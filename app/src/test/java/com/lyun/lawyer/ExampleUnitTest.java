@@ -1,4 +1,4 @@
-package cn.com.law_cloud.translator;
+package com.lyun.lawyer;
 
 import org.junit.Test;
 

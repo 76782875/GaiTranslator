@@ -1,4 +1,4 @@
-package cn.com.law_cloud.translator;
+package com.lyun.lawyer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("cn.com.law_cloud.translator", appContext.getPackageName());
+        assertEquals("com.lyun.lawyer", appContext.getPackageName());
     }
 }
