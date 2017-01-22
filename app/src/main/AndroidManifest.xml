@@ -31,6 +31,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.TranslatorSettingActivity"
+            android:theme="@style/GlobalTitleTheme">
+            <intent-filter>
+                <action android:name="com.lyun.user.intent.action.TRANSLATOR_SETTING" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.ResetPasswordActivity"
+            android:theme="@style/GlobalTitleTheme">
+            <intent-filter>
+                <action android:name="com.lyun.user.intent.action.RESET_PASSWORD" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:theme="@style/GlobalTitleTheme">
+            <intent-filter>
+                <action android:name="com.lyun.user.intent.action.TRANSLATOR_LOGIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

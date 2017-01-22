@@ -1,12 +1,12 @@
 package com.lyun.lawyer.fragment;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.annotation.NonNull;
 
-import com.lyun.fragment.BaseFragment;
 import com.lyun.lawyer.R;
+import com.lyun.lawyer.databinding.FragmentTranslatorCenterBinding;
+import com.lyun.lawyer.viewmodel.TranslatorCenterFragmentViewModel;
+import com.lyun.library.mvvm.view.fragment.MvvmFragment;
 
 /**
  * @author Gordon
@@ -14,7 +14,7 @@ import com.lyun.lawyer.R;
  * do(翻译中心页面)
  */
 
-public class TranslatorCenterFragment extends BaseFragment {
+public class TranslatorCenterFragment extends MvvmFragment<FragmentTranslatorCenterBinding, TranslatorCenterFragmentViewModel> {
     public TranslatorCenterFragment() {
     }
 
@@ -25,9 +25,14 @@ public class TranslatorCenterFragment extends BaseFragment {
         return fragment;
     }
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_translator_center, container, false);
-        return view;
+    protected TranslatorCenterFragmentViewModel createViewModel() {
+        return new TranslatorCenterFragmentViewModel();
+    }
+
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.fragment_translator_center;
     }
 }
