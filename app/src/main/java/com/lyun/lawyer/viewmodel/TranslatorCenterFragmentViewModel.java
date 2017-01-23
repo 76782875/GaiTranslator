@@ -30,7 +30,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
         userName.set("昵称");
         translateTime.set("0 分钟");
         makeMoney.set("0 元");
-        personTime.set("0 次");
+        personTime.set("0");
         exitVisible.set(View.INVISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             topVisible.set(View.VISIBLE);
