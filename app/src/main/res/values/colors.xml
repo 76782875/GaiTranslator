@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="btn_blue">#00ACF9</color>
+    <color name="btn_blue_dark">#009Cf9</color>
+    <color name="btn_yellow">#ffe11e</color>
+    <color name="btn_yellow_dark">#ffd11e</color>
 </resources>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.lyun.lawyer.viewmodel.TranslatorGrabViewModel"></import>
+
+        <variable
+            name="mvvm"
+            type="TranslatorGrabViewModel"></variable>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/translator_grab_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="45dp"
+            android:text="抢单"
+            android:textColor="@color/bgcw"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="25dp"
+            android:paddingTop="8dp"
+            android:background="@drawable/layout_translator_grab_refresh_bg">
+
+            <com.lyun.widget.refresh.PullToRefreshLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:autoRefresh="@{mvvm.isAutoRefresh}"
+                app:refreshListener="@{mvvm.onRefreshListener}"
+                android:background="@drawable/layout_translator_grab_refresh_bg">
+                <include layout="@layout/refresh_head" />
+
+                <com.lyun.widget.refresh.PullRecyclerView
+                    android:id="@+id/pullListView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/tcw"
+                    android:divider="@null"
+                    app:adapter="@{mvvm.adapter}"
+                    app:header="@{mvvm.headViewRes}"
+                    app:layoutManager="@{mvvm.recyclerViewLayoutManageCommand}"
+                    app:notifyData="@{mvvm.notifyData}"
+                    app:onItemClickCommand="@{mvvm.itemClickCommand}"></com.lyun.widget.refresh.PullRecyclerView>
+
+                <include layout="@layout/load_more" />
+
+            </com.lyun.widget.refresh.PullToRefreshLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

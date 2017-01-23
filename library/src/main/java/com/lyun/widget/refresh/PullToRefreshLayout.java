@@ -54,9 +54,9 @@ public class PullToRefreshLayout extends RelativeLayout {
     private float pullUpY = 0;
 
     // 释放刷新的距离
-    private float refreshDist = 200;
+    private float refreshDist = 150;
     // 释放加载的距离
-    private float loadmoreDist = 200;
+    private float loadmoreDist = 150;
 
     private MyTimer timer;
     // 回滚速度
@@ -67,7 +67,6 @@ public class PullToRefreshLayout extends RelativeLayout {
     private boolean isTouch = false;
     // 手指滑动距离与下拉头的滑动距离比，中间会随正切函数变化
     private float radio = 2;
-
     // 下拉箭头的转180°动画
     private RotateAnimation rotateAnimation;
     // 均匀旋转动画
@@ -225,7 +224,7 @@ public class PullToRefreshLayout extends RelativeLayout {
                     changeState(DONE);
                     hide();
                 }
-            }.sendEmptyMessageDelayed(0, 1000);
+            }.sendEmptyMessageDelayed(0, 500);
         } else {
             changeState(DONE);
             hide();
@@ -263,7 +262,7 @@ public class PullToRefreshLayout extends RelativeLayout {
                     changeState(DONE);
                     hide();
                 }
-            }.sendEmptyMessageDelayed(0, 1000);
+            }.sendEmptyMessageDelayed(0, 500);
         } else {
             changeState(DONE);
             hide();
@@ -298,7 +297,7 @@ public class PullToRefreshLayout extends RelativeLayout {
                 refreshingView.setVisibility(View.VISIBLE);
                 pullView.setVisibility(View.INVISIBLE);
                 refreshingView.startAnimation(refreshingAnimation);
-                refreshStateTextView.setText("护航互联生活");
+                refreshStateTextView.setText("正在刷新");
                 break;
             case RELEASE_TO_LOAD:
                 // 释放加载状态
@@ -311,7 +310,7 @@ public class PullToRefreshLayout extends RelativeLayout {
                 loadingView.setVisibility(View.VISIBLE);
                 pullUpView.setVisibility(View.INVISIBLE);
                 loadingView.startAnimation(refreshingAnimation);
-                loadStateTextView.setText("护航互联生活");
+                loadStateTextView.setText("正在刷新");
                 break;
             case DONE:
                 // 刷新或加载完毕，啥都不做
