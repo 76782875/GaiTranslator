@@ -33,20 +33,20 @@ public class TranslatorGrabViewModel extends ViewModel {
         @Override
         public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
             List<ViewModel> list = new ArrayList<>();
-            list.add(new TranslatorGrabItemViewModel("姓名1","15:11:45","语音"));
-            list.add(new TranslatorGrabItemViewModel("姓名2","15:11:45","图文"));
-            list.add(new TranslatorGrabItemViewModel("姓名3","15:11:45","语音"));
-            list.add(new TranslatorGrabItemViewModel("姓名4","15:11:45","已抢"));
-            list.add(new TranslatorGrabItemViewModel("姓名5","15:11:45","语音"));
-            list.add(new TranslatorGrabItemViewModel("姓名6","15:11:45","超时"));
-            list.add(new TranslatorGrabItemViewModel("姓名7","15:11:45","已抢"));
-            list.add(new TranslatorGrabItemViewModel("姓名8","15:11:45","语音"));
-            list.add(new TranslatorGrabItemViewModel("姓名9","15:11:45","图文"));
-            list.add(new TranslatorGrabItemViewModel("姓名10","15:11:45","语音"));
-            list.add(new TranslatorGrabItemViewModel("姓名11","15:11:45","超时"));
-            list.add(new TranslatorGrabItemViewModel("姓名12","15:11:45","图文"));
-            list.add(new TranslatorGrabItemViewModel("姓名13","15:11:45","语音"));
-            list.add(new TranslatorGrabItemViewModel("姓名14","15:11:45","超时"));
+            list.add(new TranslatorGrabItemViewModel("姓名1", "15:11:45", "语音"));
+            list.add(new TranslatorGrabItemViewModel("姓名2", "15:11:45", "图文"));
+            list.add(new TranslatorGrabItemViewModel("姓名3", "15:11:45", "语音"));
+            list.add(new TranslatorGrabItemViewModel("姓名4", "15:11:45", "已抢"));
+            list.add(new TranslatorGrabItemViewModel("姓名5", "15:11:45", "语音"));
+            list.add(new TranslatorGrabItemViewModel("姓名6", "15:11:45", "超时"));
+            list.add(new TranslatorGrabItemViewModel("姓名7", "15:11:45", "已抢"));
+            list.add(new TranslatorGrabItemViewModel("姓名8", "15:11:45", "语音"));
+            list.add(new TranslatorGrabItemViewModel("姓名9", "15:11:45", "图文"));
+            list.add(new TranslatorGrabItemViewModel("姓名10", "15:11:45", "语音"));
+            list.add(new TranslatorGrabItemViewModel("姓名11", "15:11:45", "超时"));
+            list.add(new TranslatorGrabItemViewModel("姓名12", "15:11:45", "图文"));
+            list.add(new TranslatorGrabItemViewModel("姓名13", "15:11:45", "语音"));
+            list.add(new TranslatorGrabItemViewModel("姓名14", "15:11:45", "超时"));
             headViewRes.set(0);
             notifyData.set(list);
             pullToRefreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
@@ -73,12 +73,14 @@ public class TranslatorGrabViewModel extends ViewModel {
     public RelayCommand<RecyclerView> recyclerViewLayoutManageCommand = new RelayCommand<RecyclerView>(recyclerView -> {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
     });
-    public RelayCommand<ViewBindingAdapter.ClickListenerData>  clickListenerDataRelayCommand = new RelayCommand<ViewBindingAdapter.ClickListenerData>(data -> {
-        getToast().show("点击"+data.position);
+    public RelayCommand<ViewBindingAdapter.ClickListenerData> clickListenerDataRelayCommand = new RelayCommand<ViewBindingAdapter.ClickListenerData>(data -> {
+        getToast().show("点击" + data.position);
     });
-    public TranslatorGrabViewModel(){
+
+    public TranslatorGrabViewModel() {
         init();
     }
+
     private void init() {
         List<TranslatorGrabItemViewModel> list = new ArrayList<>();
         TranslatorGrabAdapter adapter = new TranslatorGrabAdapter(list, R.layout.item_translator_grab_layout);

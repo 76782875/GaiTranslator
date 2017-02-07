@@ -23,7 +23,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
     private Intent intent;
 
     public TranslatorCenterFragmentViewModel() {
-        init();
+        init();//初始化数据
     }
 
     private void init() {
@@ -31,7 +31,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
         translateTime.set("0 分钟");
         makeMoney.set("0 元");
         personTime.set("0");
-        exitVisible.set(View.INVISIBLE);
+        exitVisible.set(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             topVisible.set(View.VISIBLE);
         } else {
@@ -49,7 +49,17 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
                 intent = new Intent("com.lyun.user.intent.action.TRANSLATOR_LOGIN");
                 getActivity().startActivity(intent);
                 break;
+            case R.id.translator_center_exit:
+                exit();
+                break;
         }
+    }
+
+    //退出登录
+    private void exit() {
+        getProgressDialog().show();
+        exitVisible.set(View.INVISIBLE);
+        userName.set("点击登录");
     }
 
 }

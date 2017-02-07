@@ -21,15 +21,18 @@ public class TranslatorGrabItemViewModel extends ViewModel {
     public final ObservableBoolean btnGrabClickable = new ObservableBoolean();//抢单按钮是否可点击
     public final ObservableInt btnGrabBgColor = new ObservableInt();//抢单按钮的背景颜色
     public final ObservableInt btnGrabTextColor = new ObservableInt();//抢单按钮的字体颜色
-    public TranslatorGrabItemViewModel(){
+
+    public TranslatorGrabItemViewModel() {
     }
-    public TranslatorGrabItemViewModel(String userName,String userTime,String grabText){
+
+    public TranslatorGrabItemViewModel(String userName, String userTime, String grabText) {
         this.userName.set(userName);
         this.userTime.set(userTime);
         this.grabText.set(grabText);
     }
-    public void init(int position){
-        switch (grabText.get()){
+
+    public void init(int position) {
+        switch (grabText.get()) {
             case "语音":
                 btnGrabBgColor.set(R.drawable.bg_blue_no_border_round_corner);
                 btnGrabTextColor.set(Color.parseColor("#ffffff"));
