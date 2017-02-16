@@ -55,8 +55,8 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
                 getActivity().startActivity(intent);
                 break;
             case R.id.translator_center_avatar:
-                intent = new Intent("com.lyun.user.intent.action.TRANSLATOR_LOGIN");
-                getActivity().startActivity(intent);
+                // intent = new Intent("com.lyun.user.intent.action.TRANSLATOR_LOGIN");
+                // getActivity().startActivity(intent);
                 break;
             case R.id.translator_center_exit:
                 exit();
