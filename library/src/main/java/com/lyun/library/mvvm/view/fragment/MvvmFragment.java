@@ -20,7 +20,6 @@ import com.lyun.library.mvvm.observable.PropertyChangedCallback;
 import com.lyun.library.mvvm.viewmodel.ProgressBarDialogViewModel;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
 
-
 /**
  * @author Gordon
  * @since 2016/12/26
