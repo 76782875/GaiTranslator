@@ -1,26 +1,35 @@
 package com.lyun.lawyer.viewmodel;
 
 import android.content.Intent;
+import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Build;
 import android.view.View;
 
+import com.lyun.lawyer.Account;
 import com.lyun.lawyer.R;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
+
+import net.funol.databinding.watchdog.annotations.WatchThis;
 
 /**
  * Created by 郑成裕 on 2017/1/22.
  */
 
 public class TranslatorCenterFragmentViewModel extends ViewModel {
+
     public final ObservableInt topVisible = new ObservableInt();//android 5.0以上显示，否则不显示
     public final ObservableField<String> userName = new ObservableField<>();//昵称
     public final ObservableField<String> translateTime = new ObservableField<>();//翻译时长
     public final ObservableField<String> makeMoney = new ObservableField<>();//赚钱
     public final ObservableField<String> personTime = new ObservableField<>();//人次
     public final ObservableInt exitVisible = new ObservableInt();//退出登录按钮的显示
+
     private Intent intent;
+
+    @WatchThis
+    public final BaseObservable onLogout = new BaseObservable();
 
     public TranslatorCenterFragmentViewModel() {
         init();//初始化数据
@@ -57,9 +66,8 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
 
     //退出登录
     private void exit() {
-        getProgressDialog().show();
-        exitVisible.set(View.INVISIBLE);
-        userName.set("点击登录");
+        Account.preference().clear();
+        onLogout.notifyChange();
     }
 
 }

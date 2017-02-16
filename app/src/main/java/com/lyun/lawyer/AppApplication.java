@@ -1,11 +1,15 @@
 package com.lyun.lawyer;
 
+import com.lyun.ApplicationDelegate;
 import com.lyun.BaseApplication;
 import com.lyun.http.HeaderInterceptor;
 import com.lyun.http.HttpsSocketFactoryBuilder;
 import com.lyun.http.LogInterceptor;
 import com.lyun.lawyer.api.API;
+import com.lyun.lawyer.im.NimApplicationDelegate;
 import com.lyun.utils.L;
+
+import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -44,6 +48,13 @@ public class AppApplication extends BaseApplication {
                 .trust(getResources().openRawResource(R.raw.trust), "lyt2016")
                 // .client(getResources().openRawResource(R.raw.client), "password")
                 .build();
+    }
+
+    @Override
+    protected List<ApplicationDelegate> getDelegates() {
+        List<ApplicationDelegate> delegates = super.getDelegates();
+        delegates.add(new NimApplicationDelegate(this));
+        return delegates;
     }
 
     @Override

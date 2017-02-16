@@ -22,9 +22,12 @@ def getGitCommitTime() {
     // maybe cause Exception
     return 'git show -s --format=%cd HEAD'.execute().text.trim()
 }
+
 android {
+
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
+
     signingConfigs {
         debug {
             keyAlias 'androiddebugkey'
@@ -39,14 +42,31 @@ android {
             storePassword 'lyun-app-release-psw'
         }
     }
+
     defaultConfig {
         applicationId "com.lyun.lawyer"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode _versionCode()
-        versionName "1.0"
+        versionName "3.8"
+        multiDexEnabled true
+        signingConfig signingConfigs.debug
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "MIPUSH_APP_ID", '"2882303761517467816"'
+        buildConfigField "String", "MIPUSH_APP_KEY", '"5931746772816"'
     }
+
+    dataBinding {
+        enabled true
+    }
+
+    sourceSets {
+        main {
+            res.srcDirs += 'src/main/res-nim'
+        }
+    }
+
     buildTypes {
         debug {
             debuggable true
@@ -56,12 +76,14 @@ android {
             versionNameSuffix = " debug-${buildTime()}"
             applicationIdSuffix = 'debug'
 
-            buildConfigField "String", "HOST", '"http://172.16.252.51:8080"'
+            buildConfigField "String", "HOST", '"https://172.16.252.51:8443"'
+            buildConfigField "String", "MIPUSH_CERT_NAME", '"lawyerdebug"'
             buildConfigField "String", "BAIDU_MAP_AK", '"eqrUfj2oWMjy3pmQb8RRRjddu4Fc5zsF"'
             buildConfigField "int", "BAIDU_MAP_GEO_TABLE_ID", "138163"
 
             manifestPlaceholders.putAll([
-                    app_icon          : "@drawable/ic_debug_launcher",
+                    APPLICATION_ID    : defaultConfig.applicationId + '.' + applicationIdSuffix,
+                    NIM_APPKEY        : "2bbbb39221e2ea7d61904f61acc72d52",
                     UMENG_APP_KEY     : "55a4612067e58ebb5f004e14",
                     BaiduMobAd_STAT_ID: "ac161ce77e"])
         }
@@ -80,7 +102,9 @@ android {
             buildConfigField "int", "BAIDU_MAP_GEO_TABLE_ID", "108200"
 
             manifestPlaceholders.putAll([
-                    app_icon          : "@drawable/ic_launcher",
+                    APPLICATION_ID    : defaultConfig.applicationId,
+                    NIM_APPKEY        : "124ec74d7185ba1c8f7ee5c5207490ff",
+                    MIPUSH_CERT_NAME  : "lawyer",
                     UMENG_APP_KEY     : "55a45f2967e58e1f1400529a",
                     BaiduMobAd_STAT_ID: "dc2fb90b27"])
         }
@@ -96,11 +120,27 @@ android {
             buildConfigField "int", "BAIDU_MAP_GEO_TABLE_ID", "138163"
 
             manifestPlaceholders.putAll([
-                    app_icon          : "@drawable/ic_alpha_launcher",
+                    APPLICATION_ID    : defaultConfig.applicationId + '.' + applicationIdSuffix,
+                    NIM_APPKEY        : "2bbbb39221e2ea7d61904f61acc72d52",
+                    MIPUSH_CERT_NAME  : "lawyeralpha",
                     UMENG_APP_KEY     : "55a4612067e58ebb5f004e14",
                     BaiduMobAd_STAT_ID: "ac161ce77e"])
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
     productFlavors {
         official {
         }
@@ -130,7 +170,7 @@ android {
         variant.outputs.each { output ->
             def outputFile = output.outputFile
             def path = getProjectDir().absolutePath;
-            def fileName = "${variant.buildType.name}_Translator_v${defaultConfig.versionName}_${buildTime()}_${variant.productFlavors[0].name}.apk"
+            def fileName = "${variant.buildType.name}_User_v${defaultConfig.versionName}_${buildTime()}_${variant.productFlavors[0].name}.apk"
             if (variant.buildType.name == 'debug') {
                 fileName = 'app-debug.apk'
             }
@@ -140,27 +180,35 @@ android {
         }
     }
 
-    dataBinding {
-        enabled true
-    }
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile project(':library')
+    compile project(':nimuikit')
+    compile project(':wheel')
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:support-v4:25.0.1'
     testCompile 'junit:junit:4.12'
-    compile project(':library')
+    //testCompile 'org.mockito:mockito-core:1.10.19'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     annotationProcessor 'net.funol.databinding.watchdog:compiler:1.0.0'
+}
+
+fir {
+    //必填 上传 fir.im apk 字段，否则无法上传 APP 到 fir.im
+    apiToken '7825b3e3a96e631f6db24571927b5583'
+    //可选 上传fir.im 中显示的changelog
+    changeLog ''
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.lyun.activity.BaseActivity;
+import com.lyun.lawyer.Account;
 import com.lyun.lawyer.R;
 
 
@@ -24,7 +25,11 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void run() {
                 Intent intent = new Intent();
-                intent.setClass(SplashActivity.this, MainActivity.class);
+                if (Account.preference().isLogin()) {
+                    intent.setClass(SplashActivity.this, MainActivity.class);
+                } else {
+                    intent.setClass(SplashActivity.this, LoginActivity.class);
+                }
                 startActivity(intent);
                 finish();
             }
