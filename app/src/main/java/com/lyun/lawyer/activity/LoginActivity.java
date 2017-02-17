@@ -11,12 +11,15 @@ import android.widget.Toast;
 
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityLoginBinding;
+import com.lyun.lawyer.im.NimCache;
+import com.lyun.lawyer.im.config.preference.UserPreferences;
 import com.lyun.lawyer.viewmodel.LoginViewModel;
 import com.lyun.lawyer.viewmodel.watchdog.ILoginViewModelCallbacks;
 import com.lyun.library.mvvm.view.activity.GeneralToolbarActivity;
 import com.lyun.library.mvvm.viewmodel.GeneralToolbarViewModel;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.ClientType;
 
@@ -92,6 +95,8 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
     @Override
     public void onLoginSuccess(BaseObservable observableField, int fieldId) {
         Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
+        // 初始化消息提醒配置
+        initNotificationConfig();
         //SessionHelper.startP2PSession(this, "123456");
         startActivity(new Intent(this, MainActivity.class));
         finish();
@@ -101,6 +106,20 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
     public void onLoginFailed(ObservableField<Throwable> observableField, int fieldId) {
         Toast.makeText(this, observableField.get().getMessage(), Toast.LENGTH_LONG).show();
         observableField.get().printStackTrace();
+    }
+
+    private void initNotificationConfig() {
+        // 初始化消息提醒
+        NIMClient.toggleNotification(UserPreferences.getNotificationToggle());
+
+        // 加载状态栏配置
+        StatusBarNotificationConfig statusBarNotificationConfig = UserPreferences.getStatusConfig();
+        if (statusBarNotificationConfig == null) {
+            statusBarNotificationConfig = NimCache.getNotificationConfig();
+            UserPreferences.setStatusConfig(statusBarNotificationConfig);
+        }
+        // 更新配置
+        NIMClient.updateStatusBarNotificationConfig(statusBarNotificationConfig);
     }
 
 }
