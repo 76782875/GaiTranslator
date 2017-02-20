@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.lyun.lawyer"
           android:versionCode="${VERSION_CODE}"
           android:versionName="${VERSION_NAME}">
@@ -105,6 +106,11 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.netease.nim.uikit.session.activity.P2PMessageActivity"
+            android:theme="@style/AppTheme.NoTitle"
+            tools:replace="android:theme"/>
 
         <!-- 声明云信后台服务 -->
         <service
