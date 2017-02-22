@@ -11,7 +11,7 @@ public class LoginBean extends BaseRequest {
 
     private String password;
     private String name;
-    private String userType = "0";
+    private String userType = "1";
 
     public LoginBean(String name, String password) {
         this.password = password;

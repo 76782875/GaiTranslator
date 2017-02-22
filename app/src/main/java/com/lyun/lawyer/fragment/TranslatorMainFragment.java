@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.FragmentTranslatorGrabLayoutBinding;
-import com.lyun.lawyer.viewmodel.TranslatorGrabViewModel;
+import com.lyun.lawyer.viewmodel.TranslatorMainViewModel;
 import com.lyun.library.mvvm.view.fragment.MvvmFragment;
 
 /**
@@ -14,7 +14,7 @@ import com.lyun.library.mvvm.view.fragment.MvvmFragment;
  * do(翻译主页抢单页面)
  */
 
-public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabLayoutBinding,TranslatorGrabViewModel> {
+public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabLayoutBinding,TranslatorMainViewModel> {
     public TranslatorMainFragment() {
     }
     public static TranslatorMainFragment newInstance() {
@@ -26,8 +26,8 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
 
     @NonNull
     @Override
-    protected TranslatorGrabViewModel createViewModel() {
-        return new TranslatorGrabViewModel();
+    protected TranslatorMainViewModel createViewModel() {
+        return new TranslatorMainViewModel();
     }
 
     @Override

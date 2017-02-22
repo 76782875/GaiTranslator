@@ -1,6 +1,5 @@
 package com.lyun.lawyer.model;
 
-import com.lyun.api.response.APIResult;
 import com.lyun.lawyer.api.API;
 import com.lyun.lawyer.api.request.LoginBean;
 import com.lyun.lawyer.api.response.LoginResponse;
@@ -16,9 +15,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class LoginModel extends Model {
 
-    public Observable<APIResult<LoginResponse>> login(String username, String password) {
+    public Observable<LoginResponse> login(String username, String password) {
         LoginBean bean = new LoginBean(username, MD5Util.getStringMD5(password));
-        return API.auth.login(bean)
+        return   parseAPIObservable(API.auth.login(bean))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
     }

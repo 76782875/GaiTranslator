@@ -9,4 +9,7 @@ public class APIConstants {
 
     public static final String LOGIN = "login/";
 
+    // translation order service
+    public static final String QUERY_TRANSLATION_ORDERS = "findByBillState/";
+
 }

@@ -184,7 +184,9 @@
     </declare-styleable>
     <declare-styleable name="PullToRefreshLayout">
         <attr name="refreshListener" format="reference"></attr>
-        <attr name="autoRefresh" format="reference"></attr>
+        <attr name="autoRefresh" format="boolean"></attr>
+        <attr name="refreshResult" format="integer"/>
+        <attr name="loadMoreResult" format="integer"/>
     </declare-styleable>
     <declare-styleable name="PullRecyclerView" parent="RecyclerView">
     </declare-styleable>
