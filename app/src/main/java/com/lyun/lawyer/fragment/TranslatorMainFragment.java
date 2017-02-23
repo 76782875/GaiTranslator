@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.lyun.lawyer.R;
+import com.lyun.lawyer.api.response.TranslationOrder;
 import com.lyun.lawyer.databinding.FragmentTranslatorGrabLayoutBinding;
+import com.lyun.lawyer.im.session.SessionHelper;
 import com.lyun.lawyer.viewmodel.TranslatorMainViewModel;
 import com.lyun.lawyer.viewmodel.watchdog.ITranslatorMainViewModelCallbacks;
 import com.lyun.library.mvvm.view.fragment.MvvmFragment;
@@ -41,8 +43,8 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     }
 
     @Override
-    public void onGrabOrderSuccess(ObservableField<String> observableField, int fieldId) {
-        Toast.makeText(getContext(), observableField.get(), Toast.LENGTH_LONG).show();
+    public void onGrabOrderSuccess(ObservableField<TranslationOrder> observableField, int fieldId) {
+        SessionHelper.startP2PSession(getContext(), observableField.get().getUsername());
     }
 
     @Override

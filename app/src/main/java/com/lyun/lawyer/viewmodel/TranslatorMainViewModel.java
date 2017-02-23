@@ -45,7 +45,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
     public final ObservableInt headViewRes = new ObservableInt();
 
     @WatchThis
-    public final ObservableField<String> onGrabOrderSuccess = new ObservableField<>();
+    public final ObservableField<TranslationOrder> onGrabOrderSuccess = new ObservableField<>();
     @WatchThis
     public final ObservableField<String> onGrabOrderFail = new ObservableField<>();
 
@@ -103,7 +103,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
 
                     if (orders != null) {
                         for (TranslationOrder order : orders) {
-                            datas.add(new TranslatorGrabItemViewModel(order.getUsername(), order.getOrdertype(), order.getUserorderid()).setPropertyChangeListener(this));
+                            datas.add(new TranslatorGrabItemViewModel(order).setPropertyChangeListener(this));
                         }
                     } else {
                         throw new APIContentNullException("数据为空");
@@ -138,10 +138,11 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
     }
 
     @Override
-    public void onGrabOrder(ObservableField<String> observableField, int fieldId) {
-        new TranslationOrderModel().grabOrder(observableField.get())
+    public void onGrabOrder(ObservableField<TranslationOrder> observableField, int fieldId) {
+        new TranslationOrderModel().grabOrder(observableField.get().getUserorderid())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(orderId -> ObservableNotifier.alwaysNotify(onGrabOrderSuccess, orderId),
+                .subscribe(orderId -> ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get()),
                         throwable -> ObservableNotifier.alwaysNotify(onGrabOrderFail, throwable.getMessage()));
     }
+
 }
