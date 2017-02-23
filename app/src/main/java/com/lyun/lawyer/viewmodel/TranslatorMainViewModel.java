@@ -66,6 +66,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
         this.adapter.set(adapter);
         headViewRes.set(R.layout.translator_grab_null_bg_layout);
         isAutoRefresh.set(true);
+        queryOrders(0, true);
     }
 
     public PullToRefreshLayout.OnRefreshListener onRefreshListener = new PullToRefreshLayout.OnRefreshListener() {
