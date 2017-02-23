@@ -11,5 +11,6 @@ public class APIConstants {
 
     // translation order service
     public static final String QUERY_TRANSLATION_ORDERS = "findByBillState/";
+    public static final String GRAB_TRANSLATION_ORDERS = "upBillStatus/";
 
 }

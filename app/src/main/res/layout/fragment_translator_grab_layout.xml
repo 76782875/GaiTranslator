@@ -57,9 +57,8 @@
                 android:overScrollMode="never"
                 app:adapter="@{mvvm.adapter}"
                 app:header="@{mvvm.headViewRes}"
-                app:layoutManager="@{mvvm.recyclerViewLayoutManageCommand}"
-                app:notifyData="@{mvvm.notifyData}"
-                app:onItemClickCommand="@{mvvm.itemClickCommand}">
+                app:layoutManager="@{mvvm.recyclerViewLayoutManager}"
+                app:notifyData="@{mvvm.notifyData}" >
 
             </com.lyun.widget.refresh.PullRecyclerView>
 
