@@ -8,6 +8,7 @@ package com.lyun.lawyer.api;
 public class APIConstants {
 
     public static final String LOGIN = "login/";
+    public static final String RESET_PASSWORD = "uppassword/";//修改密码
 
     // translation order service
     public static final String QUERY_TRANSLATION_ORDERS = "findByBillState/";

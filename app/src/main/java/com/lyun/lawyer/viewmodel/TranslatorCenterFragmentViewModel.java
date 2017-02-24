@@ -22,7 +22,6 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
     public final ObservableInt topVisible = new ObservableInt();//android 5.0以上显示，否则不显示
     public final ObservableField<String> userName = new ObservableField<>();//昵称
     public final ObservableField<String> translateTime = new ObservableField<>();//翻译时长
-    public final ObservableField<String> makeMoney = new ObservableField<>();//赚钱
     public final ObservableField<String> personTime = new ObservableField<>();//人次
     public final ObservableInt exitVisible = new ObservableInt();//退出登录按钮的显示
 
@@ -31,6 +30,29 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
     @WatchThis
     public final BaseObservable onLogout = new BaseObservable();
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Account.preference().isLogin()) {
+            getTranslatorDes(Account.preference().getPhone());//获取数据统计
+            setTranslatorInformation();//更新昵称
+        } else {
+            exitVisible.set(View.INVISIBLE);
+            userName.set("");
+        }
+    }
+
+    /**
+     * 更新昵称
+     */
+    private void setTranslatorInformation() {
+        userName.set(Account.preference().getPhone());
+        exitVisible.set(View.VISIBLE);
+    }
+
+    private void getTranslatorDes(String phone) {
+    }
+
     public TranslatorCenterFragmentViewModel() {
         init();//初始化数据
     }
@@ -38,7 +60,6 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
     private void init() {
         userName.set("昵称");
         translateTime.set("0 分钟");
-        makeMoney.set("0 元");
         personTime.set("0");
         exitVisible.set(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

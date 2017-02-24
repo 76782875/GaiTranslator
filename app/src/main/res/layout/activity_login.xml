@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -49,6 +49,7 @@
                 android:drawableLeft="@mipmap/ic_phone_small"
                 android:drawablePadding="5dp"
                 android:hint="手机号"
+                android:inputType="number"
                 android:maxLines="1"
                 android:padding="10dp"
                 android:text="@={mvvm.username}"

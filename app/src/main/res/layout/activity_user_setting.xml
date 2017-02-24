@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -16,51 +17,34 @@
         android:background="@color/bgc1"
         android:orientation="vertical">
 
+        <TextView
+            style="@style/main_fragment_discover_item"
+            android:layout_marginTop="5dp"
+            android:drawableLeft="@mipmap/setting_change_passward_icon"
+            android:text="修改密码"
+            app:clickCommand="@{mvvm.onModifyPasswordButtonClick}" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/common_item_bg_selector"
-                android:drawableLeft="@mipmap/setting_change_username_icon"
-                android:drawablePadding="15dp"
-                android:gravity="center_vertical"
-                android:padding="15dp"
-                android:text="修改用户名"
-                android:textColor="#333333"
-                android:textSize="15sp" />
+                style="@style/main_fragment_discover_item"
+                android:clickable="false"
+                android:drawableLeft="@mipmap/setting_app_version_icon"
+                android:drawableRight="@null"
+                android:text="版本信息" />
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
-                android:background="@null"
-                android:hint="用户名"
-                android:lines="1"
-                android:textColor="#333333"
-                android:textColorHint="#999999"
-                android:textSize="15sp" />
+                android:text="@{mvvm.appVersion}"
+                android:textColor="@color/tc1"
+                android:textSize="14sp" />
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/textView_resetPassword"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/common_item_bg_selector"
-            android:drawableLeft="@mipmap/setting_change_passward_icon"
-            android:drawablePadding="15dp"
-            android:drawableRight="@mipmap/item_right_icon"
-            android:gravity="center_vertical"
-            android:onClick="@{mvvm.onViewClick}"
-            android:padding="15dp"
-            android:text="修改密码"
-            android:textColor="#333333"
-            android:textSize="15sp" />
     </LinearLayout>
 </layout>

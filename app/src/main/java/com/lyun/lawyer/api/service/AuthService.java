@@ -3,6 +3,7 @@ package com.lyun.lawyer.api.service;
 import com.lyun.api.response.APIResult;
 import com.lyun.lawyer.api.APIConstants;
 import com.lyun.lawyer.api.request.LoginBean;
+import com.lyun.lawyer.api.request.ResetPasswordBean;
 import com.lyun.lawyer.api.response.LoginResponse;
 
 import io.reactivex.Observable;
@@ -18,5 +19,7 @@ public interface AuthService {
 
     @POST(APIConstants.LOGIN)
     Observable<APIResult<LoginResponse>> login(@Body LoginBean body);
+    @POST(APIConstants.RESET_PASSWORD)
+    Observable<APIResult> resetPassword(@Body ResetPasswordBean body);
 
 }

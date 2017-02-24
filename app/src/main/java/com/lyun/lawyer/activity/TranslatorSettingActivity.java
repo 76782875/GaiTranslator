@@ -1,10 +1,13 @@
 package com.lyun.lawyer.activity;
 
+import android.content.Intent;
+import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
 
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityUserSettingBinding;
 import com.lyun.lawyer.viewmodel.TranslatorSettingActivityViewModel;
+import com.lyun.lawyer.viewmodel.watchdog.ITranslatorSettingActivityViewModelCallbacks;
 import com.lyun.library.mvvm.view.activity.GeneralToolbarActivity;
 import com.lyun.library.mvvm.viewmodel.GeneralToolbarViewModel;
 
@@ -12,7 +15,7 @@ import com.lyun.library.mvvm.viewmodel.GeneralToolbarViewModel;
  * Created by 郑成裕 on 2017/1/22.
  */
 
-public class TranslatorSettingActivity extends GeneralToolbarActivity<ActivityUserSettingBinding, TranslatorSettingActivityViewModel> {
+public class TranslatorSettingActivity extends GeneralToolbarActivity<ActivityUserSettingBinding, TranslatorSettingActivityViewModel> implements ITranslatorSettingActivityViewModelCallbacks{
 
 
     @Override
@@ -36,5 +39,8 @@ public class TranslatorSettingActivity extends GeneralToolbarActivity<ActivityUs
         return viewModel;
     }
 
-
+    @Override
+    public void onNavigationModifyPassword(BaseObservable observableField, int fieldId) {
+        startActivity(new Intent(this, ResetPasswordActivity.class));
+    }
 }

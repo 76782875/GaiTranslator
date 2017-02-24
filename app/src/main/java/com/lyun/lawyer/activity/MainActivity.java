@@ -14,7 +14,6 @@ import com.lyun.library.mvvm.viewmodel.ViewModel;
  * do(主页面)
  */
 public class MainActivity extends MvvmActivity<ActivityMainBinding, MainActivityViewModel> {
-
     @NonNull
     @Override
     protected MainActivityViewModel createViewModel() {
