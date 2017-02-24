@@ -75,7 +75,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
 
     private void init() {
         userName.set("昵称");
-        translateTime.set("-- 分钟");
+        translateTime.set("--");
         personTime.set("--");
         exitVisible.set(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
