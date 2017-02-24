@@ -4,7 +4,9 @@ import com.lyun.api.response.APIResult;
 import com.lyun.lawyer.api.APIConstants;
 import com.lyun.lawyer.api.request.LoginBean;
 import com.lyun.lawyer.api.request.ResetPasswordBean;
+import com.lyun.lawyer.api.request.StatisticsCardNoBean;
 import com.lyun.lawyer.api.response.LoginResponse;
+import com.lyun.lawyer.api.response.StatisticsCardNoResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -19,7 +21,11 @@ public interface AuthService {
 
     @POST(APIConstants.LOGIN)
     Observable<APIResult<LoginResponse>> login(@Body LoginBean body);
+
     @POST(APIConstants.RESET_PASSWORD)
     Observable<APIResult> resetPassword(@Body ResetPasswordBean body);
+
+    @POST(APIConstants.STATISTICS_TRANSLATE)
+    Observable<APIResult<StatisticsCardNoResponse>> getStatistics(@Body StatisticsCardNoBean body);
 
 }

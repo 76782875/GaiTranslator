@@ -78,7 +78,7 @@
                     android:layout_height="60dp"
                     android:background="@color/bgcw"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="2">
 
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -90,14 +90,29 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true">
 
-                            <TextView
+                            <LinearLayout
                                 android:id="@+id/user_center_min"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
-                                android:text="@{mvvm.translateTime}"
-                                android:textColor="@color/tc1"
-                                android:textSize="14sp" />
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{mvvm.translateTime}"
+                                    android:textColor="@color/tc1"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="分钟"
+                                    android:textColor="@color/tc1"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -110,18 +125,6 @@
                                 android:textSize="13sp" />
                         </RelativeLayout>
                     </RelativeLayout>
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@color/lc1" />
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"></RelativeLayout>
 
                     <View
                         android:layout_width="1px"

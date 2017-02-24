@@ -9,9 +9,12 @@ import android.view.View;
 
 import com.lyun.lawyer.Account;
 import com.lyun.lawyer.R;
+import com.lyun.lawyer.model.StatisticsCardNoModel;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
 
 import net.funol.databinding.watchdog.annotations.WatchThis;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by 郑成裕 on 2017/1/22.
@@ -50,7 +53,20 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
         exitVisible.set(View.VISIBLE);
     }
 
-    private void getTranslatorDes(String phone) {
+    /**
+     * 数据统计
+     *
+     * @param orderHand
+     */
+    private void getTranslatorDes(String orderHand) {
+        new StatisticsCardNoModel().getStatistics(orderHand)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(apiResult -> {
+                    if ("0".equals(apiResult.getStatus())) {//获取成功
+                        translateTime.set(apiResult.getContent().getSurplusTime());
+                        personTime.set(apiResult.getContent().getCallFrequency());
+                    }
+                });
     }
 
     public TranslatorCenterFragmentViewModel() {
@@ -59,8 +75,8 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
 
     private void init() {
         userName.set("昵称");
-        translateTime.set("0 分钟");
-        personTime.set("0");
+        translateTime.set("-- 分钟");
+        personTime.set("--");
         exitVisible.set(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             topVisible.set(View.VISIBLE);

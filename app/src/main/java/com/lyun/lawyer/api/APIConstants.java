@@ -9,6 +9,7 @@ public class APIConstants {
 
     public static final String LOGIN = "login/";
     public static final String RESET_PASSWORD = "uppassword/";//修改密码
+    public static final String STATISTICS_TRANSLATE="statisticsTranslate/";//查询服务总时长，服务人次
 
     // translation order service
     public static final String QUERY_TRANSLATION_ORDERS = "findByBillState/";
