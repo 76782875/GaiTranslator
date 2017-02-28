@@ -9,6 +9,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.lyun.lawyer.AppApplication;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityLoginBinding;
 import com.lyun.lawyer.im.NimCache;
@@ -94,7 +95,7 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
 
     @Override
     public void onLoginSuccess(BaseObservable observableField, int fieldId) {
-        Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
+        Toast.makeText(AppApplication.getInstance(), "登录成功", Toast.LENGTH_LONG).show();
         // 初始化消息提醒配置
         initNotificationConfig();
         //SessionHelper.startP2PSession(this, "123456");
@@ -104,7 +105,7 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
 
     @Override
     public void onLoginFailed(ObservableField<Throwable> observableField, int fieldId) {
-        Toast.makeText(this, observableField.get().getMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(AppApplication.getInstance(), observableField.get().getMessage(), Toast.LENGTH_LONG).show();
         observableField.get().printStackTrace();
     }
 

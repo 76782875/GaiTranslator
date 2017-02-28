@@ -7,6 +7,7 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.lyun.lawyer.AppApplication;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityResetPasswordBinding;
 import com.lyun.lawyer.viewmodel.ResetPasswordActivityViewModel;
@@ -42,22 +43,22 @@ public class ResetPasswordActivity extends GeneralToolbarActivity<ActivityResetP
 
     @Override
     public void onResetPasswordResult(ObservableField<String> observableField, int fieldId) {
-        Toast.makeText(this, observableField.get(), Toast.LENGTH_LONG).show();
+        Toast.makeText(AppApplication.getInstance(), observableField.get(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onPasswordBlank(BaseObservable observableField, int fieldId) {
-        Toast.makeText(this, "请输入原密码!", Toast.LENGTH_LONG).show();
+        Toast.makeText(AppApplication.getInstance(), "请输入原密码!", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onNewPasswordBlank(BaseObservable observableField, int fieldId) {
-        Toast.makeText(this, "请输入新密码!", Toast.LENGTH_LONG).show();
+        Toast.makeText(AppApplication.getInstance(), "请输入新密码!", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onConfirmPasswordBlank(BaseObservable observableField, int fieldId) {
-        Toast.makeText(this, "请确认新密码!", Toast.LENGTH_LONG).show();
+        Toast.makeText(AppApplication.getInstance(), "请确认新密码!", Toast.LENGTH_LONG).show();
     }
 
     @Override
