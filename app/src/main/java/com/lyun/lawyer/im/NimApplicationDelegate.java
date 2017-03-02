@@ -15,6 +15,7 @@ import com.lyun.lawyer.Account;
 import com.lyun.lawyer.AppApplication;
 import com.lyun.lawyer.BuildConfig;
 import com.lyun.lawyer.R;
+import com.lyun.lawyer.activity.MainActivity;
 import com.lyun.lawyer.activity.SplashActivity;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
 import com.lyun.lawyer.im.avchat.activity.AVChatActivity;
@@ -117,7 +118,7 @@ public class NimApplicationDelegate extends ApplicationDelegate<AppApplication> 
 
         // 如果将新消息通知提醒托管给 SDK 完成，需要添加以下配置。否则无需设置。
         StatusBarNotificationConfig config = new StatusBarNotificationConfig();
-        config.notificationEntrance = SplashActivity.class; // 点击通知栏跳转到该Activity
+        config.notificationEntrance = MainActivity.class; // 点击通知栏跳转到该Activity
         config.notificationSmallIconId = R.mipmap.ic_launcher;
         // 呼吸灯配置
         config.ledARGB = Color.GREEN;
