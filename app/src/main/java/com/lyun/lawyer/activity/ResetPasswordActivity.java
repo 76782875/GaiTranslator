@@ -47,21 +47,6 @@ public class ResetPasswordActivity extends GeneralToolbarActivity<ActivityResetP
     }
 
     @Override
-    public void onPasswordBlank(BaseObservable observableField, int fieldId) {
-        Toast.makeText(AppApplication.getInstance(), "请输入原密码!", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onNewPasswordBlank(BaseObservable observableField, int fieldId) {
-        Toast.makeText(AppApplication.getInstance(), "请输入新密码!", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onConfirmPasswordBlank(BaseObservable observableField, int fieldId) {
-        Toast.makeText(AppApplication.getInstance(), "请确认新密码!", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void progressDialogShow(ObservableBoolean observableField, int fieldId) {
         if (observableField.get())
             dialogViewModel.show();
