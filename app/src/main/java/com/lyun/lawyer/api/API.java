@@ -1,7 +1,6 @@
 package com.lyun.lawyer.api;
 
 import com.lyun.api.APIBase;
-import com.lyun.lawyer.api.response.TranslationOrder;
 import com.lyun.lawyer.api.service.AuthService;
 import com.lyun.lawyer.api.service.TranslationOrderService;
 

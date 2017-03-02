@@ -111,6 +111,9 @@
             android:name="com.netease.nim.uikit.session.activity.P2PMessageActivity"
             android:theme="@style/AppTheme.NoTitle"
             tools:replace="android:theme"/>
+        <activity
+            android:name=".im.session.activity.TranslationMessageActivity"
+            android:theme="@style/AppTheme.NoTitle"/>
 
         <!-- 声明云信后台服务 -->
         <service
@@ -232,6 +235,12 @@
                 <action android:name="com.xiaomi.mipush.ERROR"/>
             </intent-filter>
         </receiver>
+        <service
+            android:name=".service.TranslationOrderService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
     </application>
 
 </manifest>

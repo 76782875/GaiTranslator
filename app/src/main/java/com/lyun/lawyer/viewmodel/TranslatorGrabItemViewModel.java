@@ -4,7 +4,7 @@ import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.graphics.Color;
 
-import com.lyun.lawyer.api.response.TranslationOrder;
+import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.library.mvvm.command.RelayCommand;
 import com.lyun.library.mvvm.observable.util.ObservableNotifier;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
@@ -24,9 +24,9 @@ public class TranslatorGrabItemViewModel extends ViewModel {
     public final ObservableInt orderTextBg = new ObservableInt();//抢单按钮的字体颜色
 
     @WatchThis
-    public final ObservableField<TranslationOrder> onGrabOrder = new ObservableField<>();
+    public final ObservableField<TranslationOrderResponse> onGrabOrder = new ObservableField<>();
 
-    public TranslatorGrabItemViewModel(TranslationOrder order) {
+    public TranslatorGrabItemViewModel(TranslationOrderResponse order) {
         onGrabOrder.set(order);
         this.userName.set(order.getUsername().substring(0, 3) + "******" + order.getUsername().substring(9, 11));
         this.orderType.set(order.getOrdertype());

@@ -14,5 +14,6 @@ public class APIConstants {
     // translation order service
     public static final String QUERY_TRANSLATION_ORDERS = "findByBillState/";
     public static final String GRAB_TRANSLATION_ORDERS = "upBillStatus/";
+    public static final String HEART_BEAT = "heartbeat/";//查询剩余时间
 
 }

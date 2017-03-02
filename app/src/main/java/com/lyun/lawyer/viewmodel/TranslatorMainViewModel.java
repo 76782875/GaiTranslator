@@ -13,11 +13,9 @@ import com.lyun.api.exception.APIContentNullException;
 import com.lyun.lawyer.AppApplication;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.adapter.TranslatorGrabAdapter;
-import com.lyun.lawyer.api.response.TranslationOrder;
+import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.viewmodel.watchdog.ITranslatorGrabItemViewModelCallbacks;
-import com.lyun.library.mvvm.command.RelayCommand;
-import com.lyun.library.mvvm.command.ResponseCommand;
 import com.lyun.library.mvvm.observable.util.ObservableNotifier;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
 import com.lyun.widget.refresh.PullToRefreshLayout;
@@ -28,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Function;
 
 /**
  * @author Gordon
@@ -45,7 +41,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
     public final ObservableInt headViewRes = new ObservableInt();
 
     @WatchThis
-    public final ObservableField<TranslationOrder> onGrabOrderSuccess = new ObservableField<>();
+    public final ObservableField<TranslationOrderResponse> onGrabOrderSuccess = new ObservableField<>();
     @WatchThis
     public final ObservableField<String> onGrabOrderFail = new ObservableField<>();
 
@@ -94,7 +90,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                 .subscribe(result -> {
                     List<TranslatorGrabItemViewModel> datas = new ArrayList<>();
 
-                    List<TranslationOrder> orders = null;
+                    List<TranslationOrderResponse> orders = null;
                     if (result != null) {
                         orders = result.getData();
                     } else {
@@ -102,7 +98,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                     }
 
                     if (orders != null) {
-                        for (TranslationOrder order : orders) {
+                        for (TranslationOrderResponse order : orders) {
                             datas.add(new TranslatorGrabItemViewModel(order).setPropertyChangeListener(this));
                         }
                     } else {
@@ -138,7 +134,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
     }
 
     @Override
-    public void onGrabOrder(ObservableField<TranslationOrder> observableField, int fieldId) {
+    public void onGrabOrder(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
         new TranslationOrderModel().grabOrder(observableField.get().getUserorderid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(orderId -> ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get()),

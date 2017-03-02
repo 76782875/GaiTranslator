@@ -1,14 +1,20 @@
 package com.lyun.lawyer.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.lyun.lawyer.Account;
 import com.lyun.lawyer.R;
-import com.lyun.lawyer.api.response.TranslationOrder;
+import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.lawyer.databinding.FragmentTranslatorGrabLayoutBinding;
 import com.lyun.lawyer.im.session.SessionHelper;
+import com.lyun.lawyer.service.TranslationOrder;
+import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.TranslatorMainViewModel;
 import com.lyun.lawyer.viewmodel.watchdog.ITranslatorMainViewModelCallbacks;
 import com.lyun.library.mvvm.view.fragment.MvvmFragment;
@@ -43,12 +49,17 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     }
 
     @Override
-    public void onGrabOrderSuccess(ObservableField<TranslationOrder> observableField, int fieldId) {
-        SessionHelper.startP2PSession(getContext(), observableField.get().getUsername());
+    public void onGrabOrderSuccess(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
+        Intent intent = new Intent(getActivity(), TranslationOrderService.class);
+        intent.putExtra(TranslationOrder.ORDER_ID, observableField.get().getUserorderid());
+        intent.putExtra(TranslationOrder.TRANSLATOR_ID, Account.preference().getPhone());
+        intent.putExtra(TranslationOrder.USER_ID, observableField.get().getUsername());
+        getActivity().startService(intent);
     }
 
     @Override
     public void onGrabOrderFail(ObservableField<String> observableField, int fieldId) {
         Toast.makeText(getContext(), observableField.get(), Toast.LENGTH_LONG).show();
     }
+
 }

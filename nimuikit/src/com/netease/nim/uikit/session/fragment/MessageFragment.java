@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.netease.nim.uikit.NimUIKit;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.common.fragment.TFragment;
@@ -27,6 +28,7 @@ import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.MessageReceipt;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -125,15 +127,15 @@ public class MessageFragment extends TFragment implements ModuleProxy {
 
         if (inputPanel == null) {
             inputPanel = new InputPanel(container, rootView, getActionList());
-            inputPanel.setCustomization(customization);
+            inputPanel.setCustomization(customization.getInputPanelCustomization());
         } else {
-            inputPanel.reload(container, customization);
+            inputPanel.reload(container, customization.getInputPanelCustomization());
         }
 
         registerObservers(true);
 
         if (customization != null) {
-            messageListPanel.setChattingBackground(customization.backgroundUri, customization.backgroundColor);
+            messageListPanel.setChattingBackground(customization.getMessagePanelCustomization().getBackgroundUri(), customization.getMessagePanelCustomization().getBackgroundColor());
         }
     }
 
@@ -218,7 +220,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
 
     @Override
     public boolean isLongClickEnabled() {
-        return !inputPanel.isRecording();
+        return customization.getMessagePanelCustomization().isMsgLongClickEnabled() && !inputPanel.isRecording();
     }
 
     @Override
@@ -231,15 +233,16 @@ public class MessageFragment extends TFragment implements ModuleProxy {
 
     // 操作面板集合
     protected List<BaseAction> getActionList() {
-        List<BaseAction> actions = new ArrayList<>();
-        actions.add(new ImageAction());
-        actions.add(new VideoAction());
-        actions.add(new LocationAction());
+        //List<BaseAction> actions = new ArrayList<>();
+        //actions.add(new ImageAction());
+        //actions.add(new VideoAction());
+        //actions.add(new LocationAction());
 
-        if (customization != null && customization.actions != null) {
-            actions.addAll(customization.actions);
-        }
-        return actions;
+        //if (customization != null && customization.inputPanelCustomization.actions != null) {
+        //    actions.addAll(customization.inputPanelCustomization.actions);
+        //}
+
+        return customization.getInputPanelCustomization().getActions();
     }
 
     /**

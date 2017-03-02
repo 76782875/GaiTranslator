@@ -4,7 +4,7 @@ package com.lyun.lawyer.api.response;
  * Created by ZHAOWEIWEI on 2017/2/21.
  */
 
-public class TranslationOrder {
+public class TranslationOrderResponse {
 
     /**
      * username : 13838502074
