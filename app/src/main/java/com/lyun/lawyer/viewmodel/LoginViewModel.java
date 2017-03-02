@@ -1,6 +1,7 @@
 package com.lyun.lawyer.viewmodel;
 
 import android.databinding.BaseObservable;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 
 import com.lyun.lawyer.Account;
@@ -8,7 +9,9 @@ import com.lyun.lawyer.api.response.LoginResponse;
 import com.lyun.lawyer.im.login.NimLoginHelper;
 import com.lyun.lawyer.model.LoginModel;
 import com.lyun.library.mvvm.command.RelayCommand;
+import com.lyun.library.mvvm.observable.util.ObservableNotifier;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
+import com.lyun.utils.Validator;
 
 import net.funol.databinding.watchdog.annotations.WatchThis;
 
@@ -26,16 +29,35 @@ public class LoginViewModel extends ViewModel {
     public final BaseObservable onLoginSuccess = new BaseObservable();
     @WatchThis
     public final ObservableField<Throwable> onLoginFailed = new ObservableField<>();
+    @WatchThis
+    public final ObservableField<String> onLoginResult = new ObservableField<>();
+    @WatchThis
+    public final ObservableBoolean progressDialogShow = new ObservableBoolean();
 
     public RelayCommand onLoginButtonClick = new RelayCommand(() -> {
-        login(username.get(), password.get());
+        if (("".equals(username.get()) || (username.get() == null))) {
+            ObservableNotifier.alwaysNotify(onLoginResult, "请输入手机号!");
+        } else if (!Validator.isMobileNO(username.get())) {
+            ObservableNotifier.alwaysNotify(onLoginResult, "请输入正确的手机号!");
+        } else if (("".equals(password.get())) || (null == password.get())) {
+            ObservableNotifier.alwaysNotify(onLoginResult, "请输入密码!");
+        } else {
+            login(username.get(), password.get());
+        }
     });
 
     private void login(String username, String password) {
+        progressDialogShow.set(true);
         new LoginModel().login(username, password)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(loginResponse -> loginNim(username, password, loginResponse),
-                        throwable -> onLoginFailed.set(throwable));
+                .subscribe(loginResponse -> {
+                            loginNim(username, password, loginResponse);
+                            progressDialogShow.set(false);
+                        },
+                        throwable -> {
+                            onLoginFailed.set(throwable);
+                            progressDialogShow.set(false);
+                        });
     }
 
     private void loginNim(String username, String password, LoginResponse loginResponse) {
