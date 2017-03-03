@@ -11,7 +11,7 @@ import com.lyun.lawyer.model.LoginModel;
 import com.lyun.library.mvvm.command.RelayCommand;
 import com.lyun.library.mvvm.observable.util.ObservableNotifier;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
-import com.lyun.utils.Validator;
+import com.lyun.utils.RegExMatcherUtils;
 
 import net.funol.databinding.watchdog.annotations.WatchThis;
 
@@ -37,10 +37,12 @@ public class LoginViewModel extends ViewModel {
     public RelayCommand onLoginButtonClick = new RelayCommand(() -> {
         if (("".equals(username.get()) || (username.get() == null))) {
             ObservableNotifier.alwaysNotify(onLoginResult, "请输入手机号!");
-        } else if (!Validator.isMobileNO(username.get())) {
+        } else if (!RegExMatcherUtils.isMobileNO(username.get())) {
             ObservableNotifier.alwaysNotify(onLoginResult, "请输入正确的手机号!");
         } else if (("".equals(password.get())) || (null == password.get())) {
             ObservableNotifier.alwaysNotify(onLoginResult, "请输入密码!");
+        } else if (!RegExMatcherUtils.matchPassword(password.get())) {
+            ObservableNotifier.alwaysNotify(onLoginResult, "密码格式不正确,请重新输入!");
         } else {
             login(username.get(), password.get());
         }
