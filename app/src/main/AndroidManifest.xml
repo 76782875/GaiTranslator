@@ -113,7 +113,7 @@
             tools:replace="android:theme"/>
         <activity
             android:name=".im.session.activity.TranslationMessageActivity"
-            android:theme="@style/AppTheme.NoTitle"/>
+            android:theme="@style/AppTheme.NoTitle.TranslucentStatus"/>
 
         <!-- 声明云信后台服务 -->
         <service

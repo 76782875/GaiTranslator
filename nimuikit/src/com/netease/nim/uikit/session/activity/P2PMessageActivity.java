@@ -3,11 +3,6 @@ package com.netease.nim.uikit.session.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -35,6 +30,8 @@ import java.util.List;
  * Created by huangjun on 2015/2/1.
  */
 public class P2PMessageActivity extends BaseMessageActivity {
+
+    private MessageFragment mMessageFragment;
 
     private boolean isResume = false;
 
@@ -173,12 +170,18 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
     @Override
     protected MessageFragment fragment() {
-        Bundle arguments = getIntent().getExtras();
-        arguments.putSerializable(Extras.EXTRA_TYPE, SessionTypeEnum.P2P);
-        MessageFragment fragment = new MessageFragment();
-        fragment.setArguments(arguments);
-        fragment.setContainerId(R.id.message_fragment_container);
-        return fragment;
+        return getMessageFragment();
+    }
+
+    protected MessageFragment getMessageFragment() {
+        if (mMessageFragment == null) {
+            Bundle arguments = getIntent().getExtras();
+            arguments.putSerializable(Extras.EXTRA_TYPE, SessionTypeEnum.P2P);
+            mMessageFragment = new MessageFragment();
+            mMessageFragment.setArguments(arguments);
+            mMessageFragment.setContainerId(R.id.message_fragment_container);
+        }
+        return mMessageFragment;
     }
 
     @Override

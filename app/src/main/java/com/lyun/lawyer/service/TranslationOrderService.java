@@ -35,7 +35,10 @@ public class TranslationOrderService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         mTimer.cancel();
+
+        stopTranslation();
     }
 
     @Nullable
@@ -48,6 +51,15 @@ public class TranslationOrderService extends Service {
 
         mTranslationOrder = translationOrder;
 
+        startTranslation();
+    }
+
+    /**
+     * 翻译服务开始
+     */
+    protected void startTranslation() {
+        setTranslationState(mTranslationOrder.getOrderId(), "0");
+
         Intent intent = new Intent();
         //设置intent的动作为，可以任意定义
         intent.setAction(Action.START);
@@ -56,8 +68,47 @@ public class TranslationOrderService extends Service {
         intent.putExtra(TranslationOrder.USER_ID, mTranslationOrder.getUserId());
         //发送无序广播
         sendBroadcast(intent);
+    }
 
-        heartBeat();
+    /**
+     * 更新翻译进度
+     */
+    protected void processTranslation() {
+        mTranslationOrder.setServicedTime(System.currentTimeMillis() - mTranslationOrder.getStartTime());
+
+        Intent intent = new Intent();
+        //设置intent的动作为，可以任意定义
+        intent.setAction(Action.STATUS_CHANGE);
+        intent.putExtra(TranslationOrder.ORDER_ID, mTranslationOrder.getOrderId());
+        intent.putExtra(TranslationOrder.SERVICED_TIME, mTranslationOrder.getServicedTime());
+        //发送无序广播
+        sendBroadcast(intent);
+
+        if (((int) mTranslationOrder.getServicedTime() / 1000) % HEART_BEAT_INTERVAL == 0) {
+            heartBeat();
+        }
+    }
+
+    /**
+     * 翻译服务结束
+     */
+    protected void stopTranslation() {
+        setTranslationState(mTranslationOrder.getOrderId(), "1");
+
+        Intent intent = new Intent();
+        //设置intent的动作为，可以任意定义
+        intent.setAction(Action.FINISH);
+        //发送无序广播
+        sendBroadcast(intent);
+    }
+
+    private void setTranslationState(String userOrderId, String phoneState) {
+        new TranslationOrderModel().setTranslatorStatus(userOrderId, phoneState)
+                .subscribe(result -> {
+
+                }, throwable -> {
+
+                });
     }
 
     protected void heartBeat() {
@@ -73,19 +124,7 @@ public class TranslationOrderService extends Service {
     public TimerTask mOrderTimerTask = new TimerTask() {
         @Override
         public void run() {
-            mTranslationOrder.setServicedTime(System.currentTimeMillis() - mTranslationOrder.getStartTime());
-
-            Intent intent = new Intent();
-            //设置intent的动作为，可以任意定义
-            intent.setAction(Action.STATUS_CHANGE);
-            intent.putExtra(TranslationOrder.ORDER_ID, mTranslationOrder.getOrderId());
-            intent.putExtra(TranslationOrder.SERVICED_TIME, mTranslationOrder.getServicedTime());
-            //发送无序广播
-            sendBroadcast(intent);
-
-            if (((int) mTranslationOrder.getServicedTime() / 1000) % HEART_BEAT_INTERVAL == 0) {
-                heartBeat();
-            }
+            processTranslation();
         }
     };
 

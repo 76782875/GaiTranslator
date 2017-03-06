@@ -4,10 +4,13 @@ import com.lyun.api.response.APIResult;
 import com.lyun.api.response.Page;
 import com.lyun.lawyer.Account;
 import com.lyun.lawyer.api.API;
+import com.lyun.lawyer.api.request.CancelTranslationOrderBean;
 import com.lyun.lawyer.api.request.GrabOrderRequest;
 import com.lyun.lawyer.api.request.HeartBeatBean;
 import com.lyun.lawyer.api.request.QueryTranslationOrdersBean;
+import com.lyun.lawyer.api.request.TranslatorStatusBean;
 import com.lyun.lawyer.api.response.TranslationOrderResponse;
+import com.lyun.lawyer.api.response.TranslatorStatusResponse;
 import com.lyun.library.mvvm.model.Model;
 
 import java.util.List;
@@ -38,6 +41,18 @@ public class TranslationOrderModel extends Model {
     public Observable<String> grabOrder(String orderId) {
         GrabOrderRequest request = new GrabOrderRequest(orderId, Account.preference().getPhone());
         return parseAPIObservable(API.translationOrder.grabOrder(request))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io());
+    }
+
+    public Observable<APIResult<String>> cancelOrder(String userOrderId) {
+        return API.translationOrder.cancelOrder(new CancelTranslationOrderBean(userOrderId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io());
+    }
+
+    public Observable<APIResult<TranslatorStatusResponse>> setTranslatorStatus(String userOrderId, String phoneState) {
+        return API.translationOrder.setTranslatorStatus(new TranslatorStatusBean(userOrderId,phoneState))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
     }
