@@ -170,7 +170,7 @@
                 android:layout_below="@+id/translation_audio_message_avatar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:text="@{`译员`+ mvvm.translatorName+`为您服务`}"
+                android:text="@{`正在为`+ mvvm.translatorName+`服务`}"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"/>
 

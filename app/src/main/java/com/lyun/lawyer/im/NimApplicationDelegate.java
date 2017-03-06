@@ -82,7 +82,7 @@ public class NimApplicationDelegate extends ApplicationDelegate<AppApplication> 
             NIMClient.toggleNotification(UserPreferences.getNotificationToggle());
 
             // 注册网络通话来电
-            enableAVChat();
+            // enableAVChat();
 
             // 注册白板会话
             // enableRTS();
