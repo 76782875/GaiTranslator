@@ -17,7 +17,7 @@ import net.funol.databinding.watchdog.annotations.WatchThis;
 public class TranslationAudioMessageViewModel extends ViewModel {
 
     public final ObservableField<String> targetLanguage = new ObservableField<>();
-    public final ObservableField<String> translatorName = new ObservableField<>();
+    public final ObservableField<String> userName = new ObservableField<>();
     public final ObservableField<String> translationTime = new ObservableField<>();
     public final ObservableField<String> translatorAvatar = new ObservableField<>();
 

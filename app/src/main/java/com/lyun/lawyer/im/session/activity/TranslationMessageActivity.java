@@ -82,6 +82,10 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         registerReceiver(mTranslationOrderFinishReceiver, orderFinishIntentFilter);
 
         mProgressDialog = new ProgressBarDialogViewModel(this);
+
+        if (orderType == TranslationOrderModel.OrderType.AUDIO) {
+            changeToAudioChatMode();
+        }
     }
 
     protected void parseIntent() {
@@ -188,7 +192,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             // 正在语音
             currentNormalMode = false;
             if (getToolBar() != null) {
-                getTranslationAudioMessageFragment().setTranslatorName(getToolBar().getTitle().toString());
+                getTranslationAudioMessageFragment().setUserName(getToolBar().getTitle().toString());
             }
             switchContent(getTranslationAudioMessageFragment());
             getToolBar().setVisibility(View.GONE);
@@ -320,7 +324,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
     protected void registerAVChatListeners() {
         // 注册audio来电广播接收器
-        registerAVChatIncomingCallObserver(true);
+        AVChatManager.getInstance().observeIncomingCall(mAVChatIncomingCallObserver, true);
         // 监听被叫方回应（主叫方）
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, true);
         // 监听对方挂断（主叫方、被叫方）
@@ -330,7 +334,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     }
 
     protected void unregisterAVChatListeners() {
-        registerAVChatIncomingCallObserver(false);
+        AVChatManager.getInstance().observeIncomingCall(mAVChatIncomingCallObserver, false);
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, false);
         AVChatManager.getInstance().observeHangUpNotification(mAVChatCallHangupObserver, false);
         AVChatManager.getInstance().observeTimeoutNotification(mAVChatCallTimeoutObserver, false);
@@ -341,16 +345,16 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
      *
      * @param register
      */
-    private void registerAVChatIncomingCallObserver(boolean register) {
-        AVChatManager.getInstance().observeIncomingCall((Observer<AVChatData>) data -> {
-            String extra = data.getExtra();
-            L.d("AVChat", "Extra Message->" + extra);
-            // 仅处理当前服务的语音请求
-            if (data.getAccount() == null || !data.getAccount().equals(sessionId)) {
-                L.i("AVChat", "收到非当前服务的语音请求，已忽略");
-                return;
-            }
-            SimpleDialogViewModel viewModel = new SimpleDialogViewModel(this);
+    protected Observer<AVChatData> mAVChatIncomingCallObserver = (Observer<AVChatData>) data -> {
+        String extra = data.getExtra();
+        L.d("AVChat", "Extra Message->" + extra);
+        // 仅处理当前服务的语音请求
+        if (data.getAccount() == null || !data.getAccount().equals(sessionId)) {
+            L.i("AVChat", "收到非当前服务的语音请求，已忽略");
+            return;
+        }
+        runOnUiThread(() -> {
+            SimpleDialogViewModel viewModel = new SimpleDialogViewModel(TranslationMessageActivity.this);
             viewModel.setInfo("对方发送语音服务请求，是否接受");
             viewModel.setYesBtnText("是");
             viewModel.setCancelBtnText("否");
@@ -365,10 +369,11 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                     hangUpAudioCall();
                 }
             });
-            viewModel.show();
-
-        }, register);
-    }
+            if (!isFinishing()) {
+                viewModel.show();
+            }
+        });
+    };
 
     /**
      * 发起语音请求
@@ -378,7 +383,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             @Override
             public void onSuccess(AVChatData avChatData) {
                 L.i("AVChat", "语音请求发起成功，等待对方接听");
-                showProgress(null);
+                runOnUiThread(() -> showProgress(null));
             }
 
             @Override
@@ -404,7 +409,8 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                 AVChatProfile.getInstance().setAVChatting(true);
                 AVChatManager.getInstance().muteLocalAudio(false);
                 AVChatManager.getInstance().muteRemoteAudio(sessionId, false);
-                changeToAudioChatMode();
+
+                runOnUiThread(() -> changeToAudioChatMode());
             }
 
             @Override
@@ -450,7 +456,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         if (orderType == TranslationOrderModel.OrderType.AUDIO) {
             finish();
         }
-        changeToNormalChatMode();
+        runOnUiThread(() -> changeToNormalChatMode());
     }
 
     /**
@@ -480,7 +486,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                 AVChatManager.getInstance().muteRemoteAudio(sessionId, false);
                 AVChatManager.getInstance().muteLocalAudio(false);
                 // 切换到语音聊天界面
-                changeToAudioChatMode();
+                runOnUiThread(() -> changeToAudioChatMode());
             } else {
                 // 设备初始化失败，无法进行通话
                 L.e("AVChat", "设备初始化失败，无法进行通话");

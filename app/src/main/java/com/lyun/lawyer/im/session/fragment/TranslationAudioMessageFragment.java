@@ -25,6 +25,7 @@ public class TranslationAudioMessageFragment extends TFragment {
     private TranslationAudioMessageViewModel mViewModel;
     private View rootView;
 
+    private String userName;
     private String targetLanguage;
 
     @Override
@@ -35,6 +36,7 @@ public class TranslationAudioMessageFragment extends TFragment {
         mViewModel = new TranslationAudioMessageViewModel().setPropertyChangeListener(getActivity());
         translationAudioMessageBinding.setMvvm(mViewModel);
         mViewModel.targetLanguage.set(targetLanguage);
+        mViewModel.userName.set(userName);
         return rootView;
     }
 
@@ -42,8 +44,8 @@ public class TranslationAudioMessageFragment extends TFragment {
         mViewModel.translationTime.set(time);
     }
 
-    public void setTranslatorName(String name) {
-        mViewModel.translatorName.set(name);
+    public void setUserName(String name) {
+        this.userName = name;
     }
 
     public void setTranslatorTargetLanguage(String targetLanguage) {
