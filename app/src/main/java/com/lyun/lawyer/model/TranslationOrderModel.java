@@ -13,6 +13,7 @@ import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.lawyer.api.response.TranslatorStatusResponse;
 import com.lyun.library.mvvm.model.Model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -55,6 +56,26 @@ public class TranslationOrderModel extends Model {
         return API.translationOrder.setTranslatorStatus(new TranslatorStatusBean(userOrderId,phoneState))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
+    }
+
+    public enum OrderType implements Serializable {
+
+        // 0=图文 1=语音
+        MESSAGE("0"), AUDIO("1");
+
+        private String value;
+
+        OrderType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 
 }

@@ -17,9 +17,11 @@ import android.widget.TextView;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
 import com.lyun.lawyer.im.session.fragment.TranslationAudioMessageFragment;
+import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.service.TranslationOrder;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.watchdog.ITranslationAudioMessageViewModelCallbacks;
+import com.lyun.library.mvvm.viewmodel.ProgressBarDialogViewModel;
 import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
 import com.lyun.utils.L;
 import com.lyun.utils.TimeUtil;
@@ -51,11 +53,17 @@ import java.util.ArrayList;
 public class TranslationMessageActivity extends P2PMessageActivity implements ITranslationAudioMessageViewModelCallbacks {
 
     private TranslationAudioMessageFragment mTranslationAudioMessageFragment;
-    private String userOrderId;
+    private String orderId;
+    private TranslationOrderModel.OrderType orderType;
+    private String targetLanguage;
+
+    private ProgressBarDialogViewModel mProgressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        parseIntent();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(com.netease.nim.uikit.R.id.message_fragment_container, getMessageFragment());
@@ -73,7 +81,13 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         IntentFilter orderFinishIntentFilter = new IntentFilter(TranslationOrderService.Action.FINISH);
         registerReceiver(mTranslationOrderFinishReceiver, orderFinishIntentFilter);
 
-        userOrderId = getIntent().getStringExtra("orderId");
+        mProgressDialog = new ProgressBarDialogViewModel(this);
+    }
+
+    protected void parseIntent() {
+        orderId = getIntent().getStringExtra(TranslationOrder.ORDER_ID);
+        orderType = (TranslationOrderModel.OrderType) getIntent().getSerializableExtra(TranslationOrder.ORDER_TYPE);
+        targetLanguage = getIntent().getStringExtra(TranslationOrder.TARGET_LANGUAGE);
     }
 
     @Override
@@ -89,10 +103,12 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         unregisterReceiver(mTranslationOrderFinishReceiver);
     }
 
-    public static void start(Context context, String contactId, String orderId, SessionCustomization customization, IMMessage anchor) {
+    public static void start(Context context, String contactId, String orderId, TranslationOrderModel.OrderType orderType, String targetLanguage, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
+        intent.putExtra(TranslationOrder.ORDER_ID, orderId);
+        intent.putExtra(TranslationOrder.ORDER_TYPE, orderType);
+        intent.putExtra(TranslationOrder.TARGET_LANGUAGE, targetLanguage);
         intent.putExtra(Extras.EXTRA_ACCOUNT, contactId);
-        intent.putExtra("orderId", orderId);
         intent.putExtra(Extras.EXTRA_CUSTOMIZATION, customization);
         if (anchor != null) {
             intent.putExtra(Extras.EXTRA_ANCHOR, anchor);
@@ -208,6 +224,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         if (mTranslationAudioMessageFragment == null) {
             mTranslationAudioMessageFragment = new TranslationAudioMessageFragment();
             mTranslationAudioMessageFragment.setContainerId(com.netease.nim.uikit.R.id.message_fragment_container);
+            mTranslationAudioMessageFragment.setTranslatorTargetLanguage(targetLanguage);
         }
         return mTranslationAudioMessageFragment;
     }
@@ -260,7 +277,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             @Override
             public void OnYesClick(View view) {
                 // 终止翻译服务
-                stopService(new Intent(TranslationMessageActivity.this, TranslationOrderService.class));
+                finish();
             }
 
             @Override
@@ -274,6 +291,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     @Override
     public void finish() {
         super.finish();
+        stopService(new Intent(TranslationMessageActivity.this, TranslationOrderService.class));
         if (AVChatProfile.getInstance().isAVChatting()) {
             hangUpAudioCall();
         }
@@ -287,6 +305,15 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    protected void showProgress(String message) {
+        mProgressDialog.setMessage(message);
+        mProgressDialog.show();
+    }
+
+    protected void dismissProgress() {
+        mProgressDialog.dismiss();
     }
 
     ///////////////////////////语音通话部分//////////////////////////////
@@ -335,7 +362,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
                 @Override
                 public void OnCancelClick(View view) {
-
+                    hangUpAudioCall();
                 }
             });
             viewModel.show();
@@ -351,6 +378,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             @Override
             public void onSuccess(AVChatData avChatData) {
                 L.i("AVChat", "语音请求发起成功，等待对方接听");
+                showProgress(null);
             }
 
             @Override
@@ -416,6 +444,12 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
     protected void onAudioHangUp() {
         AVChatProfile.getInstance().setAVChatting(false);
+        if (isFinishing()) {
+            return;
+        }
+        if (orderType == TranslationOrderModel.OrderType.AUDIO) {
+            finish();
+        }
         changeToNormalChatMode();
     }
 
@@ -452,6 +486,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                 L.e("AVChat", "设备初始化失败，无法进行通话");
             }
         }
+        dismissProgress();
     };
 
     /**
@@ -460,7 +495,6 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
      */
     Observer<AVChatCommonEvent> mAVChatCallHangupObserver = (Observer<AVChatCommonEvent>) hangUpInfo -> {
         // 结束通话
-        AVChatProfile.getInstance().setAVChatting(false);
         onAudioHangUp();
     };
 

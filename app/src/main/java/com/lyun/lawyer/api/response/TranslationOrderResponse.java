@@ -18,6 +18,7 @@ public class TranslationOrderResponse {
     private String userorderid;
     private String ordertime;
     private String ordertype;
+    private String language;
     private int id;
 
     public String getUsername() {
@@ -50,6 +51,14 @@ public class TranslationOrderResponse {
 
     public void setOrdertype(String ordertype) {
         this.ordertype = ordertype;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public int getId() {

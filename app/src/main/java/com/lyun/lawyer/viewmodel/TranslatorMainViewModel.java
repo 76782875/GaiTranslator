@@ -88,6 +88,11 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                 .queryOrder(page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
+
+                    if (refresh) {
+                        notifyData.clear();
+                    }
+
                     List<TranslatorGrabItemViewModel> datas = new ArrayList<>();
 
                     List<TranslationOrderResponse> orders = null;
@@ -103,10 +108,6 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                         }
                     } else {
                         throw new APIContentNullException("数据为空");
-                    }
-
-                    if (refresh) {
-                        notifyData.clear();
                     }
 
                     notifyData.addAll(datas);

@@ -13,6 +13,7 @@ import com.lyun.lawyer.R;
 import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.lawyer.databinding.FragmentTranslatorGrabLayoutBinding;
 import com.lyun.lawyer.im.session.SessionHelper;
+import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.service.TranslationOrder;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.TranslatorMainViewModel;
@@ -52,6 +53,12 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     public void onGrabOrderSuccess(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
         Intent intent = new Intent(getActivity(), TranslationOrderService.class);
         intent.putExtra(TranslationOrder.ORDER_ID, observableField.get().getUserorderid());
+        TranslationOrderModel.OrderType orderType = TranslationOrderModel.OrderType.AUDIO;
+        if ("图文".equals(observableField.get().getOrdertype())) {
+            orderType = TranslationOrderModel.OrderType.MESSAGE;
+        }
+        intent.putExtra(TranslationOrder.ORDER_TYPE, orderType);
+        intent.putExtra(TranslationOrder.TARGET_LANGUAGE, observableField.get().getLanguage());
         intent.putExtra(TranslationOrder.TRANSLATOR_ID, Account.preference().getPhone());
         intent.putExtra(TranslationOrder.USER_ID, observableField.get().getUsername());
         getActivity().startService(intent);

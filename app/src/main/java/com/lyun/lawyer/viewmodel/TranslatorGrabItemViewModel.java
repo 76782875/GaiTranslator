@@ -45,7 +45,5 @@ public class TranslatorGrabItemViewModel extends ViewModel {
         }
     }
 
-    public final RelayCommand onGrabOrderClick = new RelayCommand(() -> {
-        ObservableNotifier.alwaysNotify(onGrabOrder, onGrabOrder.get());
-    });
+    public final RelayCommand onGrabOrderClick = new RelayCommand(() -> ObservableNotifier.alwaysNotify(onGrabOrder, onGrabOrder.get()));
 }

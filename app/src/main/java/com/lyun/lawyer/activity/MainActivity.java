@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityMainBinding;
 import com.lyun.lawyer.im.session.SessionHelper;
+import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.service.TranslationOrder;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.MainActivityViewModel;
@@ -28,7 +29,7 @@ public class MainActivity extends MvvmActivity<ActivityMainBinding, MainActivity
         super.onCreate(savedInstanceState);
 
         IntentFilter intentFilter = new IntentFilter(TranslationOrderService.Action.START);
-        registerReceiver(orderStartReceiver, intentFilter);
+        registerReceiver(mOrderStartReceiver, intentFilter);
     }
 
     @NonNull
@@ -51,14 +52,17 @@ public class MainActivity extends MvvmActivity<ActivityMainBinding, MainActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(orderStartReceiver);
+        unregisterReceiver(mOrderStartReceiver);
     }
 
-    private BroadcastReceiver orderStartReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mOrderStartReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            String account = intent.getStringExtra(TranslationOrder.USER_ID);
             String orderId = intent.getStringExtra(TranslationOrder.ORDER_ID);
-            SessionHelper.startTranslationSession(MainActivity.this, intent.getStringExtra(TranslationOrder.USER_ID), orderId);
+            TranslationOrderModel.OrderType orderType = (TranslationOrderModel.OrderType) intent.getSerializableExtra(TranslationOrder.ORDER_TYPE);
+            String targetLanguage = intent.getStringExtra(TranslationOrder.TARGET_LANGUAGE);
+            SessionHelper.startTranslationSession(MainActivity.this, account, orderId, orderType, targetLanguage);
         }
     };
 
