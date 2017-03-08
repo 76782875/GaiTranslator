@@ -48,7 +48,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode _versionCode()
-        versionName "3.8"
+        versionName "3.8.0"
         multiDexEnabled true
         signingConfig signingConfigs.debug
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -98,6 +98,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "HOST", '"https://lyt.law-cloud.com.cn:8444"'
+            buildConfigField "String", "MIPUSH_CERT_NAME", '"lawyer"'
             buildConfigField "String", "BAIDU_MAP_AK", '"I8mvwSd8WolPcyoTUCPf5QI1"'
             buildConfigField "int", "BAIDU_MAP_GEO_TABLE_ID", "108200"
 
@@ -116,6 +117,7 @@ android {
             applicationIdSuffix = 'alpha'
 
             buildConfigField "String", "HOST", '"https://lyt-stg.law-cloud.com.cn:8444"'
+            buildConfigField "String", "MIPUSH_CERT_NAME", '"lawyeralpha"'
             buildConfigField "String", "BAIDU_MAP_AK", '"eqrUfj2oWMjy3pmQb8RRRjddu4Fc5zsF"'
             buildConfigField "int", "BAIDU_MAP_GEO_TABLE_ID", "138163"
 
@@ -170,7 +172,7 @@ android {
         variant.outputs.each { output ->
             def outputFile = output.outputFile
             def path = getProjectDir().absolutePath;
-            def fileName = "${variant.buildType.name}_User_v${defaultConfig.versionName}_${buildTime()}_${variant.productFlavors[0].name}.apk"
+            def fileName = "${variant.buildType.name}_Lawyer_v${defaultConfig.versionName}_${buildTime()}_${variant.productFlavors[0].name}.apk"
             if (variant.buildType.name == 'debug') {
                 fileName = 'app-debug.apk'
             }
@@ -200,6 +202,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    alphaCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     annotationProcessor 'net.funol.databinding.watchdog:compiler:1.0.1'
