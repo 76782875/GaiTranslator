@@ -15,12 +15,14 @@ import com.lyun.lawyer.R;
 
 public class SplashActivity extends BaseActivity {
     private static int sleepTime=3500;
-    private Handler mHandler = new Handler();
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        if (mHandler == null)
+            mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -34,5 +36,15 @@ public class SplashActivity extends BaseActivity {
                 finish();
             }
         },sleepTime);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //防止handle的内存泄露问题
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
     }
 }
