@@ -66,7 +66,8 @@ public class TranslationOrderService extends Service {
 
         mTimer.schedule(mOrderTimerTask, 1000, 1000);
 
-        setTranslationState(mTranslationOrder.getOrderId(), "0");
+        // 专家端不标记订单开始
+        // setTranslationState(mTranslationOrder.getOrderId(), "0");
 
         Intent intent = new Intent();
         //设置intent的动作为，可以任意定义
