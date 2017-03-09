@@ -4,12 +4,12 @@ import android.databinding.ObservableField;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.CheckBox;
 
 import com.lyun.entity.TabItemBean;
 import com.lyun.lawyer.R;
-import com.lyun.lawyer.adapter.MainPagerAdapter;
 import com.lyun.lawyer.fragment.TranslatorCenterFragment;
 import com.lyun.lawyer.fragment.TranslatorMainFragment;
 import com.lyun.library.mvvm.bindingadapter.tablayout.ViewBindAdapter;
@@ -55,7 +55,19 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     RelayCommand<ViewPager> relayCommand = new RelayCommand<>((viewPage) -> {
-        viewPage.setAdapter(new MainPagerAdapter(viewPage.getContext(), mFragmentManager, fragments));
+        viewPage.setAdapter(new FragmentPagerAdapter(mFragmentManager) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                if (fragments == null)
+                    return 0;
+                return fragments.size();
+            }
+        });
     });
     //设置监听底部按钮
     private TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
@@ -87,4 +99,10 @@ public class MainActivityViewModel extends ViewModel {
         }
     };
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mFragmentManager = null;
+        fragments = null;
+    }
 }

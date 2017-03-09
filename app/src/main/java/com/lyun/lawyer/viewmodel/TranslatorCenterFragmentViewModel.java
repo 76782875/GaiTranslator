@@ -49,10 +49,16 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
      * 更新昵称
      */
     private void setTranslatorInformation() {
-        userName.set(Account.preference().getPhone());
+        userName.set(hideUserName(Account.preference().getPhone()));
         exitVisible.set(View.VISIBLE);
     }
-
+    private String hideUserName(String phone) {
+        try {
+            return phone.substring(0, 3) + "****" + phone.substring(7);
+        } catch (Exception e) {
+            return phone;
+        }
+    }
     /**
      * 数据统计
      *

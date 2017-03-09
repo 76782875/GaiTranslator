@@ -22,10 +22,9 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
     private LoadingCancelCallBack loadingCancel;
 
     public ProgressBarDialogViewModel(Context context, String text) {
-        super(context);
         setMessage(text);
         init();
-        new ProgressBarDialog(getContext(), this);
+        new ProgressBarDialog(context, this);
     }
 
     private void init() {
@@ -33,9 +32,8 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
     }
 
     public ProgressBarDialogViewModel(Context context) {
-        super(context);
         init();
-        new ProgressBarDialog(getContext(), this);
+        new ProgressBarDialog(context, this);
     }
 
     public interface LoadingCancelCallBack {

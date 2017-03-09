@@ -166,6 +166,11 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     public void onDestroy() {
         super.onDestroy();
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, false);
+        mAVChatCallAckObserver = null;
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     protected void showProgress(String message) {

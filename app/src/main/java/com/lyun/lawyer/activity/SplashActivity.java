@@ -3,10 +3,12 @@ package com.lyun.lawyer.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.ImageView;
 
 import com.lyun.activity.BaseActivity;
 import com.lyun.lawyer.Account;
 import com.lyun.lawyer.R;
+import com.lyun.utils.GlideUtils;
 
 
 /**
@@ -21,6 +23,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        GlideUtils.showImage(this, (ImageView) findViewById(R.id.bg_splash),R.mipmap.bg_splash);
         if (mHandler == null)
             mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
