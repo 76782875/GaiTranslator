@@ -56,7 +56,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
 
     private String hideUserName(String phone) {
         try {
-            return phone.substring(0, 3) + "****" + phone.substring(7);
+            return phone.substring(0, 3) + "*****" + phone.substring(8);
         } catch (Exception e) {
             return phone;
         }
