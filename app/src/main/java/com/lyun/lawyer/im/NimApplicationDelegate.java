@@ -15,6 +15,7 @@ import com.lyun.lawyer.Account;
 import com.lyun.lawyer.AppApplication;
 import com.lyun.lawyer.BuildConfig;
 import com.lyun.lawyer.R;
+import com.lyun.lawyer.activity.LoginActivity;
 import com.lyun.lawyer.activity.MainActivity;
 import com.lyun.lawyer.activity.SplashActivity;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
@@ -29,6 +30,8 @@ import com.netease.nimlib.sdk.NimStrings;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
+import com.netease.nimlib.sdk.StatusCode;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.model.AVChatAttachment;
@@ -89,6 +92,12 @@ public class NimApplicationDelegate extends ApplicationDelegate<AppApplication> 
 
             // 注册语言变化监听
             registerLocaleReceiver(true);
+
+            NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus((Observer<StatusCode>) statusCode -> {
+                if (statusCode.wontAutoLogin()) {
+                    LoginActivity.start(getApplication(), true);
+                }
+            }, true);
         }
     }
 
