@@ -26,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 public class TranslationOrderModel extends Model {
 
     public Observable<Page<List<TranslationOrderResponse>>> queryOrder(int page) {
-        QueryTranslationOrdersBean request = new QueryTranslationOrdersBean(page + "", "20");
+        QueryTranslationOrdersBean request = new QueryTranslationOrdersBean(page + "", "20", Account.preference().getPhone());
         return parseAPIObservable(API.translationOrder.queryOrders(request))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
@@ -53,7 +53,7 @@ public class TranslationOrderModel extends Model {
     }
 
     public Observable<APIResult<TranslatorStatusResponse>> setTranslatorStatus(String userOrderId, String phoneState) {
-        return API.translationOrder.setTranslatorStatus(new TranslatorStatusBean(userOrderId,phoneState))
+        return API.translationOrder.setTranslatorStatus(new TranslatorStatusBean(userOrderId, phoneState))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
     }

@@ -98,16 +98,12 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                     List<TranslationOrderResponse> orders = null;
                     if (result != null) {
                         orders = result.getData();
-                    } else {
-                        throw new APIContentNullException("数据为空");
                     }
 
                     if (orders != null) {
                         for (TranslationOrderResponse order : orders) {
                             datas.add(new TranslatorGrabItemViewModel(order).setPropertyChangeListener(this));
                         }
-                    } else {
-                        throw new APIContentNullException("数据为空");
                     }
 
                     notifyData.addAll(datas);

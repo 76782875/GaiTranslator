@@ -8,13 +8,15 @@ import com.lyun.api.request.BaseRequest;
 
 public class QueryTranslationOrdersBean extends BaseRequest {
 
-    public QueryTranslationOrdersBean(String pageid, String pagesize) {
+    public QueryTranslationOrdersBean(String pageid, String pagesize, String cardNo) {
         this.pageid = pageid;
         this.pagesize = pagesize;
+        this.cardNo = cardNo;
     }
 
     private String pageid;
     private String pagesize;
+    private String cardNo;
 
     public String getPageid() {
         return pageid;
@@ -30,5 +32,13 @@ public class QueryTranslationOrdersBean extends BaseRequest {
 
     public void setPagesize(String pagesize) {
         this.pagesize = pagesize;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 }
