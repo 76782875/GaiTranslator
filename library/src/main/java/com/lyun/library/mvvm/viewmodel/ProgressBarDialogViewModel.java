@@ -14,7 +14,6 @@ import com.lyun.widget.dialog.ProgressBarDialog;
  * do()
  */
 
-
 public class ProgressBarDialogViewModel extends DialogViewModel {
 
     public final ObservableField<String> progressText = new ObservableField<>();
@@ -22,9 +21,10 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
     private LoadingCancelCallBack loadingCancel;
 
     public ProgressBarDialogViewModel(Context context, String text) {
+        super(context);
         setMessage(text);
         init();
-        new ProgressBarDialog(context, this);
+        new ProgressBarDialog(getContext(), this);
     }
 
     private void init() {
@@ -32,8 +32,9 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
     }
 
     public ProgressBarDialogViewModel(Context context) {
+        super(context);
         init();
-        new ProgressBarDialog(context, this);
+        new ProgressBarDialog(getContext(), this);
     }
 
     public interface LoadingCancelCallBack {

@@ -441,14 +441,14 @@ public class PullToRefreshLayout extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (timer != null) {
-            if(timer.mTask!=null){
-                timer.mTask.cancel();
-                timer.mTask = null;
-            }
-            if(updateHandler!=null){
-                updateHandler.removeCallbacksAndMessages(null);
-                updateHandler =null;
-            }
+                if(timer.mTask!=null){
+                    timer.mTask.cancel();
+                    timer.mTask = null;
+                }
+                if(updateHandler!=null){
+                    updateHandler.removeCallbacksAndMessages(null);
+                    updateHandler =null;
+                }
             if(timer.timer!=null){
                 timer.timer.cancel();
                 timer.timer = null;
@@ -506,7 +506,7 @@ public class PullToRefreshLayout extends RelativeLayout {
         pullDownY = REFRESH_DIST;
         changeState(REFRESHING);
         if(mListener!=null)
-            mListener.onRefresh(this);
+        mListener.onRefresh(this);
     }
 
     /**

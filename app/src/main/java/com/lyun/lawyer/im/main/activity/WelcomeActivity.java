@@ -55,15 +55,12 @@ public class WelcomeActivity extends UI {
 
         if (firstEnter) {
             firstEnter = false;
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (canAutoLogin()) {
-                        onIntent();
-                    } else {
-                        LoginActivity.start(WelcomeActivity.this);
-                        finish();
-                    }
+            Runnable runnable = () -> {
+                if (canAutoLogin()) {
+                    onIntent();
+                } else {
+                    LoginActivity.start(WelcomeActivity.this, false);
+                    finish();
                 }
             };
             if (customSplash) {
@@ -109,7 +106,7 @@ public class WelcomeActivity extends UI {
         if (TextUtils.isEmpty(NimCache.getAccount())) {
             // 判断当前app是否正在运行
             if (!SysInfoUtil.stackResumed(this)) {
-                LoginActivity.start(this);
+                LoginActivity.start(this, false);
             }
             finish();
         } else {
