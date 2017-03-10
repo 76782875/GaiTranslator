@@ -8,6 +8,7 @@ import android.os.Build;
 import android.view.View;
 
 import com.lyun.lawyer.Account;
+import com.lyun.lawyer.AppIntent;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.model.StatisticsCardNoModel;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
@@ -52,6 +53,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
         userName.set(hideUserName(Account.preference().getPhone()));
         exitVisible.set(View.VISIBLE);
     }
+
     private String hideUserName(String phone) {
         try {
             return phone.substring(0, 3) + "****" + phone.substring(7);
@@ -59,6 +61,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
             return phone;
         }
     }
+
     /**
      * 数据统计
      *
@@ -94,11 +97,11 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.translator_center_setting:
-                intent = new Intent("com.lyun.user.intent.action.TRANSLATOR_SETTING");
+                intent = new Intent(AppIntent.ACTION_SETTINGS);
                 getActivity().startActivity(intent);
                 break;
             case R.id.translator_center_avatar:
-                // intent = new Intent("com.lyun.user.intent.action.TRANSLATOR_LOGIN");
+                // intent = new Intent(AppIntent.ACTION_LOGIN);
                 // getActivity().startActivity(intent);
                 break;
             case R.id.translator_center_exit:

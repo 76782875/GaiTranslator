@@ -60,6 +60,7 @@
         <meta-data
             android:name="com.netease.nim.appKey"
             android:value="${NIM_APPKEY}"/>
+
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/AppTheme.NoTitle.FullScreen">
@@ -72,18 +73,12 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.LOGIN"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".activity.TranslatorSettingActivity"
             android:theme="@style/GlobalTitleTheme">
             <intent-filter>
-                <action android:name="com.lyun.user.intent.action.TRANSLATOR_SETTING"/>
+                <action android:name="${APPLICATION_ID}.intent.action.SETTINGS"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
@@ -92,7 +87,7 @@
             android:name=".activity.ResetPasswordActivity"
             android:theme="@style/GlobalTitleTheme">
             <intent-filter>
-                <action android:name="com.lyun.user.intent.action.RESET_PASSWORD"/>
+                <action android:name="${APPLICATION_ID}.intent.action.RESET_PASSWORD"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
@@ -101,7 +96,7 @@
             android:name=".activity.LoginActivity"
             android:theme="@style/GlobalTitleTheme">
             <intent-filter>
-                <action android:name="com.lyun.user.intent.action.TRANSLATOR_LOGIN"/>
+                <action android:name="${APPLICATION_ID}.intent.action.LOGIN"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
