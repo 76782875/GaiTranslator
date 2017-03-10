@@ -56,7 +56,7 @@ public class ResetPasswordActivity extends GeneralToolbarActivity<ActivityResetP
 
     @Override
     public void onLogout(BaseObservable observableField, int fieldId) {
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 }

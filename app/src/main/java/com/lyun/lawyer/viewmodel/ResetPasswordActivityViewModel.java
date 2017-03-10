@@ -41,9 +41,9 @@ public class ResetPasswordActivityViewModel extends ViewModel {
             ObservableNotifier.alwaysNotify(onResetPasswordResult, "请确认新密码!");
         } else if (!newPassword1.get().equals(newPassword2.get())) {
             ObservableNotifier.alwaysNotify(onResetPasswordResult, "两次新密码输入不同!");
-        }else if (!RegExMatcherUtils.matchPassword(newPassword1.get())) {
+        } else if (!RegExMatcherUtils.matchPassword(newPassword1.get())) {
             ObservableNotifier.alwaysNotify(onResetPasswordResult, "新密码格式不正确,请重新输入!");
-        }  else {
+        } else {
             resetPassword(Account.preference().getPhone(), password.get(), newPassword1.get());
         }
 
@@ -56,8 +56,8 @@ public class ResetPasswordActivityViewModel extends ViewModel {
                 .subscribe(apiResult -> {
                             progressDialogShow.set(false);
                             if (apiResult.getStatus().equals("0")) {
-                                onResetPasswordResult.set("修改成功,请重新登录!");
-                                Account.preference().clear();
+                                onResetPasswordResult.set("修改成功");
+//                                Account.preference().clear();
                                 onLogout.notifyChange();
                             } else {
                                 onResetPasswordResult.set(apiResult.getDescribe());
