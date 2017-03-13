@@ -37,8 +37,8 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="@{mvvm.back}"
-                android:textColor="@android:color/white"
                 android:visibility="@{mvvm.backVisibility}"
+                android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
             <TextView
