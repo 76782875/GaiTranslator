@@ -55,18 +55,13 @@ public class ResetPasswordActivityViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(apiResult -> {
                             progressDialogShow.set(false);
-                            if (apiResult.getStatus().equals("0")) {
+                            if (apiResult.isSuccess()) {
                                 onResetPasswordResult.set("修改成功");
 //                                Account.preference().clear();
                                 onLogout.notifyChange();
                             } else {
                                 onResetPasswordResult.set(apiResult.getDescribe());
                             }
-                        }
-                        , throwable -> {
-                            progressDialogShow.set(false);
-                            onResetPasswordResult.set(throwable.getMessage());
-                            throwable.printStackTrace();
                         });
     }
 }

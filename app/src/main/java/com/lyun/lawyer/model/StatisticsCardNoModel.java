@@ -1,5 +1,6 @@
 package com.lyun.lawyer.model;
 
+import com.lyun.api.ErrorParser;
 import com.lyun.api.response.APIResult;
 import com.lyun.lawyer.api.API;
 import com.lyun.lawyer.api.request.StatisticsCardNoBean;
@@ -17,6 +18,7 @@ public class StatisticsCardNoModel extends Model {
     public Observable<APIResult<StatisticsCardNoResponse>> getStatistics(String orderHand) {
         StatisticsCardNoBean bean = new StatisticsCardNoBean(orderHand);
         return API.auth.getStatistics(bean)
+                .onErrorReturn(throwable -> ErrorParser.mockResult(throwable))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
     }

@@ -1,5 +1,6 @@
 package com.lyun.lawyer.model;
 
+import com.lyun.api.ErrorParser;
 import com.lyun.lawyer.api.API;
 import com.lyun.lawyer.api.request.LoginBean;
 import com.lyun.lawyer.api.response.LoginResponse;
@@ -17,7 +18,7 @@ public class LoginModel extends Model {
 
     public Observable<LoginResponse> login(String username, String password) {
         LoginBean bean = new LoginBean(username, MD5Util.getStringMD5(password));
-        return   parseAPIObservable(API.auth.login(bean))
+        return parseAPIObservable(API.auth.login(bean).onErrorReturn(throwable -> ErrorParser.mockResult(throwable)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
     }

@@ -71,7 +71,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
         new StatisticsCardNoModel().getStatistics(orderHand)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(apiResult -> {
-                    if ("0".equals(apiResult.getStatus())) {//获取成功
+                    if (apiResult.isSuccess()) {//获取成功
                         translateTime.set(apiResult.getContent().getSurplusTime());
                         personTime.set(apiResult.getContent().getCallFrequency());
                     }
