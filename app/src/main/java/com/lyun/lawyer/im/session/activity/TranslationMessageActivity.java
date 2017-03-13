@@ -1,5 +1,6 @@
 package com.lyun.lawyer.im.session.activity;
 
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.databinding.BaseObservable;
 import android.databinding.ObservableBoolean;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -45,6 +47,7 @@ import com.netease.nimlib.sdk.avchat.model.AVChatOptionalConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ZHAOWEIWEI on 2017/2/28.
@@ -188,6 +191,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     private boolean currentNormalMode;
 
     private void changeToAudioChatMode() {
+        checkPermission();
         if (AVChatProfile.getInstance().isAVChatting()) {
             // 正在语音
             currentNormalMode = false;
@@ -318,6 +322,26 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
     protected void dismissProgress() {
         mProgressDialog.dismiss();
+    }
+
+    protected final int REQUEST_AVCHAT_PERMISSION = 0x001;
+
+    @TargetApi(Build.VERSION_CODES.M)
+    protected void checkPermission() {
+        List<String> permissions = AVChatManager.checkPermission(this);
+        if (permissions != null && permissions.size() != 0) {
+            String[] strArr = new String[permissions.size()];
+            permissions.toArray(strArr);
+            requestPermissions(strArr, REQUEST_AVCHAT_PERMISSION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_AVCHAT_PERMISSION) {
+
+        }
     }
 
     ///////////////////////////语音通话部分//////////////////////////////
