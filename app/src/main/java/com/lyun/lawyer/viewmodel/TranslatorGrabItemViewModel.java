@@ -28,7 +28,7 @@ public class TranslatorGrabItemViewModel extends ViewModel {
 
     public TranslatorGrabItemViewModel(TranslationOrderResponse order) {
         onGrabOrder.set(order);
-        this.userName.set(order.getUsername().substring(0, 3) + "******" + order.getUsername().substring(9, 11));
+        this.userName.set(order.getUsername().substring(0, 3) + "*****" + order.getUsername().substring(8, 11));
         this.orderType.set(order.getOrdertype());
     }
 
