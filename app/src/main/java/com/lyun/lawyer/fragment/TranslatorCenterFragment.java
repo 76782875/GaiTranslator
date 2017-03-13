@@ -2,7 +2,6 @@ package com.lyun.lawyer.fragment;
 
 import android.content.Intent;
 import android.databinding.BaseObservable;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.lyun.lawyer.R;
@@ -24,12 +23,12 @@ public class TranslatorCenterFragment extends MvvmFragment<FragmentTranslatorCen
     public TranslatorCenterFragment() {
     }
 
-    public static TranslatorCenterFragment newInstance() {
-        TranslatorCenterFragment fragment = new TranslatorCenterFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static TranslatorCenterFragment newInstance() {
+//        TranslatorCenterFragment fragment = new TranslatorCenterFragment();
+//        Bundle args = new Bundle();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @NonNull
     @Override

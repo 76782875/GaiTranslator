@@ -10,11 +10,17 @@
             name="mvvm"
             type="TranslatorMainViewModel"></variable>
     </data>
-
+ <RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+     <ImageView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:scaleType="fitXY"
+         app:imageUrl="@{mvvm.backGround}"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/translator_grab_bg"
         android:orientation="vertical">
 
         <TextView
@@ -65,4 +71,5 @@
 
         </com.lyun.widget.refresh.PullToRefreshLayout>
     </LinearLayout>
+    </RelativeLayout>
 </layout>

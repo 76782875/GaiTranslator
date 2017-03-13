@@ -46,12 +46,12 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     public TranslatorMainFragment() {
     }
 
-    public static TranslatorMainFragment newInstance() {
-        TranslatorMainFragment fragment = new TranslatorMainFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static TranslatorMainFragment newInstance() {
+//        TranslatorMainFragment fragment = new TranslatorMainFragment();
+//        Bundle args = new Bundle();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @NonNull
     @Override

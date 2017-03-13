@@ -1,6 +1,7 @@
 package com.lyun.lawyer.viewmodel;
 
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,6 +30,7 @@ public class MainActivityViewModel extends ViewModel {
     public final ObservableField<RelayCommand> relayCommandViewPage = new ObservableField<>();
     public final ObservableField<TabLayout.OnTabSelectedListener> tabListener = new ObservableField<>();
     public final ObservableField<ViewBindAdapter.TabData> tabData = new ObservableField<>();
+    public final ObservableInt selectIndex = new ObservableInt();
     private FragmentManager mFragmentManager;
     private List<Fragment> fragments;
     public MainActivityViewModel(ViewPager viewPager, FragmentManager mFragmentManager) {
@@ -38,11 +40,12 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void init() {
-        TranslatorMainFragment mSpecialistTranslationFragment = TranslatorMainFragment.newInstance();
-        TranslatorCenterFragment mUserCenterFragment = TranslatorCenterFragment.newInstance();
+//        TranslatorMainFragment mSpecialistTranslationFragment = new TranslatorMainFragment();
+//        TranslatorCenterFragment mUserCenterFragment = new TranslatorCenterFragment();
+        if (fragments == null)
         fragments = new ArrayList<>();
-        fragments.add(mSpecialistTranslationFragment);
-        fragments.add(mUserCenterFragment);
+        fragments.add(new TranslatorMainFragment());
+        fragments.add(new TranslatorCenterFragment());
         relayCommandViewPage.set(relayCommand);
         List<TabItemBean> tabs = new ArrayList<>();
         tabs.add(new TabItemBean(R.drawable.btn_translator_main_selector, "抢单", R.layout.item_main_tab));
@@ -50,8 +53,8 @@ public class MainActivityViewModel extends ViewModel {
         tabListener.set(onTabSelectedListener);
         ViewBindAdapter.TabData tabData = new ViewBindAdapter.TabData();
         tabData.setTabs(tabs);
-        tabData.setIndex(0);
         this.tabData.set(tabData);
+        selectIndex.set(0);
     }
 
     RelayCommand<ViewPager> relayCommand = new RelayCommand<>((viewPage) -> {
@@ -103,6 +106,9 @@ public class MainActivityViewModel extends ViewModel {
     public void onDestroy() {
         super.onDestroy();
         mFragmentManager = null;
-        fragments = null;
+        if (fragments != null) {
+            fragments.clear();
+            fragments = null;
+        }
     }
 }

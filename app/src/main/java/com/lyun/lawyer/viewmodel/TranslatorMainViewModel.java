@@ -39,6 +39,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
     public final ObservableField<BaseRecyclerAdapter> adapter = new ObservableField<>();
     public final ObservableList<TranslatorGrabItemViewModel> notifyData = new ObservableArrayList<>();
     public final ObservableInt headViewRes = new ObservableInt();
+    public final ObservableInt backGround = new ObservableInt();
 
     @WatchThis
     public final ObservableField<TranslationOrderResponse> onGrabOrderSuccess = new ObservableField<>();
@@ -60,6 +61,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
         List<TranslatorGrabItemViewModel> list = new ArrayList<>();
         TranslatorGrabAdapter adapter = new TranslatorGrabAdapter(list, R.layout.item_translator_grab_layout);
         this.adapter.set(adapter);
+        backGround.set(R.mipmap.translator_grab_bg);
         headViewRes.set(R.layout.translator_grab_null_bg_layout);
         isAutoRefresh.set(true);
         queryOrders(0, true);
