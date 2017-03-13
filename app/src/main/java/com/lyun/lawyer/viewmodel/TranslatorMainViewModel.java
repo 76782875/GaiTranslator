@@ -134,7 +134,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
     public void onGrabOrder(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
         new TranslationOrderModel().grabOrder(observableField.get().getUserorderid())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(orderId -> ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get()),
+                .subscribe(result -> ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get()),
                         throwable -> ObservableNotifier.alwaysNotify(onGrabOrderFail, throwable.getMessage()));
     }
 

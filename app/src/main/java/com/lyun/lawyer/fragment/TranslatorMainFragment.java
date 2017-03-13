@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lyun.lawyer.Account;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.api.response.TranslationOrderResponse;
@@ -66,7 +67,7 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     @Override
     public void onGrabOrderSuccess(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
         mGrabOrderInfo = observableField.get();
-        if (mGrabOrderInfo.getOrdertype().equals("图文")) {
+        if ("图文".equals(mGrabOrderInfo.getOrdertype())) {
             startTranslationService();
             return;
         }
@@ -95,6 +96,8 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     }
 
     protected void startTranslationService() {
+
+        L.i(getClass().getSimpleName(), new Gson().toJson(mGrabOrderInfo));
 
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, false);
 
