@@ -303,7 +303,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     @Override
     public void finish() {
         super.finish();
-        stopService(new Intent(TranslationMessageActivity.this, TranslationOrderService.class));
+        TranslationOrderService.stop(this);
         if (AVChatProfile.getInstance().isAVChatting()) {
             hangUpAudioCall();
         }
@@ -485,13 +485,11 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
     protected void onAudioHangUp() {
         AVChatProfile.getInstance().setAVChatting(false);
-        if (isFinishing()) {
-            return;
-        }
-        if (orderType == TranslationOrderModel.OrderType.AUDIO) {
-            finish();
-        }
-        runOnUiThread(() -> changeToNormalChatMode());
+        TranslationOrderService.stop(this);
+//        if (orderType == TranslationOrderModel.OrderType.AUDIO) {
+//            finish();
+//        }
+//        runOnUiThread(() -> changeToNormalChatMode());
     }
 
     /**

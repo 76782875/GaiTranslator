@@ -1,7 +1,5 @@
 package com.lyun.lawyer.im.receiver.handler;
 
-import android.content.Intent;
-
 import com.google.gson.reflect.TypeToken;
 import com.lyun.lawyer.AppApplication;
 import com.lyun.lawyer.im.receiver.attach.TranslationOrderFinish;
@@ -17,8 +15,7 @@ public class TranslationOrderFinishByTranslatorHandler implements AttachContentH
 
     @Override
     public void handleNotification(TranslationOrderFinish data) {
-        Intent intent = new Intent(AppApplication.getInstance(), TranslationOrderService.class);
-        AppApplication.getInstance().stopService(intent);
+        TranslationOrderService.stop(AppApplication.getInstance());
     }
 
     @Override

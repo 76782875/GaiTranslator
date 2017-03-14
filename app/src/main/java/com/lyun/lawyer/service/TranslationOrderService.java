@@ -1,6 +1,7 @@
 package com.lyun.lawyer.service;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -24,6 +25,22 @@ public class TranslationOrderService extends Service {
 
     public TranslationOrderService() {
         mTimer = new Timer();
+    }
+
+    public static void start(Context context, String orderId, String targetLanguage,
+                             TranslationOrderModel.OrderType orderType, String translatorId, String userId) {
+        Intent intent = new Intent(context, TranslationOrderService.class);
+        intent.putExtra(TranslationOrder.ORDER_ID, orderId);
+        intent.putExtra(TranslationOrder.TARGET_LANGUAGE, targetLanguage);
+        intent.putExtra(TranslationOrder.ORDER_TYPE, orderType);
+        intent.putExtra(TranslationOrder.TRANSLATOR_ID, translatorId);
+        intent.putExtra(TranslationOrder.USER_ID, userId);
+        context.startService(intent);
+    }
+
+    public static void stop(Context context) {
+        Intent intent = new Intent(context, TranslationOrderService.class);
+        context.stopService(intent);
     }
 
     @Override
