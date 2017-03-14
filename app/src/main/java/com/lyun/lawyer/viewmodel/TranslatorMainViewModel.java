@@ -8,6 +8,7 @@ import android.databinding.ObservableList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.lyun.adapter.BaseRecyclerAdapter;
 import com.lyun.api.exception.APIContentNullException;
 import com.lyun.lawyer.AppApplication;
@@ -18,6 +19,7 @@ import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.viewmodel.watchdog.ITranslatorGrabItemViewModelCallbacks;
 import com.lyun.library.mvvm.observable.util.ObservableNotifier;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
+import com.lyun.utils.L;
 import com.lyun.widget.refresh.PullToRefreshLayout;
 
 import net.funol.databinding.watchdog.annotations.WatchThis;
@@ -134,6 +136,9 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
 
     @Override
     public void onGrabOrder(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
+
+        L.i(getClass().getSimpleName(), "开始抢单：" + new Gson().toJson(observableField.get()));
+
         new TranslationOrderModel().grabOrder(observableField.get().getUserorderid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get()),

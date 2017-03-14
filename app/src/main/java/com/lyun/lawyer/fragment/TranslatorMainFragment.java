@@ -67,7 +67,11 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     @Override
     public void onGrabOrderSuccess(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
         mGrabOrderInfo = observableField.get();
+
+        L.i(getClass().getSimpleName(), "抢单成功：" + new Gson().toJson(mGrabOrderInfo));
+
         if ("图文".equals(mGrabOrderInfo.getOrdertype())) {
+            L.i(getClass().getSimpleName(), "开启图文服务:" + new Gson().toJson(mGrabOrderInfo));
             startTranslationService();
             return;
         }
@@ -97,8 +101,6 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
 
     protected void startTranslationService() {
 
-        L.i(getClass().getSimpleName(), new Gson().toJson(mGrabOrderInfo));
-
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, false);
 
         Intent intent = new Intent(getActivity(), TranslationOrderService.class);
@@ -112,6 +114,8 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
         intent.putExtra(TranslationOrder.TRANSLATOR_ID, Account.preference().getPhone());
         intent.putExtra(TranslationOrder.USER_ID, mGrabOrderInfo.getUsername());
         getActivity().startService(intent);
+
+        mGrabOrderInfo = null;
     }
 
     /**
@@ -141,13 +145,13 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
                 AVChatManager.getInstance().muteRemoteAudio(ackInfo.getAccount(), false);
                 AVChatManager.getInstance().muteLocalAudio(false);
                 // 切换到语音聊天界面
+                L.i(getClass().getSimpleName(), "开启语音服务:" + new Gson().toJson(mGrabOrderInfo));
                 startTranslationService();
             } else {
                 // 设备初始化失败，无法进行通话
                 L.e("AVChat", "设备初始化失败，无法进行通话");
             }
         }
-        mGrabOrderInfo = null;
         dismissProgress();
     };
 
