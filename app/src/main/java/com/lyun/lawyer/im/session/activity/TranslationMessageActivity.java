@@ -16,6 +16,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.lyun.library.mvvm.viewmodel.ProgressBarDialogViewModel;
+import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
 import com.lyun.lawyer.im.session.fragment.TranslationAudioMessageFragment;
@@ -23,8 +25,6 @@ import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.service.TranslationOrder;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.watchdog.ITranslationAudioMessageViewModelCallbacks;
-import com.lyun.library.mvvm.viewmodel.ProgressBarDialogViewModel;
-import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
 import com.lyun.utils.FormatUtil;
 import com.lyun.utils.L;
 import com.lyun.utils.TimeUtil;
@@ -51,6 +51,8 @@ import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.NET_BROKEN_TIMEOUT;
 
 /**
  * Created by ZHAOWEIWEI on 2017/2/28.
@@ -92,6 +94,8 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         if (orderType == TranslationOrderModel.OrderType.AUDIO) {
             changeToAudioChatMode();
         }
+
+        setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
     }
 
     protected void parseIntent() {
@@ -253,6 +257,9 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         }
     };
 
+    /**
+     * 翻译服务结束
+     */
     private BroadcastReceiver mTranslationOrderFinishReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -272,7 +279,8 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
     @Override
     public void hangUpAudioCall(ObservableBoolean observableField, int fieldId) {
-        hangUpAudioCall();
+        //hangUpAudioCall();
+        onBackPressed();
     }
 
     @Override
@@ -288,8 +296,12 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         viewModel.setOnItemClickListener(new SimpleDialogViewModel.OnItemClickListener() {
             @Override
             public void OnYesClick(View view) {
-                // 终止翻译服务
-                finish();
+                // 终止翻译服务stopService(new Intent(TranslationMessageActivity.this, TranslationOrderService.class));
+                if (AVChatProfile.getInstance().isAVChatting()) {
+                    hangUpAudioCall(true);
+                } else {
+                    TranslationOrderService.stop(TranslationMessageActivity.this);
+                }
             }
 
             @Override
@@ -298,15 +310,6 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             }
         });
         viewModel.show();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        TranslationOrderService.stop(this);
-        if (AVChatProfile.getInstance().isAVChatting()) {
-            hangUpAudioCall();
-        }
     }
 
     @Override
@@ -332,6 +335,9 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     public void setTitle(CharSequence title) {
         if (getToolBar() != null) {
             getToolBar().setTitle(FormatUtil.formatUserName(title.toString()));
+            if (mTranslationAudioMessageFragment != null) {
+                mTranslationAudioMessageFragment.setTranslatorName(getToolBar().getTitle().toString());
+            }
         }
     }
 
@@ -401,7 +407,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
                 @Override
                 public void OnCancelClick(View view) {
-                    hangUpAudioCall();
+                    hangUpAudioCall(false);
                 }
             });
             if (!isFinishing()) {
@@ -418,7 +424,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             @Override
             public void onSuccess(AVChatData avChatData) {
                 L.i("AVChat", "语音请求发起成功，等待对方接听");
-                runOnUiThread(() -> showProgress(null));
+                runOnUiThread(() -> showProgress("等待对方接听"));
             }
 
             @Override
@@ -463,17 +469,20 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     /**
      * 挂断语音通话
      */
-    protected void hangUpAudioCall() {
+    protected void hangUpAudioCall(boolean stopServiceOnHangUp) {
         AVChatManager.getInstance().hangUp(new AVChatCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 L.i("AVChat", "语音挂断成功");
-                onAudioHangUp();
+                onAudioHangUp(stopServiceOnHangUp);
             }
 
             @Override
             public void onFailed(int code) {
                 L.i("AVChat", "语音挂断失败，Code:" + code);
+                if (!AVChatProfile.getInstance().isAVChatting()) {
+                    onAudioHangUp(stopServiceOnHangUp);
+                }
             }
 
             @Override
@@ -483,13 +492,13 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         });
     }
 
-    protected void onAudioHangUp() {
+    protected void onAudioHangUp(boolean stopServiceOnHangUp) {
         AVChatProfile.getInstance().setAVChatting(false);
-        TranslationOrderService.stop(this);
-//        if (orderType == TranslationOrderModel.OrderType.AUDIO) {
-//            finish();
-//        }
-//        runOnUiThread(() -> changeToNormalChatMode());
+        // 切换到图文模式
+        runOnUiThread(() -> changeToNormalChatMode());
+        if (stopServiceOnHangUp) {
+            TranslationOrderService.stop(this);
+        }
     }
 
     /**
@@ -534,7 +543,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
      */
     Observer<AVChatCommonEvent> mAVChatCallHangupObserver = (Observer<AVChatCommonEvent>) hangUpInfo -> {
         // 结束通话
-        onAudioHangUp();
+        onAudioHangUp(true);
     };
 
     /**
@@ -543,6 +552,6 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
      */
     Observer<AVChatTimeOutEvent> mAVChatCallTimeoutObserver = (Observer<AVChatTimeOutEvent>) event -> {
         // 超时类型
-        AVChatProfile.getInstance().setAVChatting(false);
+        onAudioHangUp(event == NET_BROKEN_TIMEOUT);
     };
 }
