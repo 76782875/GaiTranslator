@@ -101,6 +101,10 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
 
     protected void startTranslationService() {
 
+        if (mGrabOrderInfo == null) {
+            return;
+        }
+
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, false);
 
         Intent intent = new Intent(getActivity(), TranslationOrderService.class);
