@@ -161,7 +161,7 @@ public class NimApplicationDelegate extends ApplicationDelegate<AppApplication> 
 
             @Override
             public int getDefaultIconResId() {
-                return R.mipmap.user_center_select_icon;
+                return R.mipmap.icon_translator_center_selector;
             }
 
             @Override
