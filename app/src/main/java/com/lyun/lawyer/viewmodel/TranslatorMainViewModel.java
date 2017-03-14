@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.lyun.adapter.BaseRecyclerAdapter;
-import com.lyun.api.exception.APIContentNullException;
 import com.lyun.lawyer.AppApplication;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.adapter.TranslatorGrabAdapter;
@@ -26,6 +25,8 @@ import net.funol.databinding.watchdog.annotations.WatchThis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -65,8 +66,23 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
         this.adapter.set(adapter);
         backGround.set(R.mipmap.translator_grab_bg);
         headViewRes.set(R.layout.translator_grab_null_bg_layout);
-        isAutoRefresh.set(true);
         queryOrders(0, true);
+    }
+
+    protected Timer mAutoRefreshTimer = new Timer();
+
+    public void startAutoRefresh() {
+        mAutoRefreshTimer = new Timer();
+        mAutoRefreshTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ObservableNotifier.alwaysNotify(isAutoRefresh, true);
+            }
+        }, 0, 10000);
+    }
+
+    public void stopAutoRefresh() {
+        mAutoRefreshTimer.cancel();
     }
 
     public PullToRefreshLayout.OnRefreshListener onRefreshListener = new PullToRefreshLayout.OnRefreshListener() {

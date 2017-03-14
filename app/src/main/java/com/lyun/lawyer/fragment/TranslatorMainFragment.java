@@ -167,6 +167,13 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
         super.onResume();
         // 监听被叫方回应（主叫方）
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, true);
+        getFragmentViewModel().startAutoRefresh();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getFragmentViewModel().stopAutoRefresh();
     }
 
     @Override
