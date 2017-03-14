@@ -107,17 +107,12 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
 
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, false);
 
-        Intent intent = new Intent(getActivity(), TranslationOrderService.class);
-        intent.putExtra(TranslationOrder.ORDER_ID, mGrabOrderInfo.getUserorderid());
         TranslationOrderModel.OrderType orderType = TranslationOrderModel.OrderType.AUDIO;
         if ("图文".equals(mGrabOrderInfo.getOrdertype())) {
             orderType = TranslationOrderModel.OrderType.MESSAGE;
         }
-        intent.putExtra(TranslationOrder.ORDER_TYPE, orderType);
-        intent.putExtra(TranslationOrder.TARGET_LANGUAGE, mGrabOrderInfo.getLanguage());
-        intent.putExtra(TranslationOrder.TRANSLATOR_ID, Account.preference().getPhone());
-        intent.putExtra(TranslationOrder.USER_ID, mGrabOrderInfo.getUsername());
-        getActivity().startService(intent);
+
+        TranslationOrderService.start(getActivity(), mGrabOrderInfo.getUserorderid(), mGrabOrderInfo.getLanguage(), orderType, Account.preference().getPhone(), mGrabOrderInfo.getUsername());
 
         mGrabOrderInfo = null;
     }
