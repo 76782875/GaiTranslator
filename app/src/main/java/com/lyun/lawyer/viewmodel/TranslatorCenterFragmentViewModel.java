@@ -12,6 +12,7 @@ import com.lyun.lawyer.AppIntent;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.model.StatisticsCardNoModel;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
+import com.lyun.utils.TimeUtil;
 
 import net.funol.databinding.watchdog.annotations.WatchThis;
 
@@ -72,7 +73,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(apiResult -> {
                     if (apiResult.isSuccess()) {//获取成功
-                        translateTime.set(apiResult.getContent().getSurplusTime());
+                        translateTime.set(TimeUtil.convertMin2Str(apiResult.getContent().getSurplusTime()));
                         personTime.set(apiResult.getContent().getCallFrequency());
                     }
                 });
@@ -84,7 +85,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
 
     private void init() {
         userName.set("昵称");
-        translateTime.set("-- ");
+        translateTime.set("-- 分钟");
         personTime.set("-- ");
         exitVisible.set(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
