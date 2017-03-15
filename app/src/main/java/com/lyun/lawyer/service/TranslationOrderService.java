@@ -1,8 +1,10 @@
 package com.lyun.lawyer.service;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -38,10 +40,26 @@ public class TranslationOrderService extends Service {
         context.startService(intent);
     }
 
-    public static void stop(Context context) {
-        Intent intent = new Intent(context, TranslationOrderService.class);
-        context.stopService(intent);
+    public static void stop(Context context, int byWho, String reason) {
+        Intent intent = new Intent();
+        intent.putExtra(TranslationOrder.FINISH_REASON, reason);
+        intent.putExtra(TranslationOrder.WHO_FINISH, byWho);
+        intent.setAction(Action.COMMAND_STOP_SERVICE);
+        context.sendBroadcast(intent);
     }
+
+    protected BroadcastReceiver mStopServiceReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            unregisterReceiver(this);
+
+            mTranslationOrder.setFinishReason(intent.getStringExtra(TranslationOrder.FINISH_REASON));
+            mTranslationOrder.setWhoFinish(intent.getIntExtra(TranslationOrder.WHO_FINISH, TranslationOrder.OTHER));
+            L.i(TAG, "翻译服务关闭：reason -> " + mTranslationOrder.getFinishReason());
+            stopSelf();
+        }
+    };
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -51,6 +69,10 @@ public class TranslationOrderService extends Service {
         String userId = intent.getStringExtra(TranslationOrder.USER_ID);
         String translatorId = intent.getStringExtra(TranslationOrder.TRANSLATOR_ID);
         startNewOrder(new TranslationOrder(orderId, orderType, targetLanguage, System.currentTimeMillis(), userId, translatorId));
+
+        IntentFilter intentFilter = new IntentFilter(Action.COMMAND_STOP_SERVICE);
+        registerReceiver(mStopServiceReceiver, intentFilter);
+
         return START_NOT_STICKY;
     }
 
@@ -128,6 +150,8 @@ public class TranslationOrderService extends Service {
         setTranslationState(mTranslationOrder.getOrderId(), "1");
 
         Intent intent = new Intent();
+        intent.putExtra(TranslationOrder.FINISH_REASON, mTranslationOrder.getFinishReason());
+        intent.putExtra(TranslationOrder.WHO_FINISH, mTranslationOrder.getWhoFinish());
         //设置intent的动作为，可以任意定义
         intent.setAction(Action.FINISH);
         //发送无序广播
@@ -166,6 +190,8 @@ public class TranslationOrderService extends Service {
         public static final String START = BuildConfig.APPLICATION_ID + ".translation.order.START";
         public static final String STATUS_CHANGE = BuildConfig.APPLICATION_ID + ".translation.order.STATUS_CHANGE";
         public static final String FINISH = BuildConfig.APPLICATION_ID + ".translation.order.FINISH";
+
+        protected static final String COMMAND_STOP_SERVICE = BuildConfig.APPLICATION_ID + ".translation.order.COMMAND_STOP_SERVICE";
     }
 
 }
