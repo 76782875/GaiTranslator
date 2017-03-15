@@ -1,12 +1,10 @@
 package com.lyun.lawyer.api.request;
 
-import com.lyun.api.request.BaseRequest;
-
 /**
  * Created by ZHAOWEIWEI on 2017/2/21.
  */
 
-public class QueryTranslationOrdersBean extends BaseRequest {
+public class QueryTranslationOrdersBean extends BaseRequestBean {
 
     public QueryTranslationOrdersBean(String pageid, String pagesize, String cardNo) {
         this.pageid = pageid;

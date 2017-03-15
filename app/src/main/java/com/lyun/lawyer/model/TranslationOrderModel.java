@@ -35,7 +35,7 @@ public class TranslationOrderModel extends Model {
     }
 
     public Observable<APIResult> heartBeat(String userOrderId) {
-        return API.translationOrder.heartBeat(new HeartBeatBean(userOrderId, Account.preference().getPhone(), "1"))
+        return API.translationOrder.heartBeat(new HeartBeatBean(userOrderId, Account.preference().getPhone()))
                 .onErrorReturn(throwable -> ErrorParser.mockResult(throwable))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());

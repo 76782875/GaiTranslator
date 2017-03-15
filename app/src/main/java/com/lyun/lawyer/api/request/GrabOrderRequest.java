@@ -1,12 +1,10 @@
 package com.lyun.lawyer.api.request;
 
-import com.lyun.api.request.BaseRequest;
-
 /**
  * Created by ZHAOWEIWEI on 2017/2/22.
  */
 
-public class GrabOrderRequest extends BaseRequest {
+public class GrabOrderRequest extends BaseRequestBean {
 
     // 订单号
     private String userOrderId;
