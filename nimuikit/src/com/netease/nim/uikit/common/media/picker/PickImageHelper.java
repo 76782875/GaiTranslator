@@ -106,7 +106,7 @@ public class PickImageHelper {
         int from = PickImageActivity.FROM_LOCAL;
         PickImageActivity.start((Activity) context, requestCode, from, option.outputPath, option.multiSelect,
                 option.multiSelectMaxCount, true, false, 0, 0,toolbarCustomization);
-    }
+     }
 
     /**
      * 打开本地默认图片选择器

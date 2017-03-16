@@ -137,19 +137,14 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
         } else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_AGREE) {
             // 对方同意接听
             L.i("AVChat", "对方同意接听");
-            if (ackInfo.isDeviceReady()) {
-                // 设备初始化成功，开始通话
-                L.i("AVChat", "设备初始化成功，开始通话");
-                AVChatProfile.getInstance().setAVChatting(true);
-                AVChatManager.getInstance().muteRemoteAudio(ackInfo.getAccount(), false);
-                AVChatManager.getInstance().muteLocalAudio(false);
-                // 切换到语音聊天界面
-                L.i(getClass().getSimpleName(), "开启语音服务:" + new Gson().toJson(mGrabOrderInfo));
-                startTranslationService();
-            } else {
-                // 设备初始化失败，无法进行通话
-                L.e("AVChat", "设备初始化失败，无法进行通话");
-            }
+            // 设备初始化成功，开始通话
+            L.i("AVChat", "设备初始化成功，开始通话");
+            AVChatProfile.getInstance().setAVChatting(true);
+            AVChatManager.getInstance().muteRemoteAudio(ackInfo.getAccount(), false);
+            AVChatManager.getInstance().muteLocalAudio(false);
+            // 切换到语音聊天界面
+            L.i(getClass().getSimpleName(), "开启语音服务:" + new Gson().toJson(mGrabOrderInfo));
+            startTranslationService();
         }
         dismissProgress();
     };
