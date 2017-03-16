@@ -120,10 +120,13 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                         orders = result.getData();
                     }
 
-                    if (orders != null) {
+                    if (orders != null && orders.size()>0) {
                         for (TranslationOrderResponse order : orders) {
                             datas.add(new TranslatorGrabItemViewModel(order).setPropertyChangeListener(this));
                         }
+                    }else if(orders != null && orders.size()==0 && !refresh){
+                            ObservableNotifier.alwaysNotify(loadMoreResult, PullToRefreshLayout.DONE);
+                        return;
                     }
 
                     notifyData.addAll(datas);
