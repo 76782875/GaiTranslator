@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lyun.library.mvvm.viewmodel.ProgressBarDialogViewModel;
 import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
@@ -66,6 +67,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.NET_BROKEN_TIMEOUT;
+import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.OUTGOING_TIMEOUT;
 
 /**
  * Created by ZHAOWEIWEI on 2017/2/28.
@@ -587,6 +589,10 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     Observer<AVChatTimeOutEvent> mAVChatCallTimeoutObserver = (Observer<AVChatTimeOutEvent>) event -> {
         // 超时类型
         onAudioHangUp(event == NET_BROKEN_TIMEOUT, TranslationOrder.OTHER, "网络超时");
+        if (event == OUTGOING_TIMEOUT) {
+            dismissProgress();
+            Toast.makeText(this, "对方拒绝接听", Toast.LENGTH_LONG).show();
+        }
     };
 
     /**

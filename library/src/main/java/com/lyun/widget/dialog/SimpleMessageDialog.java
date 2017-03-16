@@ -15,12 +15,16 @@ import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
  */
 
 public class SimpleMessageDialog extends MvvmDialog<DialogSimpleMessageBinding,SimpleDialogViewModel> {
+
     public SimpleMessageDialog(Context context,SimpleDialogViewModel viewModel) {
         super(context,viewModel,R.layout.dialog_simple_message, R.style.dialog);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        setCancelable(false);
+        setCanceledOnTouchOutside(false);
     }
 }
