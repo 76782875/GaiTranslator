@@ -1,7 +1,6 @@
 package com.lyun.lawyer.im.session.activity;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lyun.library.mvvm.viewmodel.ProgressBarDialogViewModel;
-import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
 import com.lyun.lawyer.im.session.fragment.TranslationAudioMessageFragment;
@@ -32,13 +29,14 @@ import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.service.TranslationOrder;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.watchdog.ITranslationAudioMessageViewModelCallbacks;
+import com.lyun.library.mvvm.viewmodel.ProgressBarDialogViewModel;
+import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
 import com.lyun.utils.FormatUtil;
 import com.lyun.utils.L;
 import com.lyun.utils.TimeUtil;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.session.SessionCustomization;
-import com.netease.nim.uikit.session.ToolbarCustomization;
 import com.netease.nim.uikit.session.activity.P2PMessageActivity;
 import com.netease.nim.uikit.session.constant.Extras;
 import com.netease.nim.uikit.uinfo.UserInfoHelper;
@@ -59,8 +57,6 @@ import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -106,6 +102,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         registerReceiver(mTranslationOrderFinishReceiver, orderFinishIntentFilter);
 
         mProgressDialog = new ProgressBarDialogViewModel(this);
+        mIncomingCallDialog = new SimpleDialogViewModel(this);
         initIncomingCallDialog();
 
         if (orderType == TranslationOrderModel.OrderType.AUDIO) {
@@ -420,7 +417,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         AVChatManager.getInstance().observeAVChatState(mAVChatStateObserver, false);
     }
 
-    protected SimpleDialogViewModel mIncomingCallDialog = new SimpleDialogViewModel(this);
+    protected SimpleDialogViewModel mIncomingCallDialog;
 
     protected void initIncomingCallDialog() {
         mIncomingCallDialog.setInfo("对方发送语音服务请求，是否接受");
