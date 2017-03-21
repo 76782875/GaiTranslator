@@ -159,8 +159,11 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
     public void onGrabOrder(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
 
         if (hasGrabOrderProcessing) {
+            L.i(getClass().getSimpleName(), "当前有正在处理的抢单请求，本次点击不处理");
             return;
         }
+
+        hasGrabOrderProcessing = true;
 
         L.i(getClass().getSimpleName(), "开始抢单：" + new Gson().toJson(observableField.get()));
 
@@ -168,10 +171,12 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get());
+                            L.i(getClass().getSimpleName(), "抢单请求处理完成，恢复抢单");
                             hasGrabOrderProcessing = false;
                         },
                         throwable -> {
                             ObservableNotifier.alwaysNotify(onGrabOrderFail, throwable.getMessage());
+                            L.i(getClass().getSimpleName(), "抢单请求处理完成，恢复抢单");
                             hasGrabOrderProcessing = false;
                         })
         ;
