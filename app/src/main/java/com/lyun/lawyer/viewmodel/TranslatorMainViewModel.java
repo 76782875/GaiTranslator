@@ -120,12 +120,12 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                         orders = result.getData();
                     }
 
-                    if (orders != null && orders.size()>0) {
+                    if (orders != null && orders.size() > 0) {
                         for (TranslationOrderResponse order : orders) {
                             datas.add(new TranslatorGrabItemViewModel(order).setPropertyChangeListener(this));
                         }
-                    }else if(orders != null && orders.size()==0 && !refresh){
-                            ObservableNotifier.alwaysNotify(loadMoreResult, PullToRefreshLayout.DONE);
+                    } else if (orders != null && orders.size() == 0 && !refresh) {
+                        ObservableNotifier.alwaysNotify(loadMoreResult, PullToRefreshLayout.DONE);
                         return;
                     }
 
@@ -153,15 +153,28 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                 });
     }
 
+    private boolean hasGrabOrderProcessing = false;
+
     @Override
     public void onGrabOrder(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
+
+        if (hasGrabOrderProcessing) {
+            return;
+        }
 
         L.i(getClass().getSimpleName(), "开始抢单：" + new Gson().toJson(observableField.get()));
 
         new TranslationOrderModel().grabOrder(observableField.get().getUserorderid())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get()),
-                        throwable -> ObservableNotifier.alwaysNotify(onGrabOrderFail, throwable.getMessage()));
+                .subscribe(result -> {
+                            ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get());
+                            hasGrabOrderProcessing = false;
+                        },
+                        throwable -> {
+                            ObservableNotifier.alwaysNotify(onGrabOrderFail, throwable.getMessage());
+                            hasGrabOrderProcessing = false;
+                        })
+        ;
     }
 
 }

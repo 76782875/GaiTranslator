@@ -1,6 +1,5 @@
 package com.lyun.lawyer.fragment;
 
-import android.content.Intent;
 import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.lawyer.databinding.FragmentTranslatorGrabLayoutBinding;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
 import com.lyun.lawyer.model.TranslationOrderModel;
-import com.lyun.lawyer.service.TranslationOrder;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.TranslatorMainViewModel;
 import com.lyun.lawyer.viewmodel.watchdog.ITranslatorMainViewModelCallbacks;
