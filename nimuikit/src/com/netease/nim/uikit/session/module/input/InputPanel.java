@@ -32,7 +32,6 @@ import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nim.uikit.recent.AitHelper;
-import com.netease.nim.uikit.session.SessionCustomization;
 import com.netease.nim.uikit.session.actions.BaseAction;
 import com.netease.nim.uikit.session.emoji.EmoticonPickerView;
 import com.netease.nim.uikit.session.emoji.IEmoticonSelectedListener;
@@ -120,9 +119,16 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
         this.isTextAudioSwitchShow = isTextAudioSwitchShow;
         init();
     }
-
     public InputPanel(Container container, View view, List<BaseAction> actions) {
         this(container, view, actions, true);
+    }
+    public InputPanel(Container container, View view, List<BaseAction> actions,InputPanelCustomization customization) {
+        this.container = container;
+        this.view = view;
+        this.actions = actions;
+        this.uiHandler = new Handler();
+        this.customization = customization;
+        init();
     }
 
     public void onPause() {
@@ -197,10 +203,15 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
 
         // 文本录音按钮切换布局
         textAudioSwitchLayout = (FrameLayout) view.findViewById(R.id.switchLayout);
-        if (isTextAudioSwitchShow) {
+        if (customization!=null && customization.isShowAudioInputBar()) {
             textAudioSwitchLayout.setVisibility(View.VISIBLE);
         } else {
             textAudioSwitchLayout.setVisibility(View.GONE);
+        }
+        if (customization!=null && customization.isShowEmojiInputBar()) {
+            emojiButtonInInputBar.setVisibility(View.VISIBLE);
+        } else {
+            emojiButtonInInputBar.setVisibility(View.GONE);
         }
     }
 
