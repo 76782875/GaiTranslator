@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
+import com.lyun.lawyer.im.avchat.receiver.PhoneCallStateObserver;
 import com.lyun.lawyer.im.session.fragment.TranslationAudioMessageFragment;
 import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.service.TranslationOrder;
@@ -44,6 +45,7 @@ import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserver;
+import com.netease.nimlib.sdk.avchat.constant.AVChatControlCommand;
 import com.netease.nimlib.sdk.avchat.constant.AVChatEventType;
 import com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
@@ -377,6 +379,10 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
     protected void showProgress(String message) {
         mProgressDialog.setMessage(message);
+        mProgressDialog.setBottomMessage("取消");
+        mProgressDialog.setOnBottomClickCallBack(view -> {
+            hangUpAudioCall(false);
+        });
         mProgressDialog.show();
     }
 
@@ -454,6 +460,10 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             L.i("AVChat", "收到非当前服务的语音请求，已忽略");
             return;
         }
+        if (PhoneCallStateObserver.getInstance().getPhoneCallState() != PhoneCallStateObserver.PhoneCallStateEnum.IDLE) {
+            AVChatManager.getInstance().sendControlCommand(AVChatControlCommand.BUSY, null);
+            return;
+        }
         runOnUiThread(() -> {
             if (!isFinishing()) {
                 mIncomingCallDialog.show();
@@ -469,7 +479,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             @Override
             public void onSuccess(AVChatData avChatData) {
                 L.i("AVChat", "语音请求发起成功，等待对方接听");
-                runOnUiThread(() -> showProgress("等待对方接听"));
+                runOnUiThread(() -> showProgress("正在请求通话..."));
             }
 
             @Override
@@ -560,9 +570,11 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_BUSY) {
             // 对方正在忙
             L.e("AVChat", "对方正在忙");
+            Toast.makeText(this,"对方正忙",Toast.LENGTH_LONG).show();
         } else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_REJECT) {
             // 对方拒绝接听
             L.e("AVChat", "对方拒绝接听");
+            Toast.makeText(this,"对方拒绝接听",Toast.LENGTH_LONG).show();
         } else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_AGREE) {
             // 对方同意接听
             L.i("AVChat", "对方同意接听");
@@ -575,6 +587,8 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             runOnUiThread(() -> changeToAudioChatMode());
         }
         dismissProgress();
+        if(mIncomingCallDialog!=null)
+            mIncomingCallDialog.dismiss();
     };
 
     /**
@@ -584,7 +598,15 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     Observer<AVChatCommonEvent> mAVChatCallHangupObserver = (Observer<AVChatCommonEvent>) hangUpInfo -> {
         // 结束通话
         if (hangUpInfo.getEvent() == AVChatEventType.PEER_HANG_UP) {
-            onAudioHangUp(true, TranslationOrder.USER, "用户主动挂断");
+            if (AVChatProfile.getInstance().isAVChatting())
+                onAudioHangUp(true, TranslationOrder.USER, "用户主动挂断");
+            else{
+                AVChatProfile.getInstance().setAVChatting(false);
+                dismissProgress();
+                if(mIncomingCallDialog!=null)
+                    mIncomingCallDialog.dismiss();
+                Toast.makeText(this, "对方取消语音请求", Toast.LENGTH_LONG).show();
+            }
         }
     };
 
@@ -596,11 +618,12 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         // 超时类型
         onAudioHangUp(event == NET_BROKEN_TIMEOUT, TranslationOrder.OTHER, "网络超时");
         if (event == OUTGOING_TIMEOUT) {
-            dismissProgress();
-            Toast.makeText(this, "对方拒绝接听", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "对方拒绝了您的语音请求", Toast.LENGTH_LONG).show();
         } else if (event == INCOMING_TIMEOUT) {
-            mIncomingCallDialog.dismiss();
         }
+        dismissProgress();
+        if(mIncomingCallDialog!=null)
+            mIncomingCallDialog.dismiss();
     };
 
     /**
