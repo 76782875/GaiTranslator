@@ -224,7 +224,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             if (AVChatProfile.getInstance().isAVChatting()) {
                 // 正在语音
                 currentNormalMode = false;
-                getTranslationAudioMessageFragment().setUserName(getTitle().toString());
+                mTranslationAudioMessageFragment.setUserName(getTitle().toString());
                 switchContent(getTranslationAudioMessageFragment());
                 getToolBar().setVisibility(View.GONE);
             } else {
@@ -266,6 +266,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             mTranslationAudioMessageFragment = new TranslationAudioMessageFragment();
             mTranslationAudioMessageFragment.setContainerId(com.netease.nim.uikit.R.id.message_fragment_container);
             mTranslationAudioMessageFragment.setTranslatorTargetLanguage(targetLanguage);
+            mTranslationAudioMessageFragment.setUserName(getTitle().toString());
         }
         return mTranslationAudioMessageFragment;
     }
@@ -385,9 +386,10 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
     @Override
     public void setTitle(CharSequence title) {
-        super.setTitle(FormatUtil.formatUserName(title.toString()));
+        title = FormatUtil.formatUserName(title.toString());
+        super.setTitle(title);
         if (mTranslationAudioMessageFragment != null) {
-            mTranslationAudioMessageFragment.setUserName(getTitle().toString());
+            mTranslationAudioMessageFragment.setUserName(title.toString());
         }
     }
 
