@@ -175,10 +175,8 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
         super.onDestroy();
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, false);
         mAVChatCallAckObserver = null;
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
+        dismissProgress();
+        mProgressDialog = null;
     }
 
     protected void showProgress(String message) {
@@ -189,6 +187,8 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     }
 
     protected void dismissProgress() {
-        mProgressDialog.dismiss();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
     }
 }
