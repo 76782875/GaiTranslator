@@ -276,7 +276,7 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
                 messageEditText.setSelection(editEnd);
                 messageEditText.addTextChangedListener(this);
 
-                sendTypingCommand();
+                // sendTypingCommand();
             }
         });
     }
