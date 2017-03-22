@@ -34,6 +34,7 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
         progressText.set(progressText.get() == null ? "加载中..." : progressText.get());
         textBottomVisibility.set(View.GONE);
         textBottomVisibility.set(View.GONE);
+        lineVisibility.set(View.GONE);
     }
 
     public ProgressBarDialogViewModel(Context context) {
