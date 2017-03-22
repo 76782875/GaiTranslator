@@ -77,7 +77,7 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
     }
 
     public void onBottomClick(View view) {
-        if(onBottomClickCallBack!=null)
+        if (onBottomClickCallBack != null)
             onBottomClickCallBack.onClick(view);
         dismiss();
     }
