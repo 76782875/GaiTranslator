@@ -45,6 +45,8 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
     public final ObservableInt backGround = new ObservableInt();
 
     @WatchThis
+    public final ObservableField onGrabOrderStart = new ObservableField<>();
+    @WatchThis
     public final ObservableField<TranslationOrderResponse> onGrabOrderSuccess = new ObservableField<>();
     @WatchThis
     public final ObservableField<String> onGrabOrderFail = new ObservableField<>();
@@ -166,6 +168,8 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
         hasGrabOrderProcessing = true;
 
         L.i(getClass().getSimpleName(), "开始抢单：" + new Gson().toJson(observableField.get()));
+
+        ObservableNotifier.alwaysNotify(onGrabOrderStart, null);
 
         new TranslationOrderModel().grabOrder(observableField.get().getUserorderid())
                 .observeOn(AndroidSchedulers.mainThread())

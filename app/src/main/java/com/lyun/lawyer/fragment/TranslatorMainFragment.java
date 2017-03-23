@@ -63,6 +63,11 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     }
 
     @Override
+    public void onGrabOrderStart(ObservableField observableField, int fieldId) {
+        showProgress(null);
+    }
+
+    @Override
     public void onGrabOrderSuccess(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
         mGrabOrderInfo = observableField.get();
 
@@ -90,10 +95,12 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
                 L.e("AVChat", "语音请求发起失败", exception);
             }
         });
+        dismissProgress();
     }
 
     @Override
     public void onGrabOrderFail(ObservableField<String> observableField, int fieldId) {
+        dismissProgress();
         Toast.makeText(getContext(), observableField.get(), Toast.LENGTH_LONG).show();
     }
 
