@@ -11,6 +11,7 @@ import com.lyun.lawyer.R;
 import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.lawyer.databinding.FragmentTranslatorGrabLayoutBinding;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
+import com.lyun.lawyer.im.session.activity.TranslationMessageActivity;
 import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.TranslatorMainViewModel;
@@ -28,6 +29,9 @@ import com.netease.nimlib.sdk.avchat.model.AVChatCalleeAckEvent;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.netease.nimlib.sdk.avchat.model.AVChatNotifyOption;
 import com.netease.nimlib.sdk.avchat.model.AVChatOptionalConfig;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.INCOMING_TIMEOUT;
 import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.NET_BROKEN_TIMEOUT;
@@ -123,6 +127,8 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
 
         TranslationOrderService.start(getActivity(), mGrabOrderInfo.getUserorderid(), mGrabOrderInfo.getLanguage(), orderType, Account.preference().getPhone(), mGrabOrderInfo.getUsername());
 
+        dismissProgressAfter1S();
+
         mGrabOrderInfo = null;
     }
 
@@ -155,7 +161,7 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
             L.i(getClass().getSimpleName(), "开启语音服务:" + new Gson().toJson(mGrabOrderInfo));
             startTranslationService();
         }
-        dismissProgress();
+        dismissProgressAfter1S();
     };
 
     /**
@@ -201,6 +207,15 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
         AVChatManager.getInstance().observeTimeoutNotification(mAVChatCallTimeoutObserver, false);
         dismissProgress();
         mProgressDialog = null;
+    }
+
+    protected void dismissProgressAfter1S() {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(() -> dismissProgress());
+            }
+        }, 1000);
     }
 
     protected void showProgress(String message) {
