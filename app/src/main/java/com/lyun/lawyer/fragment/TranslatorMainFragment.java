@@ -100,7 +100,6 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
                 L.e("AVChat", "语音请求发起失败", exception);
             }
         });
-        dismissProgress();
     }
 
     @Override
@@ -156,7 +155,6 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
             L.i(getClass().getSimpleName(), "开启语音服务:" + new Gson().toJson(mGrabOrderInfo));
             startTranslationService();
         }
-        dismissProgress();
     };
 
     /**
@@ -199,10 +197,9 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     public void onDestroy() {
         super.onDestroy();
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, false);
-        mAVChatCallAckObserver = null;
+        AVChatManager.getInstance().observeTimeoutNotification(mAVChatCallTimeoutObserver, false);
         dismissProgress();
         mProgressDialog = null;
-        AVChatManager.getInstance().observeTimeoutNotification(mAVChatCallTimeoutObserver, false);
     }
 
     protected void showProgress(String message) {
