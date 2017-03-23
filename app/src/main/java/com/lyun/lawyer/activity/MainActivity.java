@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.KeyEvent;
 
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityMainBinding;
@@ -65,6 +66,22 @@ public class MainActivity extends MvvmActivity<ActivityMainBinding, MainActivity
             SessionHelper.startTranslationSession(MainActivity.this, account, orderId, orderType, targetLanguage);
         }
     };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 过滤按键动作
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // 按返回键不结束activity
+        moveTaskToBack(true);
+        super.onBackPressed();
+    }
 
 }
 
