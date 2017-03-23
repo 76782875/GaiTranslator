@@ -22,11 +22,16 @@ import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.constant.AVChatEventType;
+import com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.model.AVChatCalleeAckEvent;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.netease.nimlib.sdk.avchat.model.AVChatNotifyOption;
 import com.netease.nimlib.sdk.avchat.model.AVChatOptionalConfig;
+
+import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.INCOMING_TIMEOUT;
+import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.NET_BROKEN_TIMEOUT;
+import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.OUTGOING_TIMEOUT;
 
 /**
  * @author Gordon
@@ -154,6 +159,19 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
         dismissProgress();
     };
 
+    /**
+     * 监听呼叫或接听超时通知
+     * 主叫方在拨打网络通话时，超过 45 秒被叫方还未接听来电，则自动挂断。被叫方超过 45 秒未接听来听，也会自动挂断，在通话过程中网络超时 30 秒自动挂断。
+     */
+    Observer<AVChatTimeOutEvent> mAVChatCallTimeoutObserver = (Observer<AVChatTimeOutEvent>) event -> {
+        // 超时类型
+        L.i("AVChat", "语音聊天中断：event -> " + event);
+        if (event == OUTGOING_TIMEOUT) {
+            dismissProgress();
+        } else if (event == INCOMING_TIMEOUT) {
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +185,8 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
         // 监听被叫方回应（主叫方）
         AVChatManager.getInstance().observeCalleeAckNotification(mAVChatCallAckObserver, true);
         getFragmentViewModel().startAutoRefresh();
+        // 监听呼叫或接听超时通知
+        AVChatManager.getInstance().observeTimeoutNotification(mAVChatCallTimeoutObserver, true);
     }
 
     @Override
@@ -182,6 +202,7 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
         mAVChatCallAckObserver = null;
         dismissProgress();
         mProgressDialog = null;
+        AVChatManager.getInstance().observeTimeoutNotification(mAVChatCallTimeoutObserver, false);
     }
 
     protected void showProgress(String message) {
