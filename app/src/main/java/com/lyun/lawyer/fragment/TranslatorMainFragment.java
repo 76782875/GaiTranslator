@@ -155,6 +155,7 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
             L.i(getClass().getSimpleName(), "开启语音服务:" + new Gson().toJson(mGrabOrderInfo));
             startTranslationService();
         }
+        dismissProgress();
     };
 
     /**
