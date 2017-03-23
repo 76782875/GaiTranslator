@@ -20,10 +20,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
+import com.lyun.lawyer.im.avchat.AVChatSoundPlayer;
 import com.lyun.lawyer.im.avchat.receiver.PhoneCallStateObserver;
 import com.lyun.lawyer.im.session.fragment.TranslationAudioMessageFragment;
 import com.lyun.lawyer.model.TranslationOrderModel;
@@ -80,6 +80,9 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     private String targetLanguage;
 
     private ProgressBarDialogViewModel mProgressDialog;
+    private boolean isMakeAudioCall;
+    private ImageView imageView;
+    private long lastClickTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -167,10 +170,12 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
         LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(com.netease.nim.uikit.R.layout.nim_action_bar_custom_view, null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        ImageView imageView = new ImageView(this);
+        imageView = new ImageView(this);
         imageView.setImageResource(R.drawable.ic_av_call);
         imageView.setPadding(ScreenUtil.dip2px(15), 0, ScreenUtil.dip2px(15), 0);
         imageView.setOnClickListener(v -> {
+            if(isFastDoubleClick())
+                return;
             if (currentNormalMode) {
                 changeToAudioChatMode();
             } else {
@@ -181,7 +186,15 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
         getToolBar().addView(view, new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.RIGHT | Gravity.CENTER));
     }
-
+    public boolean isFastDoubleClick() {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastClickTime;
+        if (0 < timeD && timeD < 1000) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
+    }
     /**
      * 居中显示Toolbar
      *
@@ -380,16 +393,27 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     protected void showProgress(String message) {
         mProgressDialog.setMessage(message);
         mProgressDialog.setBottomMessage("取消");
+        mProgressDialog.setOnOutSideCancel(false);
         mProgressDialog.setOnBottomClickCallBack(view -> {
+            isMakeAudioCall = false;
             hangUpAudioCall(false);
         });
         mProgressDialog.show();
     }
 
     protected void dismissProgress() {
-        mProgressDialog.dismiss();
+        if(mProgressDialog!=null)
+            mProgressDialog.dismiss();
+        isMakeAudioCall = false;
     }
-
+    protected void dismissInComing() {
+        if(mIncomingCallDialog!=null)
+            mIncomingCallDialog.dismiss();
+        if(imageView!=null){
+            imageView.setEnabled(true);
+            imageView.setClickable(true);
+        }
+    }
     @Override
     public void setTitle(CharSequence title) {
         title = FormatUtil.formatUserName(title.toString());
@@ -437,11 +461,13 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         mIncomingCallDialog.setOnItemClickListener(new SimpleDialogViewModel.OnItemClickListener() {
             @Override
             public void OnYesClick(View view) {
+                dismissInComing();
                 acceptAudioCall();
             }
 
             @Override
             public void OnCancelClick(View view) {
+                dismissInComing();
                 hangUpAudioCall(false);
             }
         });
@@ -460,8 +486,13 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             L.i("AVChat", "收到非当前服务的语音请求，已忽略");
             return;
         }
-        if (PhoneCallStateObserver.getInstance().getPhoneCallState() != PhoneCallStateObserver.PhoneCallStateEnum.IDLE) {
+        if(imageView!=null){
+            imageView.setEnabled(false);
+            imageView.setClickable(false);
+        }
+        if (isMakeAudioCall || AVChatProfile.getInstance().isAVChatting() || PhoneCallStateObserver.getInstance().getPhoneCallState() != PhoneCallStateObserver.PhoneCallStateEnum.IDLE) {
             AVChatManager.getInstance().sendControlCommand(AVChatControlCommand.BUSY, null);
+            L.i("AVChat", "设置发送busy");
             return;
         }
         runOnUiThread(() -> {
@@ -475,6 +506,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
      * 发起语音请求
      */
     protected void makeAudioCall() {
+        isMakeAudioCall = true;
         AVChatManager.getInstance().call(sessionId, AVChatType.AUDIO, new AVChatOptionalConfig(), new AVChatNotifyOption(), new AVChatCallback<AVChatData>() {
             @Override
             public void onSuccess(AVChatData avChatData) {
@@ -485,11 +517,13 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             @Override
             public void onFailed(int code) {
                 L.e("AVChat", "语音请求发起失败 code:" + code);
+                isMakeAudioCall = false;
             }
 
             @Override
             public void onException(Throwable exception) {
                 L.e("AVChat", "语音请求发起失败", exception);
+                isMakeAudioCall = false;
             }
         });
     }
@@ -570,11 +604,12 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_BUSY) {
             // 对方正在忙
             L.e("AVChat", "对方正在忙");
-            Toast.makeText(this,"对方正忙",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,"对方正忙",Toast.LENGTH_LONG).show();
+            AVChatSoundPlayer.instance().play(AVChatSoundPlayer.RingerTypeEnum.PEER_BUSY);
         } else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_REJECT) {
             // 对方拒绝接听
             L.e("AVChat", "对方拒绝接听");
-            Toast.makeText(this,"对方拒绝接听",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,"对方拒绝接听",Toast.LENGTH_LONG).show();
         } else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_AGREE) {
             // 对方同意接听
             L.i("AVChat", "对方同意接听");
@@ -603,9 +638,8 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             else{
                 AVChatProfile.getInstance().setAVChatting(false);
                 dismissProgress();
-                if(mIncomingCallDialog!=null)
-                    mIncomingCallDialog.dismiss();
-                Toast.makeText(this, "对方取消语音请求", Toast.LENGTH_LONG).show();
+                dismissInComing();
+//                Toast.makeText(this, "对方取消语音请求", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -618,12 +652,11 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         // 超时类型
         onAudioHangUp(event == NET_BROKEN_TIMEOUT, TranslationOrder.OTHER, "网络超时");
         if (event == OUTGOING_TIMEOUT) {
-            Toast.makeText(this, "对方拒绝了您的语音请求", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "对方拒绝了您的语音请求", Toast.LENGTH_LONG).show();
         } else if (event == INCOMING_TIMEOUT) {
         }
         dismissProgress();
-        if(mIncomingCallDialog!=null)
-            mIncomingCallDialog.dismiss();
+        dismissInComing();
     };
 
     /**

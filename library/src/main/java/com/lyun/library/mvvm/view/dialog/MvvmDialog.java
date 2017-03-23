@@ -47,4 +47,9 @@ public abstract class MvvmDialog<VDB extends ViewDataBinding, VM extends DialogV
         if (isShowing())
             dismiss();
     }
+    @Override
+    public void isOutSideCancel(ObservableBoolean observableField, int fieldId) {
+        setCancelable(observableField.get());
+        setCanceledOnTouchOutside(observableField.get());
+    }
 }

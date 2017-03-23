@@ -35,6 +35,7 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
         textBottomVisibility.set(View.GONE);
         textBottomVisibility.set(View.GONE);
         lineVisibility.set(View.GONE);
+        isOutSideCancel.set(true);
     }
 
     public ProgressBarDialogViewModel(Context context) {
@@ -80,5 +81,8 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
         if (onBottomClickCallBack != null)
             onBottomClickCallBack.onClick(view);
         dismiss();
+    }
+    public void setOnOutSideCancel(Boolean cancel) {
+        isOutSideCancel.set(cancel);
     }
 }
