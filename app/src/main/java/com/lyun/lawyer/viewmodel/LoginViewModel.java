@@ -41,8 +41,6 @@ public class LoginViewModel extends ViewModel {
             ObservableNotifier.alwaysNotify(onLoginResult, "错误手机号!");
         } else if (("".equals(password.get())) || (null == password.get())) {
             ObservableNotifier.alwaysNotify(onLoginResult, "请输入密码!");
-        } else if (!RegExMatcherUtils.matchPassword(password.get())) {
-            ObservableNotifier.alwaysNotify(onLoginResult, "密码格式不正确,请重新输入!");
         } else {
             login(username.get(), password.get());
         }
