@@ -34,13 +34,13 @@ public class ResetPasswordActivityViewModel extends ViewModel {
 
     public RelayCommand onSubmitClick = new RelayCommand(() -> {
         if ("".equals(password.get())) {
-            ObservableNotifier.alwaysNotify(onResetPasswordResult, "请输入原密码!");
+            ObservableNotifier.alwaysNotify(onResetPasswordResult, "请输入原密码");
         } else if ("".equals(newPassword1.get())) {
-            ObservableNotifier.alwaysNotify(onResetPasswordResult, "请输入新密码!");
+            ObservableNotifier.alwaysNotify(onResetPasswordResult, "请输入新密码");
         } else if ("".equals(newPassword2.get())) {
-            ObservableNotifier.alwaysNotify(onResetPasswordResult, "请确认新密码!");
+            ObservableNotifier.alwaysNotify(onResetPasswordResult, "请确认新密码");
         } else if (!newPassword1.get().equals(newPassword2.get())) {
-            ObservableNotifier.alwaysNotify(onResetPasswordResult, "两次新密码输入不同!");
+            ObservableNotifier.alwaysNotify(onResetPasswordResult, "两次新密码输入不同");
         } else if (!RegExMatcherUtils.matchPassword(newPassword1.get())) {
             ObservableNotifier.alwaysNotify(onResetPasswordResult, "请正确输入6~16位字母或数字");
         } else {
