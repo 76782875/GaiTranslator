@@ -32,6 +32,11 @@ import com.netease.nimlib.sdk.avchat.model.AVChatOptionalConfig;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.INCOMING_TIMEOUT;
 import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.NET_BROKEN_TIMEOUT;
@@ -210,12 +215,9 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
     }
 
     protected void dismissProgressAfter1S() {
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                getActivity().runOnUiThread(() -> dismissProgress());
-            }
-        }, 1000);
+        Observable.interval(1, TimeUnit.SECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> dismissProgress());
     }
 
     protected void showProgress(String message) {
