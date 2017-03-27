@@ -9,7 +9,6 @@ import android.databinding.BaseObservable;
 import android.databinding.ObservableBoolean;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -24,7 +23,6 @@ import android.widget.Toast;
 
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
-import com.lyun.lawyer.im.avchat.AVChatSoundPlayer;
 import com.lyun.lawyer.im.avchat.receiver.PhoneCallStateObserver;
 import com.lyun.lawyer.im.session.fragment.TranslationAudioMessageFragment;
 import com.lyun.lawyer.model.TranslationOrderModel;
@@ -622,7 +620,6 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_BUSY) {
             // 对方正在忙
             L.e("AVChat", "对方正在忙");
-            AVChatSoundPlayer.instance().play(AVChatSoundPlayer.RingerTypeEnum.PEER_BUSY);
         } else if (ackInfo.getEvent() == AVChatEventType.CALLEE_ACK_REJECT) {
             // 对方拒绝接听
             L.e("AVChat", "对方拒绝接听");
