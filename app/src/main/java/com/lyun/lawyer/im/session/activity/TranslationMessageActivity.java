@@ -82,7 +82,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
     private ProgressBarDialogViewModel mProgressDialog;
     private boolean isMakeAudioCall;
-    private ImageView imageView;
+    private ImageView mAudioCallButton;
     private long lastClickTime;
 
     @Override
@@ -171,10 +171,10 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
         LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(com.netease.nim.uikit.R.layout.nim_action_bar_custom_view, null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        imageView = new ImageView(this);
-        imageView.setImageResource(R.drawable.ic_av_call);
-        imageView.setPadding(ScreenUtil.dip2px(15), 0, ScreenUtil.dip2px(15), 0);
-        imageView.setOnClickListener(v -> {
+        mAudioCallButton = new ImageView(this);
+        mAudioCallButton.setImageResource(R.drawable.ic_av_call);
+        mAudioCallButton.setPadding(ScreenUtil.dip2px(15), 0, ScreenUtil.dip2px(15), 0);
+        mAudioCallButton.setOnClickListener(v -> {
             if (isFastDoubleClick())
                 return;
             if (currentNormalMode) {
@@ -183,7 +183,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                 changeToNormalChatMode();
             }
         });
-        view.addView(imageView, params);
+        view.addView(mAudioCallButton, params);
 
         getToolBar().addView(view, new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.RIGHT | Gravity.CENTER));
     }
@@ -413,9 +413,9 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     protected void dismissInComing() {
         if (mIncomingCallDialog != null)
             mIncomingCallDialog.dismiss();
-        if (imageView != null) {
-            imageView.setEnabled(true);
-            imageView.setClickable(true);
+        if (mAudioCallButton != null) {
+            mAudioCallButton.setEnabled(true);
+            mAudioCallButton.setClickable(true);
         }
     }
 
@@ -485,9 +485,9 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             L.i("AVChat", "收到非当前服务的语音请求，已忽略");
             return;
         }
-        if (imageView != null) {
-            imageView.setEnabled(false);
-            imageView.setClickable(false);
+        if (mAudioCallButton != null) {
+            mAudioCallButton.setEnabled(false);
+            mAudioCallButton.setClickable(false);
         }
         if (isMakeAudioCall || AVChatProfile.getInstance().isAVChatting() || PhoneCallStateObserver.getInstance().getPhoneCallState() != PhoneCallStateObserver.PhoneCallStateEnum.IDLE) {
             AVChatManager.getInstance().sendControlCommand(AVChatControlCommand.BUSY, null);
@@ -634,9 +634,9 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             // 切换到语音聊天界面
             runOnUiThread(() -> changeToAudioChatMode());
         }
+        mAudioCallTimeOutTimer.cancel();
         dismissProgress();
-        if (mIncomingCallDialog != null)
-            mIncomingCallDialog.dismiss();
+        dismissInComing();
     };
 
     /**
