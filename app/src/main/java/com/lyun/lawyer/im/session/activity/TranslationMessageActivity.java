@@ -244,6 +244,11 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         }
 
         if (AVChatProfile.getInstance().isAVChatting()) {
+
+            if (getMessageFragment() != null) {
+                getMessageFragment().hideInputMethod();
+            }
+
             // 正在语音
             currentNormalMode = false;
             mTranslationAudioMessageFragment.setUserName(getTitle().toString());
