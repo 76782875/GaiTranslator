@@ -374,9 +374,8 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                 // 终止翻译服务stopService(new Intent(TranslationMessageActivity.this, TranslationOrderService.class));
                 if (AVChatProfile.getInstance().isAVChatting()) {
                     hangUpAudioCall(true);
-                } else {
-                    TranslationOrderService.stop(TranslationMessageActivity.this, TranslationOrder.TRANSLATOR, "翻译挂断");
                 }
+                TranslationOrderService.stop(TranslationMessageActivity.this, TranslationOrder.TRANSLATOR, "翻译挂断");
             }
 
             @Override
@@ -509,6 +508,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     };
 
     public Timer mAudioCallTimeOutTimer;
+
     public class AudioCallTimeOutTimerTask extends TimerTask {
         @Override
         public void run() {
@@ -519,7 +519,9 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                 Toast.makeText(getApplicationContext(), "对方拒绝了您的语音请求", Toast.LENGTH_LONG).show();
             });
         }
-    };
+    }
+
+    ;
 
     /**
      * 发起语音请求
@@ -586,31 +588,27 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             @Override
             public void onSuccess(Void aVoid) {
                 L.i("AVChat", "语音挂断成功");
-                onAudioHangUp(stopServiceOnHangUp, TranslationOrder.TRANSLATOR, "翻译挂断");
+                onAudioHangUp();
             }
 
             @Override
             public void onFailed(int code) {
                 L.i("AVChat", "语音挂断失败，Code:" + code);
-                onAudioHangUp(stopServiceOnHangUp, TranslationOrder.TRANSLATOR, "翻译挂断");
+                onAudioHangUp();
             }
 
             @Override
             public void onException(Throwable exception) {
                 L.i("AVChat", "语音挂断失败", exception);
-                onAudioHangUp(stopServiceOnHangUp, TranslationOrder.TRANSLATOR, "翻译挂断");
+                onAudioHangUp();
             }
         });
     }
 
-    protected void onAudioHangUp(boolean stopServiceOnHangUp, int whoHangUp, String reason) {
+    protected void onAudioHangUp() {
         AVChatProfile.getInstance().setAVChatting(false);
         // 切换到图文模式
-        if (stopServiceOnHangUp) {
-            TranslationOrderService.stop(this, whoHangUp, reason);
-        } else {
-            runOnUiThread(() -> changeToNormalChatMode());
-        }
+        runOnUiThread(() -> changeToNormalChatMode());
     }
 
     /**
@@ -656,7 +654,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         // 结束通话
         if (hangUpInfo.getEvent() == AVChatEventType.PEER_HANG_UP) {
             if (AVChatProfile.getInstance().isAVChatting())
-                onAudioHangUp(true, TranslationOrder.USER, "用户主动挂断");
+                onAudioHangUp();
             else {
                 AVChatProfile.getInstance().setAVChatting(false);
                 dismissProgress();
@@ -671,7 +669,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
      */
     Observer<AVChatTimeOutEvent> mAVChatCallTimeoutObserver = (Observer<AVChatTimeOutEvent>) event -> {
         // 超时类型
-        onAudioHangUp(event == NET_BROKEN_TIMEOUT, TranslationOrder.OTHER, "网络超时");
+        onAudioHangUp();
         if (event == OUTGOING_TIMEOUT) {
         } else if (event == INCOMING_TIMEOUT) {
         }
@@ -741,7 +739,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         public void onUserLeave(String account, int event) {
             L.i("AVChat", "onUserLeave account -> " + account + " event -> " + event);
             if (event == -1) {
-                onAudioHangUp(true, TranslationOrder.OTHER, "网络超时");
+                onAudioHangUp();
             }
         }
 
