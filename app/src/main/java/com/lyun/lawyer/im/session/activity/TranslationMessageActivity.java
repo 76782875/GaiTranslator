@@ -66,7 +66,6 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.INCOMING_TIMEOUT;
-import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.NET_BROKEN_TIMEOUT;
 import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.OUTGOING_TIMEOUT;
 
 /**
@@ -401,7 +400,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         mProgressDialog.setBottomMessage("取消");
         mProgressDialog.setOnOutSideCancel(false);
         mProgressDialog.setOnBottomClickCallBack(view -> {
-            isMakeAudioCall = false;
+            dismissProgress();
             hangUpAudioCall(false);
             if (mAudioCallTimeOutTimer != null) {
                 mAudioCallTimeOutTimer.cancel();
@@ -411,9 +410,13 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     }
 
     protected void dismissProgress() {
+        isMakeAudioCall = false;
         if (mProgressDialog != null)
             mProgressDialog.dismiss();
-        isMakeAudioCall = false;
+        if (mAudioCallButton != null) {
+            mAudioCallButton.setEnabled(true);
+            mAudioCallButton.setClickable(true);
+        }
     }
 
     protected void dismissInComing() {
