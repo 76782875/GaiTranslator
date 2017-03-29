@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityMainBinding;
+import com.lyun.lawyer.im.config.preference.UserPreferences;
 import com.lyun.lawyer.im.session.SessionHelper;
 import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.service.TranslationOrder;
@@ -17,6 +18,7 @@ import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.MainActivityViewModel;
 import com.lyun.library.mvvm.view.activity.MvvmActivity;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
+import com.netease.nimlib.sdk.NIMClient;
 
 /**
  * @author Gordon
@@ -36,6 +38,8 @@ public class MainActivity extends MvvmActivity<ActivityMainBinding, MainActivity
     @NonNull
     @Override
     protected MainActivityViewModel createViewModel() {
+        UserPreferences.setNotificationToggle(false);
+        NIMClient.toggleNotification(false);
         return new MainActivityViewModel(getActivityViewDataBinding().mainContainer, getSupportFragmentManager());
     }
 
