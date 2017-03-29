@@ -17,6 +17,8 @@ import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityLoginBinding;
 import com.lyun.lawyer.im.NimCache;
 import com.lyun.lawyer.im.config.preference.UserPreferences;
+import com.lyun.lawyer.service.TranslationOrder;
+import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.LoginViewModel;
 import com.lyun.lawyer.viewmodel.watchdog.ILoginViewModelCallbacks;
 import com.lyun.library.mvvm.view.activity.GeneralToolbarActivity;
@@ -42,6 +44,7 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
         context.startActivity(intent);
 //        if (kickOut)
             Account.preference().clear();
+        TranslationOrderService.stop(context, TranslationOrder.TRANSLATOR, "用户在其他地方登陆");
     }
 
     @Override

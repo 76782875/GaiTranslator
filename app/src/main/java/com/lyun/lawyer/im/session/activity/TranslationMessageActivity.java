@@ -311,7 +311,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            hangUpAudioCall(true);
+            hangUpAudioCall();
 
             int whoFinish = intent.getIntExtra(TranslationOrder.WHO_FINISH, TranslationOrder.OTHER);
 
@@ -372,7 +372,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             public void OnYesClick(View view) {
                 // 终止翻译服务stopService(new Intent(TranslationMessageActivity.this, TranslationOrderService.class));
                 if (AVChatProfile.getInstance().isAVChatting()) {
-                    hangUpAudioCall(true);
+                    hangUpAudioCall();
                 }
                 TranslationOrderService.stop(TranslationMessageActivity.this, TranslationOrder.TRANSLATOR, "翻译挂断");
             }
@@ -401,7 +401,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         mProgressDialog.setOnOutSideCancel(false);
         mProgressDialog.setOnBottomClickCallBack(view -> {
             dismissProgress();
-            hangUpAudioCall(false);
+            hangUpAudioCall();
             if (mAudioCallTimeOutTimer != null) {
                 mAudioCallTimeOutTimer.cancel();
             }
@@ -476,7 +476,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             @Override
             public void OnCancelClick(View view) {
                 dismissInComing();
-                hangUpAudioCall(false);
+                hangUpAudioCall();
             }
         });
     }
@@ -517,7 +517,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         public void run() {
             runOnUiThread(() -> {
                 isMakeAudioCall = false;
-                hangUpAudioCall(false);
+                hangUpAudioCall();
                 dismissProgress();
                 Toast.makeText(getApplicationContext(), "对方拒绝了您的语音请求", Toast.LENGTH_LONG).show();
             });
@@ -586,7 +586,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     /**
      * 挂断语音通话
      */
-    protected void hangUpAudioCall(boolean stopServiceOnHangUp) {
+    protected void hangUpAudioCall() {
         AVChatManager.getInstance().hangUp(new AVChatCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -676,6 +676,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         if (event == OUTGOING_TIMEOUT) {
         } else if (event == INCOMING_TIMEOUT) {
         }
+        isMakeAudioCall = false;
         dismissProgress();
         dismissInComing();
     };
