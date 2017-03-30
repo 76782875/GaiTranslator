@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.lyun.lawyer.BuildConfig;
@@ -175,7 +176,9 @@ public class TranslationOrderService extends Service {
     protected void heartBeat() {
         new TranslationOrderModel().heartBeat(mTranslationOrder.getOrderId())
                 .subscribe(result -> {
-
+                    if (TextUtils.equals("2", result.getStatus())) {
+                        stop(getApplicationContext(), TranslationOrder.OTHER, "订单已结束");
+                    }
                 }, throwable -> {
 
                 });
