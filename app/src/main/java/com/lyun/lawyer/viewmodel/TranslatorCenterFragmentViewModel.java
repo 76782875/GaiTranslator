@@ -16,6 +16,9 @@ import com.lyun.utils.TimeUtil;
 
 import net.funol.databinding.watchdog.annotations.WatchThis;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
@@ -40,6 +43,10 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
         super.onResume();
         if (Account.preference().isLogin()) {
             getTranslatorDes(Account.preference().getPhone());//获取数据统计
+            Observable.empty()
+                    .delay(2, TimeUnit.SECONDS)
+                    .doOnComplete(() -> getTranslatorDes(Account.preference().getPhone()))
+                    .subscribe();
             setTranslatorInformation();//更新昵称
         } else {
             exitVisible.set(View.INVISIBLE);
