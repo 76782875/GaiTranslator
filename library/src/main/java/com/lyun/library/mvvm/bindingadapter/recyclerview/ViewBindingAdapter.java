@@ -63,6 +63,7 @@ public class ViewBindingAdapter {
     public static void setNotifyData(RecyclerView recyclerView, List<? extends ViewModel> data) {
         BaseRecyclerAdapter adapter = (BaseRecyclerAdapter) recyclerView.getAdapter();
         if (data != null)
+            if (recyclerView != null && !recyclerView.isComputingLayout())
             adapter.setListData(data);
     }
 
