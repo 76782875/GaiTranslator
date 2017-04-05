@@ -28,10 +28,6 @@ public class TranslationOrderService extends Service {
 
     private TranslationOrder mTranslationOrder;
 
-    public TranslationOrderService() {
-        mTimer = new Timer();
-    }
-
     public static boolean isRunning() {
         return mInstance == null ? false : true;
     }
@@ -47,11 +43,18 @@ public class TranslationOrderService extends Service {
         context.startService(intent);
     }
 
-    public static void stop(Context context, int byWho, String reason) {
+    public static void stop(Context context, String orderId, int byWho, String reason) {
         Intent intent = new Intent();
+        intent.putExtra(TranslationOrder.ORDER_ID, orderId);
         intent.putExtra(TranslationOrder.FINISH_REASON, reason);
         intent.putExtra(TranslationOrder.WHO_FINISH, byWho);
         intent.setAction(Action.COMMAND_STOP_SERVICE);
+        context.sendBroadcast(intent);
+    }
+
+    public static void forceStop(Context context) {
+        Intent intent = new Intent();
+        intent.setAction(Action.COMMAND_FORCE_STOP_SERVICE);
         context.sendBroadcast(intent);
     }
 
@@ -59,9 +62,25 @@ public class TranslationOrderService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            if (!TextUtils.equals(mTranslationOrder.getOrderId(), intent.getStringExtra(TranslationOrder.ORDER_ID))) {
+                return;
+            }
+
             unregisterReceiver(this);
 
             mTranslationOrder.setFinishReason(intent.getStringExtra(TranslationOrder.FINISH_REASON));
+            mTranslationOrder.setWhoFinish(intent.getIntExtra(TranslationOrder.WHO_FINISH, TranslationOrder.OTHER));
+            L.i(TAG, "翻译服务关闭：reason -> " + mTranslationOrder.getFinishReason());
+            stopSelf();
+        }
+    };
+
+    protected BroadcastReceiver mForceStopServiceReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            unregisterReceiver(this);
+
             mTranslationOrder.setWhoFinish(intent.getIntExtra(TranslationOrder.WHO_FINISH, TranslationOrder.OTHER));
             L.i(TAG, "翻译服务关闭：reason -> " + mTranslationOrder.getFinishReason());
             stopSelf();
@@ -83,8 +102,8 @@ public class TranslationOrderService extends Service {
         String translatorId = intent.getStringExtra(TranslationOrder.TRANSLATOR_ID);
         startNewOrder(new TranslationOrder(orderId, orderType, targetLanguage, System.currentTimeMillis(), userId, translatorId));
 
-        IntentFilter intentFilter = new IntentFilter(Action.COMMAND_STOP_SERVICE);
-        registerReceiver(mStopServiceReceiver, intentFilter);
+        registerReceiver(mStopServiceReceiver, new IntentFilter(Action.COMMAND_STOP_SERVICE));
+        registerReceiver(mForceStopServiceReceiver, new IntentFilter(Action.COMMAND_FORCE_STOP_SERVICE));
 
         return START_NOT_STICKY;
     }
@@ -117,7 +136,12 @@ public class TranslationOrderService extends Service {
      */
     protected void startTranslation() {
 
-        mTimer.schedule(mOrderTimerTask, 1000, 1000);
+        if (mTimer != null) {
+            mTimer.cancel();
+        }
+
+        mTimer = new Timer();
+        mTimer.schedule(new OrderTimerTask(), 1000, 1000);
 
         // 专家端不标记订单开始
         // setTranslationState(mTranslationOrder.getOrderId(), "0");
@@ -190,7 +214,7 @@ public class TranslationOrderService extends Service {
         new TranslationOrderModel().heartBeat(mTranslationOrder.getOrderId())
                 .subscribe(result -> {
                     if (TextUtils.equals("2", result.getStatus())) {
-                        stop(getApplicationContext(), TranslationOrder.OTHER, "订单已结束");
+                        stop(getApplicationContext(), mTranslationOrder.getOrderId(), TranslationOrder.OTHER, "订单已结束");
                     }
                 }, throwable -> {
 
@@ -198,12 +222,13 @@ public class TranslationOrderService extends Service {
     }
 
     public Timer mTimer;
-    public TimerTask mOrderTimerTask = new TimerTask() {
+
+    public class OrderTimerTask extends TimerTask {
         @Override
         public void run() {
             processTranslation();
         }
-    };
+    }
 
     public class Action {
         public static final String START = BuildConfig.APPLICATION_ID + ".translation.order.START";
@@ -211,6 +236,7 @@ public class TranslationOrderService extends Service {
         public static final String FINISH = BuildConfig.APPLICATION_ID + ".translation.order.FINISH";
 
         protected static final String COMMAND_STOP_SERVICE = BuildConfig.APPLICATION_ID + ".translation.order.COMMAND_STOP_SERVICE";
+        protected static final String COMMAND_FORCE_STOP_SERVICE = BuildConfig.APPLICATION_ID + ".translation.order.COMMAND_FORCE_STOP_SERVICE";
     }
 
 }

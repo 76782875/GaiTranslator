@@ -37,14 +37,15 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
 
     private static final String KICK_OUT = "KICK_OUT";
     private SimpleDialogViewModel dialog;
+
     public static void start(Context context, boolean kickOut) {
         Intent intent = new Intent(context, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(KICK_OUT, kickOut);
         context.startActivity(intent);
 //        if (kickOut)
-            Account.preference().clear();
-        TranslationOrderService.stop(context, TranslationOrder.TRANSLATOR, "用户在其他地方登陆");
+        Account.preference().clear();
+        TranslationOrderService.forceStop(context);
     }
 
     @Override
@@ -52,10 +53,11 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
         super.onCreate(savedInstanceState);
         onParseIntent();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(dialog!=null)
+        if (dialog != null)
             dialog.dismiss();
     }
 
@@ -114,6 +116,7 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
         }
         return super.onKeyDown(keyCode, event);
     }
+
     @Override
     protected int getBodyLayoutId() {
         return R.layout.activity_login;

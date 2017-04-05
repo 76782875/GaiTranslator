@@ -380,7 +380,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                 if (AVChatProfile.getInstance().isAVChatting()) {
                     hangUpAudioCall();
                 }
-                TranslationOrderService.stop(TranslationMessageActivity.this, TranslationOrder.TRANSLATOR, "翻译挂断");
+                TranslationOrderService.stop(TranslationMessageActivity.this, orderId, TranslationOrder.TRANSLATOR, "翻译挂断");
             }
 
             @Override
