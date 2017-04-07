@@ -159,11 +159,12 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
 
     private boolean hasGrabOrderProcessing = false;
 
-    private void resetGrabOrder() {
+    private void resetGrabOrder(int delay) {
+        L.i(getClass().getSimpleName(), "1抢单请求处理完成，恢复抢单");
         Observable.empty()
-                .delay(1, TimeUnit.SECONDS)
+                .delay(delay, TimeUnit.SECONDS)
                 .doOnComplete(() -> {
-                    L.i(getClass().getSimpleName(), "抢单请求处理完成，恢复抢单");
+                    L.i(getClass().getSimpleName(), "2抢单请求处理完成，恢复抢单");
                     hasGrabOrderProcessing = false;
                 })
                 .subscribe();
@@ -187,11 +188,11 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get());
-                            resetGrabOrder();
+                            resetGrabOrder(3);
                         },
                         throwable -> {
                             ObservableNotifier.alwaysNotify(onGrabOrderFail, throwable.getMessage());
-                            resetGrabOrder();
+                            resetGrabOrder(0);
                         })
         ;
     }
