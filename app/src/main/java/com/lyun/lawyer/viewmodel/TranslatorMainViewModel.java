@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
@@ -157,6 +159,16 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
 
     private boolean hasGrabOrderProcessing = false;
 
+    private void resetGrabOrder() {
+        Observable.empty()
+                .delay(1, TimeUnit.SECONDS)
+                .doOnComplete(() -> {
+                    L.i(getClass().getSimpleName(), "抢单请求处理完成，恢复抢单");
+                    hasGrabOrderProcessing = false;
+                })
+                .subscribe();
+    }
+
     @Override
     public void onGrabOrder(ObservableField<TranslationOrderResponse> observableField, int fieldId) {
 
@@ -175,13 +187,11 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get());
-                            L.i(getClass().getSimpleName(), "抢单请求处理完成，恢复抢单");
-                            hasGrabOrderProcessing = false;
+                            resetGrabOrder();
                         },
                         throwable -> {
                             ObservableNotifier.alwaysNotify(onGrabOrderFail, throwable.getMessage());
-                            L.i(getClass().getSimpleName(), "抢单请求处理完成，恢复抢单");
-                            hasGrabOrderProcessing = false;
+                            resetGrabOrder();
                         })
         ;
     }
