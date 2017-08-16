@@ -35,7 +35,7 @@ public class TranslatorGrabItemViewModel extends ViewModel {
     public void init(int position) {
         switch (orderType.get()) {
             case "语音":
-                orderTextBg.set(Color.parseColor("#48fe35"));
+                orderTextBg.set(Color.parseColor("#209ced"));
                 break;
             case "图文":
                 orderTextBg.set(Color.parseColor("#ffc11e"));

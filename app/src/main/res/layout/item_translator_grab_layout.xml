@@ -27,20 +27,25 @@
             android:textColor="#333"
             android:textSize="15sp"/>
 
-        <TextView
+        <com.lyun.roundrectview.RoundRectTextView
             android:id="@+id/translator_grab_button"
             android:layout_width="70dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:background="@drawable/no_border_round_corner_blue_bg"
             android:clickable="false"
             android:gravity="center"
+            android:paddingBottom="7dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="7dp"
             android:text="抢单"
-            app:clickCommand="@{mvvm.onGrabOrderClick}"
             android:textColor="@android:color/white"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            app:backgroundColor="#fe811c"
+            app:clickCommand="@{mvvm.onGrabOrderClick}"
+            app:cornerRadius="50%"/>
 
         <TextView
             android:layout_width="wrap_content"
