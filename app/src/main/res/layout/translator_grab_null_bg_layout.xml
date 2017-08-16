@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/translator_grab_null_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/translator_grab_null_bg"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="暂无订单,请耐心等待..."
-            android:textColor="@color/tc2"
-            android:textSize="18sp"
-            android:gravity="center_horizontal"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:src="@mipmap/translator_grab_null_bg"
-            android:layout_gravity="center_horizontal"/>
-    </LinearLayout>
+        android:layout_below="@id/translator_grab_null_img"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="暂无订单,请耐心等待..."
+        android:textColor="#333333"
+        android:textSize="18sp"/>
 </RelativeLayout>
