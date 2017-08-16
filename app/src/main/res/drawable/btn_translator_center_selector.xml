@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@mipmap/icon_translator_center_selector" android:state_checked="true"></item>
+    <item android:drawable="@mipmap/icon_translator_center_select" android:state_checked="true"></item>
 
-    <item android:drawable="@mipmap/icon_translator_center_unselector" android:state_checked="false"></item>
+    <item android:drawable="@mipmap/icon_translator_center_unselect" android:state_checked="false"></item>
 </selector>
