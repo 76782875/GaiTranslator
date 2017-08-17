@@ -30,7 +30,7 @@ public class MsgViewHolderText extends MsgViewHolderBase {
         layoutDirection();
 
         TextView bodyTextView = findViewById(R.id.nim_message_item_text_body);
-        bodyTextView.setTextColor(isReceivedMessage() ? Color.BLACK : Color.WHITE);
+        bodyTextView.setTextColor(isReceivedMessage() ? Color.parseColor("#ff8100") : Color.parseColor("#333333"));
         bodyTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

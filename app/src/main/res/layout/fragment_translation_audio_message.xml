@@ -17,42 +17,18 @@
         android:layout_height="match_parent"
         android:background="@mipmap/bg_av_chat">
 
-        <LinearLayout
+        <TextView
             android:id="@+id/translation_audio_message_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@{`服务分类：`+mvvm.targetLanguage}"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="中文"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"/>
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/ic_audio_chat_translation"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="@{mvvm.targetLanguage}"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"/>
-
-        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/translation_audio_message_switch"
@@ -99,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/translation_audio_message_switch"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="40dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="6">
@@ -151,15 +127,22 @@
             android:layout_above="@id/translation_audio_message_options"
             android:layout_below="@id/translation_audio_message_info"
             android:layout_marginBottom="50dp"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:paddingTop="10dp">
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/bg_av_chat_avatar"/>
 
             <com.netease.nim.uikit.common.ui.imageview.CircleImageView
                 android:id="@+id/translation_audio_message_avatar"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
                 android:src="@mipmap/user_default_avatar"/>
 
             <TextView
@@ -168,22 +151,24 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/translation_audio_message_avatar"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="45dp"
                 android:text="@{`正在为`+ mvvm.userName+`服务`}"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"/>
 
-            <TextView
+            <com.lyun.roundrectview.RoundRectTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/translation_audio_message_username"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:drawableLeft="@drawable/ic_audio_chat"
-                android:drawablePadding="5dp"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:text="@{mvvm.translationTime}"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                app:backgroundColor="#ffcb80"
+                app:cornerRadius="50%"/>
         </RelativeLayout>
 
     </RelativeLayout>
