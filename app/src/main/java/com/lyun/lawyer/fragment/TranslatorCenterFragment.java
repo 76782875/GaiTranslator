@@ -2,7 +2,9 @@ package com.lyun.lawyer.fragment;
 
 import android.content.Intent;
 import android.databinding.BaseObservable;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.activity.LoginActivity;
@@ -33,7 +35,10 @@ public class TranslatorCenterFragment extends MvvmFragment<FragmentTranslatorCen
     @NonNull
     @Override
     protected TranslatorCenterFragmentViewModel createViewModel() {
-        return new TranslatorCenterFragmentViewModel().setPropertyChangeListener(this);
+        TranslatorCenterFragmentViewModel viewModel = new TranslatorCenterFragmentViewModel();
+        viewModel.setPropertyChangeListener(this);
+        viewModel.topVisible.set(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? View.VISIBLE : View.GONE);
+        return viewModel;
     }
 
     @Override

@@ -27,7 +27,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class TranslatorCenterFragmentViewModel extends ViewModel {
 
-    public final ObservableInt topVisible = new ObservableInt();//android 5.0以上显示，否则不显示
+    public final ObservableInt topVisible = new ObservableInt(0);//android 5.0以上显示，否则不显示
     public final ObservableField<String> userName = new ObservableField<>();//昵称
     public final ObservableField<String> translateTime = new ObservableField<>();//翻译时长
     public final ObservableField<String> personTime = new ObservableField<>();//人次
