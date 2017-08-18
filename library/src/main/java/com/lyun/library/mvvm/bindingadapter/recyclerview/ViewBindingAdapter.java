@@ -63,7 +63,6 @@ public class ViewBindingAdapter {
     public static void setNotifyData(RecyclerView recyclerView, List<? extends ViewModel> data) {
         BaseRecyclerAdapter adapter = (BaseRecyclerAdapter) recyclerView.getAdapter();
         if (data != null)
-            if (recyclerView != null && !recyclerView.isComputingLayout())
             adapter.setListData(data);
     }
 
@@ -85,7 +84,7 @@ public class ViewBindingAdapter {
 
     @BindingAdapter("header")
     public static void setHeader(RecyclerView recyclerView, @LayoutRes int layoutRes) {
-        if (layoutRes > 0) {
+        if (layoutRes > 0 && recyclerView.getAdapter()!=null) {
             View view = View.inflate(recyclerView.getContext(), layoutRes, null);
             ((BaseRecyclerAdapter) recyclerView.getAdapter()).setHeaderView(view);
         } else {

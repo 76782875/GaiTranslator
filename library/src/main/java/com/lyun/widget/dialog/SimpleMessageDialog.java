@@ -14,10 +14,10 @@ import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
  * @version 创建时间：2014年5月27日 上午10:12:47
  */
 
-public class SimpleMessageDialog extends MvvmDialog<DialogSimpleMessageBinding,SimpleDialogViewModel> {
+public class SimpleMessageDialog extends MvvmDialog<DialogSimpleMessageBinding, SimpleDialogViewModel> {
 
-    public SimpleMessageDialog(Context context,SimpleDialogViewModel viewModel) {
-        super(context,viewModel,R.layout.dialog_simple_message, R.style.dialog);
+    public SimpleMessageDialog(Context context, SimpleDialogViewModel viewModel) {
+        super(context, viewModel, R.layout.dialog_simple_message, R.style.dialog);
     }
 
     @Override

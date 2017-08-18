@@ -24,5 +24,10 @@ public final class ViewBindingAdapter {
             }
         }
     }
+
+    @BindingAdapter("backGround")
+    public static void setBackGround(ViewGroup viewGroup, int res) {
+        viewGroup.setBackgroundResource(res);
+    }
 }
 

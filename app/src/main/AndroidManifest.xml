@@ -103,7 +103,7 @@
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:theme="@style/GlobalTitleTheme">
+            android:theme="@style/AppTheme.NoTitle.TranslucentStatus">
             <intent-filter>
                 <action android:name="${APPLICATION_ID}.intent.action.LOGIN"/>
 

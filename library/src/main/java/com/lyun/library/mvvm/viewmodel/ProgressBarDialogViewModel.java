@@ -22,7 +22,6 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
     public final ObservableInt textBottomVisibility = new ObservableInt();
     public final ObservableField<String> textBottomText = new ObservableField<>();
     private OnBottomClickCallBack onBottomClickCallBack;
-
     public ProgressBarDialogViewModel(Context context, String text) {
         super(context);
         setMessage(text);
@@ -82,7 +81,8 @@ public class ProgressBarDialogViewModel extends DialogViewModel {
             onBottomClickCallBack.onClick(view);
         dismiss();
     }
+
     public void setOnOutSideCancel(Boolean cancel) {
-        isOutSideCancel.set(cancel);
+            isOutSideCancel.set(cancel);
     }
 }

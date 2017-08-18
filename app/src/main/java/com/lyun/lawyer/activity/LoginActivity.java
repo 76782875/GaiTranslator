@@ -17,12 +17,10 @@ import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityLoginBinding;
 import com.lyun.lawyer.im.NimCache;
 import com.lyun.lawyer.im.config.preference.UserPreferences;
-import com.lyun.lawyer.service.TranslationOrder;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.LoginViewModel;
 import com.lyun.lawyer.viewmodel.watchdog.ILoginViewModelCallbacks;
-import com.lyun.library.mvvm.view.activity.GeneralToolbarActivity;
-import com.lyun.library.mvvm.viewmodel.GeneralToolbarViewModel;
+import com.lyun.library.mvvm.view.activity.MvvmActivity;
 import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
@@ -32,7 +30,7 @@ import com.netease.nimlib.sdk.auth.ClientType;
 /**
  * Created by 郑成裕 on 2017/1/22.
  */
-public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, LoginViewModel>
+public class LoginActivity extends MvvmActivity<ActivityLoginBinding, LoginViewModel>
         implements ILoginViewModelCallbacks {
 
     private static final String KICK_OUT = "KICK_OUT";
@@ -52,6 +50,7 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onParseIntent();
+        setStatusBarDarkMode(true);
     }
 
     @Override
@@ -59,6 +58,17 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
         super.onDestroy();
         if (dialog != null)
             dialog.dismiss();
+    }
+
+    @NonNull
+    @Override
+    protected LoginViewModel createViewModel() {
+        return new LoginViewModel().setPropertyChangeListener(this);
+    }
+
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.activity_login;
     }
 
     private void onParseIntent() {
@@ -115,28 +125,6 @@ public class LoginActivity extends GeneralToolbarActivity<ActivityLoginBinding, 
             }
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected int getBodyLayoutId() {
-        return R.layout.activity_login;
-    }
-
-    @NonNull
-    @Override
-    protected GeneralToolbarViewModel.ToolbarViewModel createTitleViewModel() {
-        GeneralToolbarViewModel.ToolbarViewModel viewModel = super.createTitleViewModel();
-        viewModel.setPropertyChangeListener(this);
-        viewModel.title.set("登录");
-        viewModel.backVisibility.set(View.INVISIBLE);
-//        viewModel.onBackClick.set(view -> finish());
-        return viewModel;
-    }
-
-    @NonNull
-    @Override
-    protected LoginViewModel createBodyViewModel() {
-        return new LoginViewModel().setPropertyChangeListener(this);
     }
 
     @Override
