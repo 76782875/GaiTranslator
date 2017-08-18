@@ -82,7 +82,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme.NoTitle.TranslucentStatus"/>
         <activity
             android:name=".activity.TranslatorSettingActivity"
             android:theme="@style/GlobalTitleTheme">
