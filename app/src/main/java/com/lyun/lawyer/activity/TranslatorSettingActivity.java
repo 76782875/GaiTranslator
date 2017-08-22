@@ -15,8 +15,7 @@ import com.lyun.library.mvvm.viewmodel.GeneralToolbarViewModel;
  * Created by 郑成裕 on 2017/1/22.
  */
 
-public class TranslatorSettingActivity extends GeneralToolbarActivity<ActivityUserSettingBinding, TranslatorSettingActivityViewModel> implements ITranslatorSettingActivityViewModelCallbacks{
-
+public class TranslatorSettingActivity extends GeneralToolbarActivity<ActivityUserSettingBinding, TranslatorSettingActivityViewModel> implements ITranslatorSettingActivityViewModelCallbacks {
 
     @Override
     protected int getBodyLayoutId() {
@@ -36,6 +35,8 @@ public class TranslatorSettingActivity extends GeneralToolbarActivity<ActivityUs
         viewModel.setPropertyChangeListener(this);
         viewModel.title.set("设置");
         viewModel.onBackClick.set(view -> finish());
+        viewModel.backDrawable.set(R.mipmap.ic_back_chat);
+        viewModel.textColor.set(getResources().getColor(R.color.colorTextPrimary));
         return viewModel;
     }
 

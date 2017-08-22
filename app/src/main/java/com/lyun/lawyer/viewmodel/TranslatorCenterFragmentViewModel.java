@@ -2,6 +2,7 @@ package com.lyun.lawyer.viewmodel;
 
 import android.content.Intent;
 import android.databinding.BaseObservable;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Build;
@@ -27,7 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class TranslatorCenterFragmentViewModel extends ViewModel {
 
-    public final ObservableInt topVisible = new ObservableInt(0);//android 5.0以上显示，否则不显示
+    public final ObservableBoolean topVisible = new ObservableBoolean(false);//android 5.0以上显示，否则不显示
     public final ObservableField<String> userName = new ObservableField<>();//昵称
     public final ObservableField<String> translateTime = new ObservableField<>();//翻译时长
     public final ObservableField<String> personTime = new ObservableField<>();//人次
@@ -96,9 +97,9 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
         personTime.set("-- ");
         exitVisible.set(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            topVisible.set(View.VISIBLE);
+            topVisible.set(true);
         } else {
-            topVisible.set(View.GONE);
+            topVisible.set(false);
         }
     }
 

@@ -18,21 +18,12 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/layout_height_top"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_alignParentTop="true"
-            android:visibility="@{mvvm.topVisible}">
-
-        </RelativeLayout>
-
-        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_below="@id/layout_height_top"
             android:background="#fe942d"
-            android:paddingBottom="65dp">
+            android:paddingBottom="65dp"
+            android:paddingTop="@{mvvm.topVisible ? 25 : 0 }">
 
             <ImageView
                 android:id="@+id/translator_center_setting"
@@ -118,8 +109,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:weightSum="2">
 
                 <TextView

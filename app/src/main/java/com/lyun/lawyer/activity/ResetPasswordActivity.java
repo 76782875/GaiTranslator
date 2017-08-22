@@ -32,6 +32,8 @@ public class ResetPasswordActivity extends GeneralToolbarActivity<ActivityResetP
         viewModel.setPropertyChangeListener(this);
         viewModel.title.set("修改密码");
         viewModel.onBackClick.set(view -> finish());
+        viewModel.backDrawable.set(R.mipmap.ic_back_chat);
+        viewModel.textColor.set(getResources().getColor(R.color.colorTextPrimary));
         return viewModel;
     }
 

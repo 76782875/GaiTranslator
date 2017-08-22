@@ -1,18 +1,31 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppBaseTheme" parent="LibTheme"></style>
+    <style name="AppBaseTheme" parent="LibTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textColorHint">@color/textColorHint</item>
+        <item name="android:editTextColor">@color/textColorHint</item>
+    </style>
 
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme.NoTitle" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoTitle.FullScreen" parent="AppTheme.NoTitle">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="AppTheme.TranslucentStatus" parent="AppTheme">
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 
-    <style name="AppTheme.NoTitle" parent="LibTheme.NoTitle"></style>
-
-    <style name="AppTheme.NoTitle.FullScreen" parent="LibTheme.NoTitle.FullScreen"></style>
-
-    <style name="AppTheme.TranslucentStatus" parent="LibTheme.TranslucentStatus"></style>
-
-    <style name="AppTheme.NoTitle.TranslucentStatus" parent="LibTheme.NoTitle">
+    <style name="AppTheme.NoTitle.TranslucentStatus" parent="AppTheme.NoTitle">
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 
@@ -27,7 +40,7 @@
     </style>
 
     <style name="app_custom_title_style">
-        <item name="android:background">@color/bgcB</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="android:layout_height">@dimen/title_height</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:padding">@dimen/title_padding</item>

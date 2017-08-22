@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -14,15 +14,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bgc1"
+        android:background="#f5f5f5"
         android:orientation="vertical">
 
         <TextView
             style="@style/main_fragment_discover_item"
             android:layout_marginTop="5dp"
             android:drawableLeft="@mipmap/setting_change_passward_icon"
+            android:drawableRight="@null"
             android:text="修改密码"
-            app:clickCommand="@{mvvm.onModifyPasswordButtonClick}" />
+            app:clickCommand="@{mvvm.onModifyPasswordButtonClick}"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,7 +35,7 @@
                 android:clickable="false"
                 android:drawableLeft="@mipmap/setting_app_version_icon"
                 android:drawableRight="@null"
-                android:text="版本信息" />
+                android:text="版本信息"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,7 +45,7 @@
                 android:layout_marginRight="15dp"
                 android:text="@{mvvm.appVersion}"
                 android:textColor="@color/tc1"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
         </RelativeLayout>
     </LinearLayout>
 </layout>

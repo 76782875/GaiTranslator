@@ -37,7 +37,6 @@ public class TranslatorCenterFragment extends MvvmFragment<FragmentTranslatorCen
     protected TranslatorCenterFragmentViewModel createViewModel() {
         TranslatorCenterFragmentViewModel viewModel = new TranslatorCenterFragmentViewModel();
         viewModel.setPropertyChangeListener(this);
-        viewModel.topVisible.set(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? View.VISIBLE : View.GONE);
         return viewModel;
     }
 
