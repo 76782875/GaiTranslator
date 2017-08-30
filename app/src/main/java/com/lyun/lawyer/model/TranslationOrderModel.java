@@ -42,7 +42,7 @@ public class TranslationOrderModel extends Model {
     }
 
     public Observable<String> grabOrder(String orderId) {
-        GrabOrderRequest request = new GrabOrderRequest(orderId, Account.preference().getPhone());
+        GrabOrderRequest request = new GrabOrderRequest(orderId, Account.preference().getCardNo());
         return parseAPIObservable(API.translationOrder.grabOrder(request).onErrorReturn(throwable -> ErrorParser.mockResult(throwable)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());

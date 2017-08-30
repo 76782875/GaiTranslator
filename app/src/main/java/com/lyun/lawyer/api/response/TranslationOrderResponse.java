@@ -18,7 +18,7 @@ public class TranslationOrderResponse {
     private String userorderid;
     private String ordertime;
     private String ordertype;
-    private String language;
+    private String domain;
     private int id;
 
     public String getUsername() {
@@ -53,12 +53,12 @@ public class TranslationOrderResponse {
         this.ordertype = ordertype;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public int getId() {

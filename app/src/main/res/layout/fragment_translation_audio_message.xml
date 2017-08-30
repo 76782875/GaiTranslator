@@ -91,6 +91,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="静音"
+                android:textColor="@android:color/white"
                 app:onCheckCommand="@{mvvm.onMuteCheckCommand}"/>
 
             <CheckBox
@@ -104,6 +105,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text=" "
+                android:textColor="@android:color/white"
                 app:onCheckCommand="@{mvvm.onHangUpCheckCommand}"/>
 
             <CheckBox
@@ -117,6 +119,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="免提"
+                android:textColor="@android:color/white"
                 app:onCheckCommand="@{mvvm.onHandFreeCheckCommand}"/>
 
         </LinearLayout>

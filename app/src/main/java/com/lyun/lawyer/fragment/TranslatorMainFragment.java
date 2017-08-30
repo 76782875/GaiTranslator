@@ -11,7 +11,6 @@ import com.lyun.lawyer.R;
 import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.lawyer.databinding.FragmentTranslatorGrabLayoutBinding;
 import com.lyun.lawyer.im.avchat.AVChatProfile;
-import com.lyun.lawyer.im.session.activity.TranslationMessageActivity;
 import com.lyun.lawyer.model.TranslationOrderModel;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.TranslatorMainViewModel;
@@ -30,16 +29,12 @@ import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.netease.nimlib.sdk.avchat.model.AVChatNotifyOption;
 import com.netease.nimlib.sdk.avchat.model.AVChatOptionalConfig;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 
 import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.INCOMING_TIMEOUT;
-import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.NET_BROKEN_TIMEOUT;
 import static com.netease.nimlib.sdk.avchat.constant.AVChatTimeOutEvent.OUTGOING_TIMEOUT;
 
 /**
@@ -130,7 +125,7 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
             orderType = TranslationOrderModel.OrderType.MESSAGE;
         }
 
-        TranslationOrderService.start(getActivity(), mGrabOrderInfo.getUserorderid(), mGrabOrderInfo.getLanguage(), orderType, Account.preference().getCardNo(), mGrabOrderInfo.getUsername());
+        TranslationOrderService.start(getActivity(), mGrabOrderInfo.getUserorderid(), mGrabOrderInfo.getDomain(), orderType, Account.preference().getCardNo(), mGrabOrderInfo.getUsername());
 
         dismissProgressAfter1S();
 
