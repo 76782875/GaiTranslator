@@ -27,7 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 public class TranslationOrderModel extends Model {
 
     public Observable<Page<List<TranslationOrderResponse>>> queryOrder(int page) {
-        QueryTranslationOrdersBean request = new QueryTranslationOrdersBean(page + "", "20", Account.preference().getPhone());
+        QueryTranslationOrdersBean request = new QueryTranslationOrdersBean(page + "", "20", Account.preference().getCardNo());
         return parseAPIObservable(API.translationOrder.queryOrders(request).onErrorReturn(throwable -> ErrorParser.mockResult(throwable)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
@@ -35,7 +35,7 @@ public class TranslationOrderModel extends Model {
     }
 
     public Observable<APIResult> heartBeat(String userOrderId) {
-        return API.translationOrder.heartBeat(new HeartBeatBean(userOrderId, Account.preference().getPhone()))
+        return API.translationOrder.heartBeat(new HeartBeatBean(userOrderId, Account.preference().getCardNo()))
                 .onErrorReturn(throwable -> ErrorParser.mockResult(throwable))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());

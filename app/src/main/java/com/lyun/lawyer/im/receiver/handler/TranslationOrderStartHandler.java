@@ -19,7 +19,7 @@ public class TranslationOrderStartHandler implements AttachContentHandler<Transl
 
     @Override
     public void handleNotification(Context context, TranslationOrderStart data) {
-        TranslationOrderService.start(AppApplication.getInstance(), data.getUserOrderId(), null, null, data.getOrderHand(), Account.preference().getPhone());
+        TranslationOrderService.start(AppApplication.getInstance(), data.getUserOrderId(), null, null, data.getOrderHand(), Account.preference().getCardNo());
     }
 
     @Override

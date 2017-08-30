@@ -43,10 +43,10 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
     public void onResume() {
         super.onResume();
         if (Account.preference().isLogin()) {
-            getTranslatorDes(Account.preference().getPhone());//获取数据统计
+            getTranslatorDes(Account.preference().getCardNo());//获取数据统计
             Observable.empty()
                     .delay(2, TimeUnit.SECONDS)
-                    .doOnComplete(() -> getTranslatorDes(Account.preference().getPhone()))
+                    .doOnComplete(() -> getTranslatorDes(Account.preference().getCardNo()))
                     .subscribe();
             setTranslatorInformation();//更新昵称
         } else {
@@ -59,16 +59,17 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
      * 更新昵称
      */
     private void setTranslatorInformation() {
-        userName.set(hideUserName(Account.preference().getPhone()));
+        userName.set(hideUserName(Account.preference().getCardNo()));
         exitVisible.set(View.VISIBLE);
     }
 
     private String hideUserName(String phone) {
-        try {
-            return phone.substring(0, 3) + "*****" + phone.substring(8);
-        } catch (Exception e) {
-            return phone;
-        }
+        return phone;
+//        try {
+//            return phone.substring(0, 3) + "*****" + phone.substring(8);
+//        } catch (Exception e) {
+//            return phone;
+//        }
     }
 
     /**

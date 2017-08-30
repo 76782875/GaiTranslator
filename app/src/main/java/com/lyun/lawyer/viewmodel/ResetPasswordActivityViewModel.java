@@ -44,7 +44,7 @@ public class ResetPasswordActivityViewModel extends ViewModel {
         } else if (!RegExMatcherUtils.matchPassword(newPassword1.get())) {
             ObservableNotifier.alwaysNotify(onResetPasswordResult, "请正确输入6~16位字母或数字");
         } else {
-            resetPassword(Account.preference().getPhone(), password.get(), newPassword1.get());
+            resetPassword(Account.preference().getCardNo(), password.get(), newPassword1.get());
         }
 
     });

@@ -61,11 +61,12 @@ public class LoginViewModel extends ViewModel {
     }
 
     private void loginNim(String username, String password, LoginResponse loginResponse) {
-        NimLoginHelper.login(username, loginResponse.getYunXinToken()).subscribe(
+        NimLoginHelper.login(loginResponse.getCardNo(), loginResponse.getYunXinToken()).subscribe(
                 loginInfo -> {
                     Account.preference().savePhone(username);
                     Account.preference().savePassword(password);
                     Account.preference().saveToken(loginResponse.getAppToken());
+                    Account.preference().saveCardNo(loginResponse.getCardNo());
                     Account.preference().saveNimToken(loginResponse.getYunXinToken());
                     Account.preference().setLogin(true);
                     onLoginSuccess.notifyChange();

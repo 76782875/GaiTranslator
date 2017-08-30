@@ -27,12 +27,14 @@ public class Account {
         private String phone;
         private String password;
         private String token;
+        private String cardNo;
         private String nimToken;
         private boolean login;
 
         private final String KEY_PHONE = "phone";
         private final String KEY_PASSWORD = "password";
         private final String KEY_TOKEN = "token";
+        private final String KEY_CARD_NO = "card_no";
         private final String KEY_NIM_TOKEN = "nim_token";
         private final String KEY_LOGIN = "login";
 
@@ -83,6 +85,18 @@ public class Account {
         public void setLogin(boolean login) {
             this.login = login;
             saveBoolean(KEY_LOGIN, login);
+        }
+
+        public String getCardNo() {
+            if (cardNo == null) {
+                cardNo = getString(KEY_CARD_NO);
+            }
+            return cardNo;
+        }
+
+        public void saveCardNo(String cardNo) {
+            this.cardNo = cardNo;
+            saveString(KEY_CARD_NO, cardNo);
         }
 
         public String getNimToken() {

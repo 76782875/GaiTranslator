@@ -33,6 +33,7 @@ public class LoginResponse extends BaseResponse {
     private String introduction;
     private String yunXinToken;
     private String appToken;
+    private String cardNo;
 
     public String getUserName() {
         return userName;
@@ -120,5 +121,13 @@ public class LoginResponse extends BaseResponse {
 
     public void setAppToken(String appToken) {
         this.appToken = appToken;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 }

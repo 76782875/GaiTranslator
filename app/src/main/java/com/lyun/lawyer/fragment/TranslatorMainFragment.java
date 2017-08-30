@@ -130,7 +130,7 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
             orderType = TranslationOrderModel.OrderType.MESSAGE;
         }
 
-        TranslationOrderService.start(getActivity(), mGrabOrderInfo.getUserorderid(), mGrabOrderInfo.getLanguage(), orderType, Account.preference().getPhone(), mGrabOrderInfo.getUsername());
+        TranslationOrderService.start(getActivity(), mGrabOrderInfo.getUserorderid(), mGrabOrderInfo.getLanguage(), orderType, Account.preference().getCardNo(), mGrabOrderInfo.getUsername());
 
         dismissProgressAfter1S();
 
