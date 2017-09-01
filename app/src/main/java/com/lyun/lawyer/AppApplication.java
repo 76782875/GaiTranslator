@@ -14,8 +14,6 @@ import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import okhttp3.Headers;
-
 /**
  * @author 赵尉尉
  * @date 2016/12/20
@@ -49,7 +47,7 @@ public class AppApplication extends BaseApplication {
 
     private SSLSocketFactory getSSLSocketFactory() {
         return new HttpsSocketFactoryBuilder()
-                .trust(getResources().openRawResource(R.raw.trust), "lyt2016")
+                .trust(getResources().openRawResource(R.raw.trust), "lyt2017")
                 // .client(getResources().openRawResource(R.raw.client), "password")
                 .build();
     }
