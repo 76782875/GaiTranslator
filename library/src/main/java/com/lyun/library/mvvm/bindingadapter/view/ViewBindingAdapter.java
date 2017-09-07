@@ -3,12 +3,9 @@ package com.lyun.library.mvvm.bindingadapter.view;
 import android.databinding.BindingAdapter;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
 
 import com.lyun.library.mvvm.command.RelayCommand;
 import com.lyun.library.mvvm.command.ResponseCommand;
-
-import org.w3c.dom.Text;
 
 public final class ViewBindingAdapter {
 

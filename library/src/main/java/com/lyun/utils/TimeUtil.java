@@ -49,7 +49,7 @@ public class TimeUtil {
             return hour+"小时"+mins+"分钟";
         }
     }
-    //格式化String 时间
+    //格式化String 时间 yyyy-MM-dd HH:mm:ss
     public static String formatTime(String data,String style) {
         SimpleDateFormat time = new SimpleDateFormat(style);
         Date date = null;
@@ -59,6 +59,20 @@ public class TimeUtil {
             e.printStackTrace();
         }
         if(date ==null)
+            return "";
+        return time.format(date);
+    }
+
+    //格式化String 时间 yyyy-MM-dd HH:mm:ss
+    public static String formatTime(long data, String style) {
+        SimpleDateFormat time = new SimpleDateFormat(style);
+        Date date = null;
+        try {
+            date = new Date(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (date == null)
             return "";
         return time.format(date);
     }

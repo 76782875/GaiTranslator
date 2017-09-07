@@ -19,7 +19,7 @@ import java.util.List;
  * do()
  */
 
-public abstract class BaseRecyclerAdapter<DB extends ViewDataBinding,VM extends ViewModel> extends RecyclerView.Adapter<BaseRecyclerAdapter.BaseRecyclerHolder> implements InterfaceBindView<DB,VM> {
+public abstract class BaseRecyclerAdapter<DB extends ViewDataBinding, VM extends ViewModel> extends RecyclerView.Adapter<BaseRecyclerAdapter.BaseRecyclerHolder> implements InterfaceBindView<DB, VM> {
     public List<VM> viewModels;
     public int layoutId;
     private View mHeaderView;
@@ -30,8 +30,21 @@ public abstract class BaseRecyclerAdapter<DB extends ViewDataBinding,VM extends 
     public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
     public static final int TYPE_NORMAL = 2;  //说明是不带有header和footer的
     private int newPosition;
+
+    public BaseRecyclerAdapter() {
+        this(null, 0);
+    }
+
     public BaseRecyclerAdapter(List<VM> viewModels, int layoutId) {
         this.viewModels = viewModels;
+        this.layoutId = layoutId;
+    }
+
+    public void setViewModels(List<VM> viewModels){
+        this.viewModels = viewModels;
+    }
+
+    public void setLayoutId(int layoutId){
         this.layoutId = layoutId;
     }
 
@@ -74,11 +87,15 @@ public abstract class BaseRecyclerAdapter<DB extends ViewDataBinding,VM extends 
                     newPosition = position - 1 < 0 ? 0 : position - 1;
                 else
                     newPosition = position;
-                viewBind(viewModels.get(newPosition), (DB) holder.getViewDataBinding(), position);
+                viewBind(viewModels.get(newPosition), (DB) holder.getViewDataBinding(), newPosition);
                 if (itemClickListener != null) {
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if (mHeaderView != null)
+                                newPosition = position - 1 < 0 ? 0 : position - 1;
+                            else
+                                newPosition = position;
                             itemClickListener.onItemClick(v, viewModels, newPosition);
                         }
                     });
@@ -87,12 +104,14 @@ public abstract class BaseRecyclerAdapter<DB extends ViewDataBinding,VM extends 
                     holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
+                            if (mHeaderView != null)
+                                newPosition = position - 1 < 0 ? 0 : position - 1;
+                            else
+                                newPosition = position;
                             itemLongClickListener.onItemClick(v, viewModels, newPosition);
                             return false;
                         }
                     });
-            }else {
-                return;
             }
         }
     }
@@ -112,6 +131,7 @@ public abstract class BaseRecyclerAdapter<DB extends ViewDataBinding,VM extends 
         }
         return TYPE_NORMAL;
     }
+
     @Override
     public int getItemCount() {
         if (mHeaderView == null && mFooterView == null) {
@@ -153,9 +173,11 @@ public abstract class BaseRecyclerAdapter<DB extends ViewDataBinding,VM extends 
     public void setItemClickListener(OnRecycleItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
+
     public void setItemLongClickListener(OnRecycleItemClickListener itemLongClickListener) {
         this.itemLongClickListener = itemLongClickListener;
     }
+
     public void setListData(List listData) {
         this.viewModels = listData;
         notifyDataSetChanged();
