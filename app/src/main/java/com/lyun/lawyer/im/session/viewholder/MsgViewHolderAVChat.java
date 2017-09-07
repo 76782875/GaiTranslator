@@ -52,7 +52,7 @@ public class MsgViewHolderAVChat extends MsgViewHolderBase {
                 typeImage.setImageResource(R.drawable.avchat_left_type_video);
             }
             isReceive = false;
-            statusLabel.setTextColor(context.getResources().getColor(R.color.color_grey_999999));
+            statusLabel.setTextColor(Color.WHITE);
         } else {
             if (attachment.getType() == AVChatType.AUDIO) {
                 typeImage.setImageResource(R.drawable.avchat_right_type_audio);
@@ -60,7 +60,7 @@ public class MsgViewHolderAVChat extends MsgViewHolderBase {
                 typeImage.setImageResource(R.drawable.avchat_right_type_video);
             }
             isReceive = true;
-            statusLabel.setTextColor(Color.WHITE);
+            statusLabel.setTextColor(context.getResources().getColor(R.color.color_grey_999999));
         }
     }
 
