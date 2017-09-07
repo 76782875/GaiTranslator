@@ -8,6 +8,7 @@ import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.library.mvvm.command.RelayCommand;
 import com.lyun.library.mvvm.observable.util.ObservableNotifier;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
+import com.lyun.utils.FormatUtil;
 
 import net.funol.databinding.watchdog.annotations.WatchThis;
 
@@ -28,7 +29,7 @@ public class TranslatorGrabItemViewModel extends ViewModel {
 
     public TranslatorGrabItemViewModel(TranslationOrderResponse order) {
         onGrabOrder.set(order);
-        this.userName.set(order.getUsername().substring(0, 3) + "*****" + order.getUsername().substring(8, 11));
+        this.userName.set(FormatUtil.formatUserName(order.getUsername()));
         this.orderType.set(order.getOrdertype());
     }
 
