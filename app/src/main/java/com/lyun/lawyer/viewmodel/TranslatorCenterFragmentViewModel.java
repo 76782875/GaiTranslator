@@ -13,6 +13,7 @@ import com.lyun.lawyer.AppIntent;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.model.StatisticsCardNoModel;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
+import com.lyun.utils.FormatUtil;
 import com.lyun.utils.TimeUtil;
 
 import net.funol.databinding.watchdog.annotations.WatchThis;
@@ -59,17 +60,8 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
      * 更新昵称
      */
     private void setTranslatorInformation() {
-        userName.set(hideUserName(Account.preference().getCardNo()));
+        userName.set(FormatUtil.formatUserName(Account.preference().getCardNo()));
         exitVisible.set(View.VISIBLE);
-    }
-
-    private String hideUserName(String phone) {
-        return phone;
-//        try {
-//            return phone.substring(0, 3) + "*****" + phone.substring(8);
-//        } catch (Exception e) {
-//            return phone;
-//        }
     }
 
     /**

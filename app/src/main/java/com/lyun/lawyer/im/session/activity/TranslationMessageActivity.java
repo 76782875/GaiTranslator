@@ -282,7 +282,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         currentNormalMode = true;
         switchContent(getMessageFragment());
         getToolBar().setVisibility(View.VISIBLE);
-        setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
+        setTitle(FormatUtil.formatUserName(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P)));
     }
 
     private TFragment mCurrentFragment;
