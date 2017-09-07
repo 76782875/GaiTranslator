@@ -14,7 +14,6 @@ import com.lyun.lawyer.R;
 import com.lyun.lawyer.fragment.TranslatorCenterFragment;
 import com.lyun.lawyer.fragment.TranslatorMainFragment;
 import com.lyun.library.mvvm.bindingadapter.tablayout.ViewBindAdapter;
-import com.lyun.library.mvvm.command.RelayCommand;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
 
 import java.util.ArrayList;
@@ -27,12 +26,13 @@ import java.util.List;
  */
 public class MainActivityViewModel extends ViewModel {
     public final ObservableField<ViewPager> viewPage = new ObservableField<>();
-    public final ObservableField<RelayCommand> relayCommandViewPage = new ObservableField<>();
+    public final ObservableField<FragmentPagerAdapter> adapter = new ObservableField<>();
     public final ObservableField<TabLayout.OnTabSelectedListener> tabListener = new ObservableField<>();
     public final ObservableField<ViewBindAdapter.TabData> tabData = new ObservableField<>();
     public final ObservableInt selectIndex = new ObservableInt();
     private FragmentManager mFragmentManager;
     private List<Fragment> fragments;
+
     public MainActivityViewModel(ViewPager viewPager, FragmentManager mFragmentManager) {
         this.viewPage.set(viewPager);
         this.mFragmentManager = mFragmentManager;
@@ -43,10 +43,10 @@ public class MainActivityViewModel extends ViewModel {
 //        TranslatorMainFragment mSpecialistTranslationFragment = new TranslatorMainFragment();
 //        TranslatorCenterFragment mUserCenterFragment = new TranslatorCenterFragment();
         if (fragments == null)
-        fragments = new ArrayList<>();
+            fragments = new ArrayList<>();
         fragments.add(new TranslatorMainFragment());
         fragments.add(new TranslatorCenterFragment());
-        relayCommandViewPage.set(relayCommand);
+        adapter.set(getAdapter());
         List<TabItemBean> tabs = new ArrayList<>();
         tabs.add(new TabItemBean(R.drawable.btn_translator_main_selector, "抢单", R.layout.item_main_tab));
         tabs.add(new TabItemBean(R.drawable.btn_translator_center_selector, "我", R.layout.item_main_tab));
@@ -57,8 +57,8 @@ public class MainActivityViewModel extends ViewModel {
         selectIndex.set(0);
     }
 
-    RelayCommand<ViewPager> relayCommand = new RelayCommand<>((viewPage) -> {
-        viewPage.setAdapter(new FragmentPagerAdapter(mFragmentManager) {
+    protected FragmentPagerAdapter getAdapter() {
+        return new FragmentPagerAdapter(mFragmentManager) {
             @Override
             public Fragment getItem(int position) {
                 return fragments.get(position);
@@ -70,8 +70,9 @@ public class MainActivityViewModel extends ViewModel {
                     return 0;
                 return fragments.size();
             }
-        });
-    });
+        };
+    }
+
     //设置监听底部按钮
     private TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
         @Override
