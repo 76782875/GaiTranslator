@@ -188,6 +188,7 @@ public class TranslatorMainViewModel extends ViewModel implements ITranslatorGra
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             ObservableNotifier.alwaysNotify(onGrabOrderSuccess, observableField.get());
+                            notifyData.remove(observableField.get());
                             resetGrabOrder(3);
                         },
                         throwable -> {
