@@ -114,15 +114,15 @@ android {
             signingConfig signingConfigs.release
 
             versionNameSuffix = " alpha-${getGitCommitHash()}"
-            applicationIdSuffix = 'alpha'
+//            applicationIdSuffix = 'alpha'
 
-            buildConfigField "String", "HOST", '"https://newlyt1.law-cloud.com.cn:8441"'
+            buildConfigField "String", "HOST", '"https://lyt2.lawper.com.cn:8441"'
             buildConfigField "String", "MIPUSH_CERT_NAME", '"lawyeralpha"'
             buildConfigField "String", "BAIDU_MAP_AK", '"eqrUfj2oWMjy3pmQb8RRRjddu4Fc5zsF"'
             buildConfigField "int", "BAIDU_MAP_GEO_TABLE_ID", "138163"
 
             manifestPlaceholders.putAll([
-                    APPLICATION_ID    : defaultConfig.applicationId + '.' + applicationIdSuffix,
+                    APPLICATION_ID    : defaultConfig.applicationId,
                     NIM_APPKEY        : "2bbbb39221e2ea7d61904f61acc72d52",
                     MIPUSH_CERT_NAME  : "lawyeralpha",
                     UMENG_APP_KEY     : "55a4612067e58ebb5f004e14",
