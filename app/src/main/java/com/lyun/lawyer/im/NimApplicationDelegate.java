@@ -155,33 +155,7 @@ public class NimApplicationDelegate extends ApplicationDelegate<AppApplication> 
         options.thumbnailSize = Screen.getWidthPixels(getApplication()) / 2;
 
         // 用户资料提供者, 目前主要用于提供用户资料，用于新消息通知栏中显示消息来源的头像和昵称
-        options.userInfoProvider = new UserInfoProvider() {
-            @Override
-            public UserInfoProvider.UserInfo getUserInfo(String account) {
-                return null;
-            }
-
-            @Override
-            public int getDefaultIconResId() {
-                return R.mipmap.icon_translator_center_select;
-            }
-
-            @Override
-            public Bitmap getTeamIcon(String tid) {
-                return null;
-            }
-
-            @Override
-            public Bitmap getAvatarForMessageNotifier(String account) {
-                return null;
-            }
-
-            @Override
-            public String getDisplayNameForMessageNotifier(String account, String sessionId,
-                                                           SessionTypeEnum sessionType) {
-                return null;
-            }
-        };
+        options.userInfoProvider = new NimUserInfoProvider(getApplication());
         return options;
     }
 
