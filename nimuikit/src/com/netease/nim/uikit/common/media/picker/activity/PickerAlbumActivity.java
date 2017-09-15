@@ -2,11 +2,12 @@ package com.netease.nim.uikit.common.media.picker.activity;
 
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -23,7 +24,6 @@ import com.netease.nim.uikit.common.media.picker.loader.PickerlImageLoadTool;
 import com.netease.nim.uikit.common.media.picker.model.AlbumInfo;
 import com.netease.nim.uikit.common.media.picker.model.PhotoInfo;
 import com.netease.nim.uikit.common.media.picker.model.PickerContract;
-import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.model.ToolBarOptions;
 import com.netease.nim.uikit.session.ToolbarCustomization;
 import com.netease.nim.uikit.session.constant.Extras;
@@ -90,9 +90,9 @@ public class PickerAlbumActivity extends UI implements OnAlbumItemClickListener,
 		options.setTitleString("相册");
 		setToolBar(R.id.toolbar, options);
 		centerToolbarTitle(getToolBar());
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			getToolBar().setPadding(0, ScreenUtil.getStatusBarHeight(this), 0, 0);
-		}
+//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//			getToolBar().setPadding(0, ScreenUtil.getStatusBarHeight(this), 0, 0);
+//		}
 	}
 
 	/**
@@ -103,20 +103,20 @@ public class PickerAlbumActivity extends UI implements OnAlbumItemClickListener,
 	public void centerToolbarTitle(final Toolbar toolbar) {
 		final CharSequence originalTitle = toolbar.getTitle();
 		for (int i = 0; i < toolbar.getChildCount(); i++) {
-			View view = toolbar.getChildAt(i);
-
+			final View view = toolbar.getChildAt(i);
 			if (view instanceof TextView) {
 				final TextView textView = (TextView) view;
 				if (textView.getText().equals(originalTitle)) {
 					textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 						@Override
 						public void onGlobalLayout() {
-							textView.setLeft((toolbar.getWidth() - textView.getWidth()) / 2);
-							textView.setRight(textView.getLeft() + textView.getMeasuredWidth());
+							textView.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER));
+//							textView.setLeft((toolbar.getWidth() - textView.getWidth()) / 2);
+//							textView.setRight(textView.getLeft() + textView.getMeasuredWidth());
+
 						}
 					});
 				}
-
 			}
 		}
 	}

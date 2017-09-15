@@ -24,7 +24,7 @@ public class ToolBarOptions implements Serializable {
     /**
      * toolbar的返回按钮资源id，默认开启的资源nim_actionbar_dark_back_icon
      */
-    private int navigateId = R.drawable.nim_actionbar_dark_back_icon;
+    private int navigateId = R.drawable.ic_back_chat;
     /**
      * toolbar的返回按钮，默认开启
      */
