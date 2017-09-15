@@ -66,6 +66,6 @@ public class TranslationAudioMessageFragment extends TFragment {
     @BindingAdapter("imageUrl")
     public static void setImageUrl(CircleImageView imageView, String url) {
         Context context = imageView.getContext();
-        GlideUtils.showImage(context, imageView, url);
+        GlideUtils.showImage(imageView, url);
     }
 }

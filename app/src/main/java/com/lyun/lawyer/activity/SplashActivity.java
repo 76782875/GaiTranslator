@@ -31,7 +31,7 @@ public class SplashActivity extends BaseActivity implements EasyPermissions.Perm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        GlideUtils.showImage(this, (ImageView) findViewById(R.id.bg_splash), R.mipmap.bg_splash);
+        GlideUtils.showImage((ImageView) findViewById(R.id.bg_splash), R.mipmap.bg_splash);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermission();
         } else {
