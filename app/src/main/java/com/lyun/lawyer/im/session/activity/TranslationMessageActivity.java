@@ -38,6 +38,7 @@ import com.lyun.roundrectview.RoundRectTextView;
 import com.lyun.utils.FormatUtil;
 import com.lyun.utils.L;
 import com.lyun.utils.TimeUtil;
+import com.netease.nim.uikit.cache.NimUserInfoCache;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.session.SessionCustomization;
@@ -95,6 +96,8 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         super.onCreate(savedInstanceState);
 
         parseIntent();
+
+        NimUserInfoCache.getInstance().getUserInfoFromRemote(sessionId, null);
 
         L.e("TranslationMessageActivity", "orderId:" + orderId);
         L.e("TranslationMessageActivity", "service running:" + TranslationOrderService.isRunning());
