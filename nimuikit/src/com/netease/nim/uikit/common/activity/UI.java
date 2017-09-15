@@ -11,16 +11,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
+import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.sys.ReflectionUtil;
+import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.model.ToolBarOptions;
 
 import java.util.ArrayList;
@@ -91,10 +93,8 @@ public abstract class UI extends AppCompatActivity {
         if (options.getLogoId() != 0) {
             toolbar.setLogo(options.getLogoId());
         }
-        setSupportActionBar(toolbar);
-
         if (options.isNeedNavigate()) {
-            toolbar.setNavigationIcon(options.getNavigateId());
+            toolbar.setNavigationIcon(R.drawable.ic_back_chat);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -102,6 +102,18 @@ public abstract class UI extends AppCompatActivity {
                 }
             });
         }
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            final View view = toolbar.getChildAt(i);
+            if (view instanceof ImageButton) {
+                view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        view.setPadding(ScreenUtil.dip2px(10), ScreenUtil.dip2px(8), ScreenUtil.dip2px(10),0);
+                    }
+                });
+            }
+        }
+        setSupportActionBar(toolbar);
     }
 
     public void setToolBar(int toolbarId, int titleId, int logoId) {

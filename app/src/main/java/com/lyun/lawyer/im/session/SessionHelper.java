@@ -3,7 +3,6 @@ package com.lyun.lawyer.im.session;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -180,40 +179,48 @@ public class SessionHelper {
     private static SessionCustomization getMyP2pCustomization() {
         if (myP2pCustomization == null) {
 
+//            //定制Toolbar
+//            ToolbarCustomization toolbarCustomization = new ToolbarCustomization() {
+//                // 由于需要Activity Result， 所以重载该函数。
+//                @Override
+//                public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+//                    if (requestCode == TeamRequestCode.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+//                        String result = data.getStringExtra(TeamExtras.RESULT_EXTRA_REASON);
+//                        if (result == null) {
+//                            return;
+//                        }
+//                        if (result.equals(TeamExtras.RESULT_EXTRA_REASON_CREATE)) {
+//                            String tid = data.getStringExtra(TeamExtras.RESULT_EXTRA_DATA);
+//                            if (TextUtils.isEmpty(tid)) {
+//                                return;
+//                            }
+//
+//                            startTeamSession(activity, tid);
+//                            activity.finish();
+//                        }
+//                    }
+//                }
+//            };
+//            // 定制ActionBar右边的按钮，可以加多个
+//            ArrayList<ToolbarCustomization.OptionsButton> buttons = new ArrayList<>();
+//            ToolbarCustomization.OptionsButton cloudMsgButton = new ToolbarCustomization.OptionsButton() {
+//                @Override
+//                public void onClick(Context context, View view, String sessionId) {
+//                    initPopuptWindow(context, view, sessionId, SessionTypeEnum.P2P);
+//                }
+//            };
+//            cloudMsgButton.setIconId(R.drawable.nim_ic_messge_history);
+//            buttons.add(cloudMsgButton);
+//            toolbarCustomization.setOptionsButtons(buttons);
             //定制Toolbar
-            ToolbarCustomization toolbarCustomization = new ToolbarCustomization() {
-                // 由于需要Activity Result， 所以重载该函数。
-                @Override
-                public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-                    if (requestCode == TeamRequestCode.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-                        String result = data.getStringExtra(TeamExtras.RESULT_EXTRA_REASON);
-                        if (result == null) {
-                            return;
-                        }
-                        if (result.equals(TeamExtras.RESULT_EXTRA_REASON_CREATE)) {
-                            String tid = data.getStringExtra(TeamExtras.RESULT_EXTRA_DATA);
-                            if (TextUtils.isEmpty(tid)) {
-                                return;
-                            }
-
-                            startTeamSession(activity, tid);
-                            activity.finish();
-                        }
-                    }
-                }
-            };
+            ToolbarCustomization toolbarCustomization = new ToolbarCustomization();
+            ToolBarOptions toolBarOptions = new ToolBarOptions();
+            toolBarOptions.setLogoId(0);
+            toolBarOptions.setNavigateId(R.mipmap.ic_back_chat);
+            toolbarCustomization.setToolBarOptions(toolBarOptions);
             // 定制ActionBar右边的按钮，可以加多个
             ArrayList<ToolbarCustomization.OptionsButton> buttons = new ArrayList<>();
-            ToolbarCustomization.OptionsButton cloudMsgButton = new ToolbarCustomization.OptionsButton() {
-                @Override
-                public void onClick(Context context, View view, String sessionId) {
-                    initPopuptWindow(context, view, sessionId, SessionTypeEnum.P2P);
-                }
-            };
-            cloudMsgButton.setIconId(R.drawable.nim_ic_messge_history);
-            buttons.add(cloudMsgButton);
             toolbarCustomization.setOptionsButtons(buttons);
-
             //定制MessagePanel
             // 背景
             // p2pCustomization.backgroundColor = Color.BLUE;
@@ -235,7 +242,7 @@ public class SessionHelper {
             inputPanelCustomization.setShowEmojiInputBar(false);
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             ArrayList<BaseAction> actions = new ArrayList<>();
-            actions.add(new ImageAction());
+            actions.add(new ImageAction(toolbarCustomization));
             // actions.add(new VideoAction());
             // actions.add(new LocationAction());
             // actions.add(new SnapChatAction());

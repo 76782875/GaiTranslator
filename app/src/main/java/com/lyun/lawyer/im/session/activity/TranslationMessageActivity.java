@@ -16,7 +16,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -226,7 +228,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     public void centerToolbarTitle(final Toolbar toolbar) {
         //toolbar.setSubtitle("00:00");
         final CharSequence originalTitle = toolbar.getTitle();
-        final CharSequence originalSubtitle = toolbar.getSubtitle();
+//        final CharSequence originalSubtitle = toolbar.getSubtitle();
 
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             View view = toolbar.getChildAt(i);
@@ -240,12 +242,21 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                         textView.setRight(textView.getLeft() + textView.getMeasuredWidth());
                     });
 
-                } else if (textView.getText().equals(originalSubtitle)) {
-                    textView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-                        textView.setLeft((toolbar.getWidth() - textView.getWidth()) / 2);
-                        textView.setRight(textView.getLeft() + textView.getMeasuredWidth());
-                    });
                 }
+//                else if (textView.getText().equals(originalSubtitle)) {
+//                    textView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+//                        textView.setLeft((toolbar.getWidth() - textView.getWidth()) / 2);
+//                        textView.setRight(textView.getLeft() + textView.getMeasuredWidth());
+//                    });
+//                }
+            }
+            if (view instanceof ImageButton) {
+                view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        view.setTop(ScreenUtil.dip2px(0));
+                    }
+                });
             }
         }
     }
@@ -262,7 +273,6 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         } else {
             L.i("permission", "申请录音权限");
         }
-
         if (AVChatProfile.getInstance().isAVChatting()) {
 
             if (getMessageFragment() != null) {

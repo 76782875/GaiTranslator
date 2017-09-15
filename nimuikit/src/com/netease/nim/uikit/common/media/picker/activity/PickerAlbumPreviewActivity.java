@@ -3,15 +3,16 @@ package com.netease.nim.uikit.common.media.picker.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -27,7 +28,6 @@ import com.netease.nim.uikit.common.media.picker.util.PickerUtil;
 import com.netease.nim.uikit.common.ui.imageview.BaseZoomableImageView;
 import com.netease.nim.uikit.common.util.media.BitmapDecoder;
 import com.netease.nim.uikit.common.util.media.ImageUtil;
-import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.model.ToolBarOptions;
 import com.netease.nim.uikit.session.ToolbarCustomization;
 import com.netease.nim.uikit.session.constant.Extras;
@@ -139,9 +139,9 @@ public class PickerAlbumPreviewActivity extends UI implements OnClickListener, O
 		ToolBarOptions options = toolbarCustomization.getToolBarOptions();
 		setToolBar(R.id.toolbar, options);
 		centerToolbarTitle(getToolBar());
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			getToolBar().setPadding(0, ScreenUtil.getStatusBarHeight(this), 0, 0);
-		}
+//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//			getToolBar().setPadding(0, ScreenUtil.getStatusBarHeight(this), 0, 0);
+//		}
 		previewSelectBtn = (ImageButton) findViewById(R.id.picker_image_preview_photos_select);
 //		previewSelectBtn.setVisibility(View.GONE);
 		previewSelectBtn.setOnClickListener(this);
@@ -154,7 +154,7 @@ public class PickerAlbumPreviewActivity extends UI implements OnClickListener, O
 	public void centerToolbarTitle(final Toolbar toolbar) {
 		final CharSequence originalTitle = toolbar.getTitle();
 		for (int i = 0; i < toolbar.getChildCount(); i++) {
-			View view = toolbar.getChildAt(i);
+			final View view = toolbar.getChildAt(i);
 
 			if (view instanceof TextView) {
 				final TextView textView = (TextView) view;
@@ -162,12 +162,12 @@ public class PickerAlbumPreviewActivity extends UI implements OnClickListener, O
 					textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 						@Override
 						public void onGlobalLayout() {
-							textView.setLeft((toolbar.getWidth() - textView.getWidth()) / 2);
-							textView.setRight(textView.getLeft() + textView.getMeasuredWidth());
+//							textView.setLeft((toolbar.getWidth() - textView.getWidth()) / 2);
+//							textView.setRight(textView.getLeft() + textView.getMeasuredWidth());
+							textView.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER));
 						}
 					});
 				}
-
 			}
 		}
 	}
