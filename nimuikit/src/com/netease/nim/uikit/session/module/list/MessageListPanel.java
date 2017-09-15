@@ -682,7 +682,7 @@ public class MessageListPanel implements TAdapterDelegate {
         @Override
         public boolean onViewHolderLongClick(View clickView, View viewHolderView, IMMessage item) {
 //            if (container.proxy.isLongClickEnabled()) {
-            showLongClickAction(item);
+                showLongClickAction(item);
 //            }
             return false;
         }
