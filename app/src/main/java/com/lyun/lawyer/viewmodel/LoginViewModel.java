@@ -33,6 +33,7 @@ public class LoginViewModel extends ViewModel {
     public final ObservableField<String> onLoginResult = new ObservableField<>();
     @WatchThis
     public final ObservableBoolean progressDialogShow = new ObservableBoolean();
+    private boolean clickAble;
 
     public RelayCommand onLoginButtonClick = new RelayCommand(() -> {
         if (("".equals(username.get()) || (username.get() == null))) {
@@ -42,6 +43,8 @@ public class LoginViewModel extends ViewModel {
         } else if (("".equals(password.get())) || (null == password.get())) {
             ObservableNotifier.alwaysNotify(onLoginResult, "请输入密码");
         } else {
+            if (clickAble) return;
+            else clickAble = true;
             login(username.get(), password.get());
         }
     });
@@ -53,10 +56,12 @@ public class LoginViewModel extends ViewModel {
                 .subscribe(loginResponse -> {
                             loginNim(username, password, loginResponse);
                             progressDialogShow.set(false);
+                            clickAble = false;
                         },
                         throwable -> {
                             onLoginFailed.set(throwable);
                             progressDialogShow.set(false);
+                            clickAble = false;
                         });
     }
 
