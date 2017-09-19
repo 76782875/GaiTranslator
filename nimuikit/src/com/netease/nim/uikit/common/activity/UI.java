@@ -93,8 +93,10 @@ public abstract class UI extends AppCompatActivity {
         if (options.getLogoId() != 0) {
             toolbar.setLogo(options.getLogoId());
         }
+        setSupportActionBar(toolbar);
+
         if (options.isNeedNavigate()) {
-            toolbar.setNavigationIcon(R.drawable.ic_back_chat);
+            toolbar.setNavigationIcon(options.getNavigateId());
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -102,18 +104,6 @@ public abstract class UI extends AppCompatActivity {
                 }
             });
         }
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            final View view = toolbar.getChildAt(i);
-            if (view instanceof ImageButton) {
-                view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        view.setPadding(ScreenUtil.dip2px(10), ScreenUtil.dip2px(8), ScreenUtil.dip2px(10),0);
-                    }
-                });
-            }
-        }
-        setSupportActionBar(toolbar);
     }
 
     public void setToolBar(int toolbarId, int titleId, int logoId) {
