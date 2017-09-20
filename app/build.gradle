@@ -207,6 +207,7 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     annotationProcessor 'net.funol.databinding.watchdog:compiler:1.0.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
     compile 'pub.devrel:easypermissions:0.3.0'
 }
 
