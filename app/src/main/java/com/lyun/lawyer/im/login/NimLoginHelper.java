@@ -81,6 +81,6 @@ public class NimLoginHelper {
         // ChatRoomHelper.logout();
         NimCache.clear();
         LoginSyncDataStatusObserver.getInstance().reset();
-        DropManager.getInstance().destroy();
+        // DropManager.getInstance().destroy();
     }
 }
