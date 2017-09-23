@@ -63,6 +63,7 @@ import com.netease.nimlib.sdk.avchat.model.AVChatOptionalConfig;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -282,7 +283,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             // 正在语音
             currentNormalMode = false;
             mTranslationAudioMessageFragment.setUserName(getTitle().toString());
-            mTranslationAudioMessageFragment.setAvatar(NimUserInfoCache.getInstance().getUserInfo(sessionId).getAvatar());
+            mTranslationAudioMessageFragment.setAvatar(getSessionAvatar());
             switchContent(getTranslationAudioMessageFragment());
             getToolBar().setVisibility(View.GONE);
         } else {
@@ -320,7 +321,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             mTranslationAudioMessageFragment.setContainerId(com.netease.nim.uikit.R.id.message_fragment_container);
             mTranslationAudioMessageFragment.setTranslatorTargetLanguage(targetLanguage);
             mTranslationAudioMessageFragment.setUserName(getTitle().toString());
-            mTranslationAudioMessageFragment.setAvatar(NimUserInfoCache.getInstance().getUserInfo(sessionId).getAvatar());
+            mTranslationAudioMessageFragment.setAvatar(getSessionAvatar());
         }
         return mTranslationAudioMessageFragment;
     }
@@ -343,6 +344,14 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    protected String getSessionAvatar(){
+        UserInfoProvider.UserInfo userInfo = NimUserInfoCache.getInstance().getUserInfo(sessionId);
+        if(userInfo==null){
+            return null;
+        }
+        return userInfo.getAvatar();
     }
 
     private BroadcastReceiver mTranslationOrderStatusChangeReceiver = new BroadcastReceiver() {
@@ -490,7 +499,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         super.setTitle(title);
         if (mTranslationAudioMessageFragment != null) {
             mTranslationAudioMessageFragment.setUserName(title.toString());
-            mTranslationAudioMessageFragment.setAvatar(NimUserInfoCache.getInstance().getUserInfo(sessionId).getAvatar());
+            mTranslationAudioMessageFragment.setAvatar(getSessionAvatar());
         }
     }
 

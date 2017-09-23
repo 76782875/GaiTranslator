@@ -1,7 +1,5 @@
 package com.lyun.lawyer.im.session.fragment;
 
-import android.content.Context;
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -12,9 +10,7 @@ import android.view.ViewGroup;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.FragmentTranslationAudioMessageBinding;
 import com.lyun.lawyer.viewmodel.TranslationAudioMessageViewModel;
-import com.lyun.utils.GlideUtils;
 import com.netease.nim.uikit.common.fragment.TFragment;
-import com.netease.nim.uikit.common.ui.imageview.CircleImageView;
 
 /**
  * Created by ZHAOWEIWEI on 2017/3/3.
@@ -67,11 +63,5 @@ public class TranslationAudioMessageFragment extends TFragment {
         if (mViewModel != null) {
             mViewModel.targetLanguage.set(targetLanguage);
         }
-    }
-
-    @BindingAdapter("imageUrl")
-    public static void setImageUrl(CircleImageView imageView, String url) {
-        Context context = imageView.getContext();
-        GlideUtils.showImage(imageView, url);
     }
 }
