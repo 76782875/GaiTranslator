@@ -5,7 +5,7 @@
     >
 
     <data>
-
+        <import type="com.lyun.lawyer.R"/>
         <variable
             name="mvvm"
             type="com.lyun.lawyer.viewmodel.TranslationAudioMessageViewModel"></variable>
@@ -146,7 +146,8 @@
                 android:layout_height="90dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:src="@mipmap/user_default_avatar"/>
+                app:placeholderImageRes="@{R.mipmap.user_default_avatar}"
+                app:uri="@{mvvm.translatorAvatar}"/>
 
             <TextView
                 android:id="@+id/translation_audio_message_username"

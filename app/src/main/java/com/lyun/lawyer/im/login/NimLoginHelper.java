@@ -75,11 +75,12 @@ public class NimLoginHelper {
     }
 
     public static void logout() {
+        NIMClient.getService(AuthService.class).logout();
         // 清理缓存&注销监听&清除状态
         NimUIKit.clearCache();
         // ChatRoomHelper.logout();
         NimCache.clear();
         LoginSyncDataStatusObserver.getInstance().reset();
-        DropManager.getInstance().destroy();
+        // DropManager.getInstance().destroy();
     }
 }

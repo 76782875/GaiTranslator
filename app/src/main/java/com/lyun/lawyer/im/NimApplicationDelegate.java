@@ -191,23 +191,20 @@ public class NimApplicationDelegate extends ApplicationDelegate<AppApplication> 
      * 通知消息过滤器（如果过滤则该消息不存储不上报）
      */
     private void registerIMMessageFilter() {
-        NIMClient.getService(MsgService.class).registerIMMessageFilter(new IMMessageFilter() {
-            @Override
-            public boolean shouldIgnore(IMMessage message) {
-                if (UserPreferences.getMsgIgnore() && message.getAttachment() != null) {
-                    if (message.getAttachment() instanceof UpdateTeamAttachment) {
-                        UpdateTeamAttachment attachment = (UpdateTeamAttachment) message.getAttachment();
-                        for (Map.Entry<TeamFieldEnum, Object> field : attachment.getUpdatedFields().entrySet()) {
-                            if (field.getKey() == TeamFieldEnum.ICON) {
-                                return true;
-                            }
+        NIMClient.getService(MsgService.class).registerIMMessageFilter(message -> {
+            if (UserPreferences.getMsgIgnore() && message.getAttachment() != null) {
+                if (message.getAttachment() instanceof UpdateTeamAttachment) {
+                    UpdateTeamAttachment attachment = (UpdateTeamAttachment) message.getAttachment();
+                    for (Map.Entry<TeamFieldEnum, Object> field : attachment.getUpdatedFields().entrySet()) {
+                        if (field.getKey() == TeamFieldEnum.ICON) {
+                            return true;
                         }
-                    } else if (message.getAttachment() instanceof AVChatAttachment) {
-                        return true;
                     }
+                } else if (message.getAttachment() instanceof AVChatAttachment) {
+                    return true;
                 }
-                return false;
             }
+            return false;
         });
     }
 
@@ -219,15 +216,12 @@ public class NimApplicationDelegate extends ApplicationDelegate<AppApplication> 
     }
 
     private void registerAVChatIncomingCallObserver(boolean register) {
-        AVChatManager.getInstance().observeIncomingCall(new Observer<AVChatData>() {
-            @Override
-            public void onEvent(AVChatData data) {
-                String extra = data.getExtra();
-                Log.e("Extra", "Extra Message->" + extra);
-                // 有网络来电打开AVChatActivity
-                AVChatProfile.getInstance().setAVChatting(true);
-                AVChatActivity.launch(NimCache.getContext(), data, AVChatActivity.FROM_BROADCASTRECEIVER);
-            }
+        AVChatManager.getInstance().observeIncomingCall((Observer<AVChatData>) data -> {
+            String extra = data.getExtra();
+            Log.e("Extra", "Extra Message->" + extra);
+            // 有网络来电打开AVChatActivity
+            AVChatProfile.getInstance().setAVChatting(true);
+            AVChatActivity.launch(NimCache.getContext(), data, AVChatActivity.FROM_BROADCASTRECEIVER);
         }, register);
     }
 

@@ -17,11 +17,13 @@ import com.lyun.lawyer.R;
 import com.lyun.lawyer.databinding.ActivityLoginBinding;
 import com.lyun.lawyer.im.NimCache;
 import com.lyun.lawyer.im.config.preference.UserPreferences;
+import com.lyun.lawyer.im.login.NimLoginHelper;
 import com.lyun.lawyer.service.TranslationOrderService;
 import com.lyun.lawyer.viewmodel.LoginViewModel;
 import com.lyun.lawyer.viewmodel.watchdog.ILoginViewModelCallbacks;
 import com.lyun.library.mvvm.view.activity.MvvmActivity;
 import com.lyun.library.mvvm.viewmodel.SimpleDialogViewModel;
+import com.netease.nim.uikit.cache.NimUserInfoCache;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.auth.AuthService;
@@ -43,6 +45,8 @@ public class LoginActivity extends MvvmActivity<ActivityLoginBinding, LoginViewM
         context.startActivity(intent);
 //        if (kickOut)
         Account.preference().clear();
+        NimUserInfoCache.getInstance().clear();
+        NimLoginHelper.logout();
         TranslationOrderService.forceStop(context);
     }
 

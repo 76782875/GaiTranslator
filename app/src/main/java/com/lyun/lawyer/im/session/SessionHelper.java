@@ -138,7 +138,7 @@ public class SessionHelper {
             ToolbarCustomization toolbarCustomization = new ToolbarCustomization();
             ToolBarOptions toolBarOptions = new ToolBarOptions();
             toolBarOptions.setLogoId(0);
-            toolBarOptions.setNavigateId(R.mipmap.ic_arrow_back_black);
+            toolBarOptions.setNavigateId(R.mipmap.ic_back_chat);
             toolbarCustomization.setToolBarOptions(toolBarOptions);
             // 定制ActionBar右边的按钮，可以加多个
             ArrayList<ToolbarCustomization.OptionsButton> buttons = new ArrayList<>();

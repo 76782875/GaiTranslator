@@ -282,6 +282,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             // 正在语音
             currentNormalMode = false;
             mTranslationAudioMessageFragment.setUserName(getTitle().toString());
+            mTranslationAudioMessageFragment.setAvatar(NimUserInfoCache.getInstance().getUserInfo(sessionId).getAvatar());
             switchContent(getTranslationAudioMessageFragment());
             getToolBar().setVisibility(View.GONE);
         } else {
@@ -319,6 +320,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
             mTranslationAudioMessageFragment.setContainerId(com.netease.nim.uikit.R.id.message_fragment_container);
             mTranslationAudioMessageFragment.setTranslatorTargetLanguage(targetLanguage);
             mTranslationAudioMessageFragment.setUserName(getTitle().toString());
+            mTranslationAudioMessageFragment.setAvatar(NimUserInfoCache.getInstance().getUserInfo(sessionId).getAvatar());
         }
         return mTranslationAudioMessageFragment;
     }
@@ -488,6 +490,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         super.setTitle(title);
         if (mTranslationAudioMessageFragment != null) {
             mTranslationAudioMessageFragment.setUserName(title.toString());
+            mTranslationAudioMessageFragment.setAvatar(NimUserInfoCache.getInstance().getUserInfo(sessionId).getAvatar());
         }
     }
 
