@@ -346,9 +346,9 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         }
     }
 
-    protected String getSessionAvatar(){
+    protected String getSessionAvatar() {
         UserInfoProvider.UserInfo userInfo = NimUserInfoCache.getInstance().getUserInfo(sessionId);
-        if(userInfo==null){
+        if (userInfo == null) {
             return null;
         }
         return userInfo.getAvatar();
