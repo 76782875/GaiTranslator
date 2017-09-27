@@ -3,7 +3,7 @@
     <style name="AppBaseTheme" parent="LibTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">#fe811c</item>
         <item name="android:windowBackground">@color/colorWindowBackground</item>
         <item name="android:textColor">@color/colorTextPrimary</item>
         <item name="android:textColorHint">@color/textColorHint</item>
