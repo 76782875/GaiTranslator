@@ -270,9 +270,14 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
 
                 int editEnd = messageEditText.getSelectionEnd();
                 messageEditText.removeTextChangedListener(this);
-                while (StringUtil.counterChars(s.toString()) > 5000 && editEnd > 0) {
-                    s.delete(editEnd - 1, editEnd);
-                    editEnd--;
+
+                int width = StringUtil.counterChars(s.toString());
+
+                while (width > 5000 && editEnd > 0) {
+                    int delStart = (int) (editEnd - Math.ceil((width - 5000f) / 2));
+                    s.delete(delStart, editEnd);
+                    editEnd = delStart;
+                    width = StringUtil.counterChars(s.toString());
                 }
                 messageEditText.setSelection(editEnd);
                 messageEditText.addTextChangedListener(this);
