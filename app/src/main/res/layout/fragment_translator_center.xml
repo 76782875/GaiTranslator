@@ -36,14 +36,15 @@
                 android:padding="10dp"
                 android:src="@mipmap/translator_setting_icon"/>
 
-            <ImageView
+            <com.netease.nim.uikit.common.ui.imageview.HeadImageView
                 android:id="@+id/translator_center_avatar"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
+                android:scaleType="centerCrop"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
-                android:onClick="@{mvvm.onViewClick}"
-                android:src="@mipmap/translator_default_avatar"/>
+                app:uid="@{mvvm.cardNo}"
+                android:onClick="@{mvvm.onViewClick}"/>
 
             <TextView
                 android:id="@+id/translator_center_name"

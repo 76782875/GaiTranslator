@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -35,12 +34,8 @@ import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.model.AVChatAttachment;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.netease.nimlib.sdk.msg.MsgService;
-import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
-import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.team.constant.TeamFieldEnum;
-import com.netease.nimlib.sdk.team.model.IMMessageFilter;
 import com.netease.nimlib.sdk.team.model.UpdateTeamAttachment;
-import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 
 import java.util.Map;
 
@@ -167,12 +162,11 @@ public class NimApplicationDelegate extends ApplicationDelegate<AppApplication> 
         } else {
             return null;
         }
-
     }
 
     private void initUIKit() {
         // 初始化，使用 uikit 默认的用户信息提供者
-        NimUIKit.init(getApplication());
+        NimUIKit.init(getApplication(), new NimUserInfoProvider(getApplication()), null);
 
         // 设置地理位置提供者。如果需要发送地理位置消息，该参数必须提供。如果不需要，可以忽略。
         // NimUIKit.setLocationProvider(new NimDemoLocationProvider());

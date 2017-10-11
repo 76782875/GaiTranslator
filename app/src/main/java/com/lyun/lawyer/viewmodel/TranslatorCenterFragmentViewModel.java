@@ -34,6 +34,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
     public final ObservableField<String> translateTime = new ObservableField<>();//翻译时长
     public final ObservableField<String> personTime = new ObservableField<>();//人次
     public final ObservableInt exitVisible = new ObservableInt();//退出登录按钮的显示
+    public final ObservableField<String> cardNo = new ObservableField<>("");
 
     private Intent intent;
 
@@ -60,6 +61,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
      * 更新昵称
      */
     private void setTranslatorInformation() {
+        cardNo.set(Account.Preference.instance().getCardNo());
         userName.set(FormatUtil.formatUserName(Account.preference().getCardNo()));
         exitVisible.set(View.VISIBLE);
     }
