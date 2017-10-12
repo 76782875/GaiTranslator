@@ -252,12 +252,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 //                }
             }
             if (view instanceof ImageButton) {
-                view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        view.setTop(ScreenUtil.dip2px(0));
-                    }
-                });
+                view.getViewTreeObserver().addOnGlobalLayoutListener(() -> view.setTop(ScreenUtil.dip2px(0)));
             }
         }
     }

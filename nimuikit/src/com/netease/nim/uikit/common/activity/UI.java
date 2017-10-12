@@ -245,8 +245,8 @@ public abstract class UI extends AppCompatActivity {
     }
 
     protected TFragment switchContent(TFragment fragment, boolean needAddToBackStack) {
-        FragmentManager fm = getSupportFragmentManager();
-        if(!fm.isDestroyed()) {
+        if (!isDestroyedCompatible()) {
+            FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
             fragmentTransaction.replace(fragment.getContainerId(), fragment);
             if (needAddToBackStack) {

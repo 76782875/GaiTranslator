@@ -12,6 +12,7 @@ import com.lyun.lawyer.Account;
 import com.lyun.lawyer.AppIntent;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.model.StatisticsCardNoModel;
+import com.lyun.library.mvvm.observable.util.ObservableNotifier;
 import com.lyun.library.mvvm.viewmodel.ViewModel;
 import com.lyun.utils.FormatUtil;
 import com.lyun.utils.TimeUtil;
@@ -61,7 +62,7 @@ public class TranslatorCenterFragmentViewModel extends ViewModel {
      * 更新昵称
      */
     private void setTranslatorInformation() {
-        cardNo.set(Account.Preference.instance().getCardNo());
+        ObservableNotifier.alwaysNotify(cardNo, Account.Preference.instance().getCardNo());
         userName.set(FormatUtil.formatUserName(Account.preference().getCardNo()));
         exitVisible.set(View.VISIBLE);
     }
