@@ -7,6 +7,7 @@ import com.lyun.lawyer.im.config.preference.Preferences;
 import com.lyun.lawyer.im.config.preference.UserPreferences;
 import com.netease.nim.uikit.LoginSyncDataStatusObserver;
 import com.netease.nim.uikit.NimUIKit;
+import com.netease.nim.uikit.cache.NimUserInfoCache;
 import com.netease.nim.uikit.common.ui.drop.DropManager;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -33,6 +34,8 @@ public class NimLoginHelper {
                             NimCache.setAccount(account);
                             Preferences.saveUserAccount(account);
                             Preferences.saveUserToken(token);
+
+                            NimUserInfoCache.getInstance().getUserInfoFromRemote(account, null);
 
                             // 初始化消息提醒配置
                             initNotificationConfig();
