@@ -155,9 +155,6 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         unregisterAVChatListeners();
         unregisterReceiver(mTranslationOrderStatusChangeReceiver);
         unregisterReceiver(mTranslationOrderFinishReceiver);
-
-        dismissProgress();
-        dismissInComing();
     }
 
     public static void start(Context context, String contactId, String orderId, TranslationOrderModel.OrderType orderType, String targetLanguage, SessionCustomization customization, IMMessage anchor) {
@@ -301,15 +298,16 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
 
     @Override
     protected TFragment switchContent(TFragment fragment, boolean needAddToBackStack) {
+        if(!isDestroyedCompatible()) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-        if (mCurrentFragment != null) {
-            ft.hide(mCurrentFragment);
+            if (mCurrentFragment != null) {
+                ft.hide(mCurrentFragment);
+            }
+            ft.show(fragment);
+            ft.commitAllowingStateLoss();
+            mCurrentFragment = fragment;
         }
-        ft.show(fragment);
-        ft.commitAllowingStateLoss();
-        mCurrentFragment = fragment;
         return fragment;
     }
 
@@ -473,21 +471,25 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
     }
 
     protected void dismissProgress() {
-        isMakeAudioCall = false;
-        if (mProgressDialog != null)
-            mProgressDialog.dismiss();
-        if (mAudioCallButton != null) {
-            mAudioCallButton.setEnabled(true);
-            mAudioCallButton.setClickable(true);
+        if(!isDestroyedCompatible()) {
+            isMakeAudioCall = false;
+            if (mProgressDialog != null)
+                mProgressDialog.dismiss();
+            if (mAudioCallButton != null) {
+                mAudioCallButton.setEnabled(true);
+                mAudioCallButton.setClickable(true);
+            }
         }
     }
 
     protected void dismissInComing() {
-        if (mIncomingCallDialog != null)
-            mIncomingCallDialog.dismiss();
-        if (mAudioCallButton != null) {
-            mAudioCallButton.setEnabled(true);
-            mAudioCallButton.setClickable(true);
+        if(!isDestroyedCompatible()) {
+            if (mIncomingCallDialog != null)
+                mIncomingCallDialog.dismiss();
+            if (mAudioCallButton != null) {
+                mAudioCallButton.setEnabled(true);
+                mAudioCallButton.setClickable(true);
+            }
         }
     }
 
