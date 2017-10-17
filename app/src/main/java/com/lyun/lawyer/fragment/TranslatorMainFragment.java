@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lyun.lawyer.Account;
+import com.lyun.lawyer.AppApplication;
 import com.lyun.lawyer.R;
 import com.lyun.lawyer.api.response.TranslationOrderResponse;
 import com.lyun.lawyer.databinding.FragmentTranslatorGrabLayoutBinding;
@@ -173,6 +174,7 @@ public class TranslatorMainFragment extends MvvmFragment<FragmentTranslatorGrabL
         L.i("AVChat", "语音聊天中断：event -> " + event);
         if (event == OUTGOING_TIMEOUT) {
             dismissProgress();
+            Toast.makeText(AppApplication.getInstance(), "订单已过期", Toast.LENGTH_SHORT).show();
         } else if (event == INCOMING_TIMEOUT) {
         }
     };
