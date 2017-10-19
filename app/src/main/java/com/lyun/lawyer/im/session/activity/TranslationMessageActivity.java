@@ -516,6 +516,8 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         AVChatManager.getInstance().observeTimeoutNotification(mAVChatCallTimeoutObserver, true);
         // 通话状态监听
         AVChatManager.getInstance().observeAVChatState(mAVChatStateObserver, true);
+        // 监听自动挂断
+        PhoneCallStateObserver.getInstance().observeAutoHangUpForLocalPhone(mAutoHangupObserver, true);
     }
 
     protected void unregisterAVChatListeners() {
@@ -524,6 +526,7 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
         AVChatManager.getInstance().observeHangUpNotification(mAVChatCallHangupObserver, false);
         AVChatManager.getInstance().observeTimeoutNotification(mAVChatCallTimeoutObserver, false);
         AVChatManager.getInstance().observeAVChatState(mAVChatStateObserver, false);
+        PhoneCallStateObserver.getInstance().observeAutoHangUpForLocalPhone(mAutoHangupObserver, false);
     }
 
     protected SimpleDialogViewModel mIncomingCallDialog;
@@ -733,6 +736,19 @@ public class TranslationMessageActivity extends P2PMessageActivity implements IT
                 dismissProgress();
                 dismissInComing();
             }
+        }
+    };
+
+    /**
+     * 监听网络通话发起，接听或正在进行时有本地来电的通知
+     * 网络通话发起或者正在接通时，需要监听是否有本地来电（用户接通本地来电）。
+     * 若有本地来电，目前Demo中示例代码的处理是网络通话自动拒绝或者挂断，开发者可以自行灵活处理。
+     */
+    Observer<Integer> mAutoHangupObserver = (Observer<Integer>) integer -> {
+        // 结束通话
+        L.i("AVChat", "语音聊天自动挂断 integer -> " + integer);
+        if(integer == 1) {
+            onAudioHangUp();
         }
     };
 
