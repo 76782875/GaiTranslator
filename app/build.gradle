@@ -163,11 +163,14 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
+            def outputFile = output.outputFile
             def fileName = "${variant.buildType.name}_Lawyer_v${defaultConfig.versionName}_${buildTime()}_${variant.productFlavors[0].name}.apk"
             if (variant.buildType.name == 'debug') {
                 fileName = 'app-debug.apk'
             }
-            outputFileName = fileName
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                outputFileName = fileName
+            }
         }
     }
 
